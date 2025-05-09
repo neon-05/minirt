@@ -37,6 +37,8 @@ typedef struct s_material
 {
 	int			emmissive;
 	t_vec4		color;
+	double		roughness;
+	double		refraction_index;
 }	t_material;
 
 typedef struct s_object
