@@ -23,6 +23,7 @@ typedef struct s_scene
 {
 	t_object	*objects;
 	t_cam		*cam;
+	t_vec4		ambient;
 }	t_scene;
 
 typedef struct s_ray
