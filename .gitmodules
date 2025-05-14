@@ -1,0 +1,6 @@
+[submodule "matft"]
+	path = matft
+	url = https://github.com/neon-05/42_matft.git
+[submodule "libft"]
+	path = libft
+	url = https://github.com/neon-05/42_libft.git

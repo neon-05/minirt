@@ -3,12 +3,12 @@
 
 # include <matft.h>
 
-enum
+enum e_shape_type
 {
-	POINT = 0;
-	PLANE = 1;
-	SPHERE = 2;
-	CYLINDER = 3;
+	POINT = 0,
+	PLANE = 1,
+	SPHERE = 2,
+	CYLINDER = 3
 };
 
 typedef struct s_cam
@@ -43,11 +43,11 @@ typedef struct s_material
 
 typedef struct s_object
 {
-	int										type;
-	t_mat3									trans_matrix;
-	t_vec3									offset;
-	t_material								material;
-	(double)(t_ray, t_object *, t_scene *)	ray_dist;
+	int			type;
+	t_mat3		trans_matrix;
+	t_vec3		offset;
+	t_material	material;
+	double		ray_dist(t_ray, t_object *, t_scene *);
 }	t_object;
 
 #endif
