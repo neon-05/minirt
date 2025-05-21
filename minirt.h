@@ -1,7 +1,24 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
+//====================(INCLUDES)============================//
+
 # include <matft.h>
+# include <libft.h>
+# include <mlx.h>
+
+//====================(DEFINES)=============================//
+
+# define WIN_WIDTH
+# define WIN_HEIGHT
+
+//====================(STRUCTS)=============================//
+
+typedef struct s_cam		t_cam;
+typedef struct s_scene		t_scene;
+typedef struct s_ray		t_ray;
+typedef struct s_material	t_material;
+typedef struct s_object		t_object;
 
 enum e_shape_type
 {
@@ -48,7 +65,9 @@ typedef struct s_object
 	t_mat3		trans_matrix;
 	t_vec3		offset;
 	t_material	material;
-	double		ray_dist(t_ray, t_object *, t_scene *);
+	double		(*ray_dist)(t_ray, t_object *, t_scene *);
 }	t_object;
+
+//====================(DECLARATIONS)========================//
 
 #endif
