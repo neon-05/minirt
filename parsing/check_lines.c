@@ -61,12 +61,12 @@ static int	check_c(t_parse *parse, char **tab, char *line)
 
 static int	check_numbers(t_parse *parse, char **tab, char *line)
 {
-	if (tab[0][0] == 'A')
-		check_a(parse, tab, line);
-	else if (tab[0][0] == 'L')
-		check_l(parse, tab, line);
-	if (tab[0][0] == 'C')
-		check_c(parse, tab, line);
+	if (tab[0][0] == 'A' && check_a(parse, tab, line) == SKIPPED)
+		return (SKIPPED);
+	else if (tab[0][0] == 'L' && check_l(parse, tab, line) == SKIPPED)
+		return (SKIPPED);
+	if (tab[0][0] == 'C' && check_c(parse, tab, line) == SKIPPED)
+		return (SKIPPED);
 	return (SUCCESS);
 }
 
@@ -83,8 +83,8 @@ int	check_line(t_parse *parse, char **tab, char *line)
 		return (printf("%sCamera has wrong number of arguments (line skipped):\n%s\n\n", error, line), SKIPPED);
 	else if (tab[0][0] == 'L' && arr_size(tab) != 4)
 		return (printf("%sLight has wrong number of arguments (line skipped):\n%s\n\n", error, line), SKIPPED);
-	else
-		check_others(parse, tab, line);
+	else if (check_others(parse, tab, line) == SKIPPED)
+		return (SKIPPED);
 	if (check_numbers(parse, tab, line) == SKIPPED)
 		return (SKIPPED);
 	return (SUCCESS);

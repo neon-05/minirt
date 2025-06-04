@@ -26,12 +26,12 @@ static int	check_cy(t_parse *parse, char **tab, char *line)
 
 static int	check_numbers(t_parse *parse, char **tab, char *line)
 {
-	if (tab[0][0] == 's' && tab[0][1] == 'p')
-		check_sp(parse, tab, line);
-	else if (tab[0][0] == 'c' && tab[0][1] == 'y')
-		check_cy(parse, tab, line);
-	else if (tab[0][0] == 'p' && tab[0][1] == 'l')
-		check_pl(parse, tab, line);
+	if (tab[0][0] == 's' && tab[0][1] == 'p' && check_sp(parse, tab, line) == SKIPPED)
+		return (SKIPPED);
+	else if (tab[0][0] == 'c' && tab[0][1] == 'y' && check_cy(parse, tab, line) == SKIPPED)
+		return (SKIPPED);
+	else if (tab[0][0] == 'p' && tab[0][1] == 'l' && check_pl(parse, tab, line) == SKIPPED)
+		return (SKIPPED);
 	return (SUCCESS);
 }
 
