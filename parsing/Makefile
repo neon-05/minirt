@@ -13,8 +13,11 @@ LIB = ../42_libft/libft.a ../42_matft/matft.a
 SRCS = \
 	parser.c \
 	parsing_utils.c \
-	check_lines.c\
-	check_others.c\
+	check_once.c \
+	check_others.c \
+	ambiant.c \
+	light.c \
+	camera.c \
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

@@ -37,11 +37,10 @@ static int	check_numbers(t_parse *parse, char **tab, char *line)
 
 int	check_others(t_parse *parse, char **tab, char *line)
 {
-
 	char	*error;
 
-	(void)parse;
 	error = RED"ERROR: "RESET;
+	(void)parse;
 	if (tab[0][0] == 's' && tab[0][1] == 'p' && arr_size(tab) != 4)
 		return (printf("%sSphere light has wrong number of arguments (line skipped):\n%s\n\n", error, line), SKIPPED);
 	else if (tab[0][0] == 'p' && tab[0][1] == 'l' && arr_size(tab) != 4)

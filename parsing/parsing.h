@@ -28,6 +28,7 @@
 # define SKIPPED 2
 # define OPEN_ERROR -1
 
+# define ERROR "RED"ERROR: "RESET"
 
 
 //====================(STRUCTS)=============================//
@@ -86,9 +87,10 @@ typedef struct s_object
 
 typedef struct s_parse
 {
-	int		n_objects;
-	char	*once;
+	int			n_objects;
+	char		*once;
 	size_t		skipped_lines;
+	t_scene 	*scene;
 }	t_parse;
 
 //====================(DECLARATIONS)========================//
@@ -107,5 +109,14 @@ int	check_line(t_parse *parse, char **tab, char *line);
 
 //check_others
 int	check_others(t_parse *parse, char **tab, char *line);
+
+//ambiant
+int	 ambiant(t_scene *scene, char **tab, char *line);
+
+//light
+int	 light(t_scene *scene, char **tab, char *line);
+
+//camera
+int	 camera(t_scene *scene, char **tab, char *line);
 
 #endif

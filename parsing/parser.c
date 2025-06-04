@@ -54,19 +54,21 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 {
 	if (check_line(parse, tab, line) == SKIPPED)
 		return (parse->skipped_lines++, SKIPPED);
-	printf(GREEN"%s\n"RESET, line);
 	parse->once = ft_strjoin_f(parse->once, tab[0]);
 	if (!parse->once)
 	{
 		ft_free_arr(tab, arr_size(tab));
 		return (MALLOC_ERROR);
 	}
-	// scene->objects[parse->n_objects] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), dist_sphere);
-	// if (!scene->objects[parse->n_objects])
-	// {
-		// ft_free_arr(tab, arr_size(tab));
-		// return (MALLOC_ERROR);
-	// }
+	if (tab[0][0] == 'A' && ambiant(parse->scene, tab, line) == SKIPPED)
+		return (SKIPPED);
+	else if (tab[0][0] == 'L' && light(parse->scene, tab, line) == SKIPPED)
+		return (SKIPPED); //pas de lights dans la scene
+	else if (tab[0][0] == 'C' && camera(parse->scene, tab, line) == SKIPPED)
+		return (SKIPPED); //pourquoi un vec4 pour l'orientation ?
+	else
+		printf ("wtffffffffffffffffffffffffffffffffffffffffffffffffff\n\n\n\n");
+	printf(GREEN"%s\n"RESET, line);//print what's accepeted
 	return (SUCCESS);
 }
 
@@ -80,11 +82,12 @@ int	others_objects(t_parse *parse, char **tab, char *line)
 	return (SUCCESS);
 }
 
-int	get_data(t_scene *scene, t_parse *parse, char *line)
+int	get_data(t_parse *parse, char *line)
 {
 	char	**tab;
+	char	*error;
 
-	(void)scene;
+	error = RED"ERROR: "RESET;
 	tab = ft_split(line, '\t');
 	if (!tab)
 		return (MALLOC_ERROR);
@@ -100,7 +103,7 @@ int	get_data(t_scene *scene, t_parse *parse, char *line)
 		return (others_objects(parse, tab, line));
 	else
 	{
-		printf("ERROR: Unrecognized object (line skipped):\n%s", line);
+		printf("%sUnrecognized object (line skipped):\n%s\n\n", error, line);
 		ft_free_arr(tab, arr_size(tab));
 		return (SKIPPED);
 	}
@@ -112,12 +115,10 @@ size_t	parse(t_scene *scene, int fd)//n of line not parsed
 	t_parse		parse = {0};
 	char		*line;
 
-	(void)scene;
-	if (fd < 0)
-		return (OPEN_ERROR);
+	parse.scene = scene;
 	while (get_line(&line, fd))
 	{
-		if (get_data(scene, &parse, line) == MALLOC_ERROR)
+		if (get_data(&parse, line) == MALLOC_ERROR)
 			return (MALLOC_ERROR);
 	}
 	return (parse.skipped_lines);
