@@ -1,6 +1,169 @@
-#include "parsing.h"
+# include "parsing.h"
 
-int	check_file()
+//		printf("ERROR: Unothorized duplicated argument (line skipped):\n%s", line);
+
+/*
+
+
+typedef struct s_object
+{
+	t_mat3		trans_matrix;
+	t_vec3		offset;
+	t_material	material;
+	double		(*ray_dist_func)(t_ray);
+}	t_object;
+
+typedef struct s_scene
+{
+	t_object	**objects;
+	t_cam		*cam;
+	t_vec4		ambient;
+	t_xvar		*mlx;
+	t_win_list	*window;
+}	t_scene;
+
+*/
+
+t_material	material_init(int emmissive, t_vec4 color, double roughness, double refraction_index
+	)
+{
+	t_material	r;
+
+	r.emmissive = emmissive;
+	r.color = color;
+	r.roughness = roughness;
+	r.refraction_index = refraction_index;
+	return (r);
+}
+
+t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, double (*ray_dist_func)(t_ray))
+{
+	t_object	*obj;
+
+	obj = malloc(sizeof(t_object));
+	if (!obj)
+		return (MALLOC_ERROR);
+	obj->trans_matrix = trans_matrix;
+	obj->offset = offset;
+	obj->material = material;
+	obj->ray_dist_func = ray_dist_func;
+	return (obj);
+}
+
+int	once_objects(t_parse *parse, char **tab, char *line)
+{
+	if (check_line(parse, tab, line) == SKIPPED)
+		return (parse->skipped_lines++, SKIPPED);
+	printf(GREEN"%s\n"RESET, line);
+	parse->once = ft_strjoin_f(parse->once, tab[0]);
+	if (!parse->once)
+	{
+		ft_free_arr(tab, arr_size(tab));
+		return (MALLOC_ERROR);
+	}
+	// scene->objects[parse->n_objects] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), dist_sphere);
+	// if (!scene->objects[parse->n_objects])
+	// {
+		// ft_free_arr(tab, arr_size(tab));
+		// return (MALLOC_ERROR);
+	// }
+	return (SUCCESS);
+}
+
+int	others_objects(t_parse *parse, char **tab, char *line)
+{
+	if (check_line(parse, tab, line) == SKIPPED)
+		return (parse->skipped_lines++, SKIPPED);
+	printf(GREEN"%s\n"RESET, line);
+	(void)tab;
+	parse->n_objects++;
+	return (SUCCESS);
+}
+
+int	get_data(t_scene *scene, t_parse *parse, char *line)
+{
+	char	**tab;
+
+	(void)scene;
+	tab = ft_split(line, '\t');
+	if (!tab)
+		return (MALLOC_ERROR);
+	if (!(arr_size(tab) >= 3 && arr_size(tab) <= 5))
+	{
+		ft_free_arr(tab, arr_size(tab));
+		parse->skipped_lines++;
+		return (SUCCESS);
+	}
+	if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
+		return (once_objects(parse, tab, line));
+	else if (ft_strlen(tab[0]) == 2) // &&...
+		return (others_objects(parse, tab, line));
+	else
+	{
+		printf("ERROR: Unrecognized object (line skipped):\n%s", line);
+		ft_free_arr(tab, arr_size(tab));
+		return (SKIPPED);
+	}
+	return (SUCCESS);
+}
+
+size_t	parse(t_scene *scene, int fd)//n of line not parsed
+{
+	t_parse		parse = {0};
+	char		*line;
+
+	(void)scene;
+	if (fd < 0)
+		return (OPEN_ERROR);
+	while (get_line(&line, fd))
+	{
+		if (get_data(scene, &parse, line) == MALLOC_ERROR)
+			return (MALLOC_ERROR);
+	}
+	return (parse.skipped_lines);
+}
+
+int	main(int ac, char **av)
+{
+	t_scene 	*scene;
+	int			fd;
+
+
+	// t_mat3	i_mat3 = mat3(vec3(1., 0., 0.), vec3(0., sqrt(3.)/.2, -.5), vec3(0., .5, sqrt(3.)/.2));
+	t_mat3	i_mat3i = mat3(vec3(1., 0., 0.), vec3(0., 1., 0.), vec3(0., 0., 1.));
+
+
+	scene = malloc(sizeof(t_scene));
+	scene->cam = malloc(sizeof(t_cam));
+	scene->objects = malloc(sizeof(t_object *) * 4);
+
+	scene->cam->pos = vec3(0., 0., -1.);
+	scene->cam->fov_dist = 1.25;
+	scene->ambient = vec4(0., 0.8, 1., 1.);
+
+	scene->objects[0] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), NULL); //dist_sphere);
+	scene->objects[1] = object_init(i_mat3i, vec3(2.5, -.75, 1.), material_init(0, vec4(1., 1., 1., 1.), 1., 1.), NULL); //dist_sphere);
+	scene->objects[2] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(1., 0., 1., 1.), 1., 1.), NULL); //dist_plane);
+	scene->objects[3] = NULL;
+
+
+
+
+
+	fd = open("./config.rt", O_RDONLY);
+	parse(scene, fd);
+
+
+	(void)ac;
+	(void)av;
+}
+
+//if line not valid skipp, add 1 to return value
+
+/*
+
+
+
 
 
 
@@ -11,23 +174,23 @@ int	check_file()
 
 size_t	parse(t_scene *scene, int fd)//n of line not parsed
 {
-	int	i;
+	scene->objects[0] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), dist_sphere);
+	scene->objects[1] = object_init(i_mat3i, vec3(2.5, -.75, 1.), material_init(0, vec4(1., 1., 1., 1.), 1., 1.), dist_sphere);
+	scene->objects[2] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(1., 0., 1., 1.), 1., 1.), dist_plane);
+	scene->objects[3] = NULL;
 
-	i = 0;
+	scene->cam->pos = vec3(0., 0., -1.);
+	scene->cam->fov_dist = 1.25;
+	scene->ambient = vec4(0., 0.8, 1., 1.);
 
 }
 
+typedef struct s_object
+{
+	t_mat3		trans_matrix;
+	t_vec3		offset;
+	t_material	material;
+	double		(*ray_dist_func)(t_ray);
+}	t_object;
 
-
-
-
-
-
-
-
-
-
-
-
-
-//iif line not valid skipp, add 1 to return value
+*/
