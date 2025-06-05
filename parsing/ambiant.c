@@ -23,16 +23,15 @@ static int	check_data(char **colors, double ratio, char *line)
 	return (SUCCESS);
 }
 
-int	 ambiant(t_scene *scene, char **tab, char *line)
+int	ambiant(t_scene *scene, char **tab, char *line)
 {
 	char	**colors;
 	double	ratio;
 
-	ratio = 0;
 	colors = ft_split(tab[2], ',');
 	if (!colors)
 		return (MALLOC_ERROR);
-	// ratio = atod(tab[1]);
+	ratio = atod(tab[1]);
 	if (check_data(colors, ratio, line) == SKIPPED)
 		return (SKIPPED);
 	(void)scene;

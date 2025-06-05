@@ -7,9 +7,9 @@ static int	check_data(char **xyz, char **orientation, double fov, char *line)
 	// int		y;
 	// int		z;
 	(void)xyz;
-	// double		x_o;
-	// double		y_o;
-	// double		z_o;
+	double		x_o;
+	double		y_o;
+	double		z_o;
 
 	error = RED"ERROR: "RESET;
 	if (arr_size(orientation) != 3)
@@ -24,15 +24,16 @@ static int	check_data(char **xyz, char **orientation, double fov, char *line)
 	if (arr_size(orientation) != 3)
 		return (printf("%sCamera orientaion has wrong number\
  of arguments (line skipped):\n%s\n\n", error, line), SKIPPED);
-	// x_o = ft_atod(orientation[0]);
-	// y_o = ft_atod(orientation[1]);
-	// z_o = ft_atod(orientation[2]);
-	// if (x_o < -1 || x_o > 1 || y_o < -1 || y_o > 1 || z_o < -1 || z_o > 1)
-		// return (printf("%sCamera orientaion is not in the range [-1 - 1] (line skipped):\n%s\n\n", error, line), SKIPPED);
+	x_o = atod(orientation[0]);
+	y_o = atod(orientation[1]);
+	z_o = atod(orientation[2]);
+	if (x_o < -1 || x_o > 1 || y_o < -1 || y_o > 1 || z_o < -1 || z_o > 1)
+		return (printf("%sCamera orientaion is not in the range [-1 - 1]\
+ (line skipped):\n%s\n\n", error, line), SKIPPED);
 	return (SUCCESS);
 }
 
-int	 camera(t_scene *scene, char **tab, char *line)
+int	camera(t_scene *scene, char **tab, char *line)
 {
 	char	**xyz;
 	char	**orientation;

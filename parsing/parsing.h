@@ -103,6 +103,7 @@ int		get_line(char **line, int fd);
 char	*ft_strjoin_f(char *s1, char *s2);
 int		arr_size(char **arr);
 void	ft_free_arr(char **arr, int i);
+double	atod(const char *s);
 
 //check_lines
 int	check_line(t_parse *parse, char **tab, char *line);

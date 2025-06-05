@@ -70,3 +70,32 @@ void	ft_free_arr(char **arr, int i)
 	if (arr)
 		free(arr);
 }
+
+double	atod(const char *s)
+{
+	double	n;
+	double	frac;
+	double	power;
+	int		sign;
+	size_t	i;
+
+	n = 0;
+	frac = 0;
+	sign = 1;
+	i = 0;
+	if (!s)
+		return (0);
+	n = ft_atoi(s);
+	if (s[i] == '.')
+	{
+		i++;
+		power = 0.1;
+		while (ft_isdigit(s[i]))
+		{
+			frac += (s[i] - '0') * power;
+			power *= 0.1;
+			i++;
+		}
+	}
+	return (sign * (n + frac));
+}

@@ -36,14 +36,13 @@ int	 light(t_scene *scene, char **tab, char *line)
 	char	**colors;
 	double	ratio;
 
-	ratio = 0;
 	xyz = ft_split(tab[1], ',');
 	if (!xyz)
 		return (MALLOC_ERROR);
 	colors = ft_split(tab[3], ',');
 	if (!xyz)
 		return (MALLOC_ERROR);
-	// ratio = atod(tab[2]);
+	ratio = atod(tab[2]);
 	if (check_data(xyz, ratio, colors, line) == SKIPPED)
 		return (SKIPPED);
 	(void)scene;
