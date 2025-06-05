@@ -1,7 +1,7 @@
 VARS_OLD := $(.VARIABLES)
 CC = cc
 
-CFLAGS = -Wall -Wextra $(LDIR:%=-I%) -I/usr/include
+CFLAGS = -Wall -Wextra -Werror -g -gdwarf-4 $(LDIR:%=-I%) -I/usr/include
 LFLAGS = -L$(LIBDIR) -L/usr/lib -lXext -lX11 -lm -lbsd
 DEBUG = -fsanitize=address
 

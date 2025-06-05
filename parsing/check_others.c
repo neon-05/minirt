@@ -40,12 +40,11 @@ int	check_others(t_parse *parse, char **tab, char *line)
 	char	*error;
 
 	error = RED"ERROR: "RESET;
-	(void)parse;
 	if (tab[0][0] == 's' && tab[0][1] == 'p' && arr_size(tab) != 4)
 		return (printf("%sSphere light has wrong number of arguments (line skipped):\n%s\n\n", error, line), SKIPPED);
 	else if (tab[0][0] == 'p' && tab[0][1] == 'l' && arr_size(tab) != 4)
 		return (printf("%sPlane has wrong number of arguments (line skipped):\n%s\n\n", error, line), SKIPPED);
-	else if (tab[0][0] == 'c' && tab[0][1] == 'y' && arr_size(tab) != 5)
+	else if (tab[0][0] == 'c' && tab[0][1] == 'y' && arr_size(tab) != 6)
 		return (printf("%sCylinlder has wrong number of arguments (line skipped):\n%s\n\n", error, line), SKIPPED);
 	if (check_numbers(parse, tab, line) == SKIPPED)
 		return (SKIPPED);

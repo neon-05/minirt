@@ -65,7 +65,7 @@ static int	check_numbers(t_parse *parse, char **tab, char *line)
 		return (SKIPPED);
 	else if (tab[0][0] == 'L' && check_l(parse, tab, line) == SKIPPED)
 		return (SKIPPED);
-	if (tab[0][0] == 'C' && check_c(parse, tab, line) == SKIPPED)
+	else if (tab[0][0] == 'C' && check_c(parse, tab, line) == SKIPPED)
 		return (SKIPPED);
 	return (SUCCESS);
 }
