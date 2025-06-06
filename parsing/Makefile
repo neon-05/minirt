@@ -18,6 +18,7 @@ SRCS = \
 	ambiant.c \
 	light.c \
 	camera.c \
+	transf.c\
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

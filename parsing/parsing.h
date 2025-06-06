@@ -93,6 +93,33 @@ typedef struct s_parse
 	t_scene 	*scene;
 }	t_parse;
 
+typedef struct s_val
+{
+	char		**tab;
+	char		*error;
+
+	double		ratio;
+	char		**colors;
+	double		r;
+	double		g;
+	double		b;
+
+	char		**xyz;
+	char		**orient;
+	double		teta;
+	double		x;
+	double		y;
+	double		z;
+	double		aa;
+	double		ab;
+	double		ac;
+	double		fov;
+
+	double		diametre;
+
+	double		height;
+}	t_val;
+
 //====================(DECLARATIONS)========================//
 
 //parser
@@ -119,5 +146,9 @@ int	 light(t_scene *scene, char **tab, char *line);
 
 //camera
 int	 camera(t_scene *scene, char **tab, char *line);
+
+//tranfs
+t_vec4	colors(t_val *val, double a);
+t_vec4	quaternion(double a, double b, double c, double teta);
 
 #endif
