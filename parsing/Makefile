@@ -31,6 +31,7 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIB)
 	$(CC) $(OBJS) $(LIB) $(CFLAGS) $(LFLAGS) -o $(NAME)
 	@echo $(NAME)" compiled!\n"
+	make clean
 
 debug: $(OBJS) $(LIB)
 	$(CC) $(DEBUG) $(OBJS) $(LIB) $(CFLAGS) $(LFLAGS) -o $(NAME)

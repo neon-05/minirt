@@ -28,9 +28,6 @@
 # define SKIPPED 2
 # define OPEN_ERROR -1
 
-# define ERROR "RED"ERROR: "RESET"
-
-
 //====================(STRUCTS)=============================//
 typedef struct s_cam		t_cam;
 typedef struct s_scene		t_scene;
@@ -89,7 +86,6 @@ typedef struct s_parse
 {
 	int			n_objects;
 	char		*once;
-	size_t		skipped_lines;
 	t_scene 	*scene;
 }	t_parse;
 
@@ -132,20 +128,21 @@ int		arr_size(char **arr);
 void	ft_free_arr(char **arr, int i);
 double	atod(const char *s);
 
-//check_lines
-int	check_line(t_parse *parse, char **tab, char *line);
+//check_once
+int		check_line(t_parse *parse, char **tab, char *line);
+int		is_number(char *str);
 
 //check_others
-int	check_others(t_parse *parse, char **tab, char *line);
+int		check_others(t_parse *parse, char **tab, char *line);
 
 //ambiant
-int	 ambiant(t_scene *scene, char **tab, char *line);
+int		ambiant(t_scene *scene, char **tab, char *line);
 
 //light
-int	 light(t_scene *scene, char **tab, char *line);
+int		light(t_scene *scene, char **tab, char *line);
 
 //camera
-int	 camera(t_scene *scene, char **tab, char *line);
+int		camera(t_scene *scene, char **tab, char *line);
 
 //tranfs
 t_vec4	colors(t_val *val, double a);

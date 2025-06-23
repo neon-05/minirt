@@ -77,24 +77,24 @@ double	atod(const char *s)
 	double	frac;
 	double	power;
 	int		sign;
-	size_t	i;
 
 	n = 0;
 	frac = 0;
 	sign = 1;
-	i = 0;
 	if (!s)
 		return (0);
 	n = ft_atoi(s);
-	if (s[i] == '.')
+	while (*s && *s != '.')
+		s++;
+	if (*s == '.')
 	{
-		i++;
+		s++;
 		power = 0.1;
-		while (ft_isdigit(s[i]))
+		while (ft_isdigit(*s))
 		{
-			frac += (s[i] - '0') * power;
+			frac += (*s - '0') * power;
 			power *= 0.1;
-			i++;
+			s++;
 		}
 	}
 	return (sign * (n + frac));
