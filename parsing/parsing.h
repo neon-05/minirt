@@ -144,6 +144,15 @@ int		light(t_scene *scene, char **tab, char *line);
 //camera
 int		camera(t_scene *scene, char **tab, char *line);
 
+//sphere
+int		sphere(t_scene *scene, char **tab, char *line);
+
+//plane
+int		plane(t_scene *scene, char **tab, char *line);
+
+//cylinder
+int		cylinder(t_scene *scene, char **tab, char *line);
+
 //tranfs
 t_vec4	colors(t_val *val, double a);
 t_vec4	quaternion(double a, double b, double c, double teta);

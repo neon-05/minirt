@@ -71,7 +71,7 @@ void	ft_free_arr(char **arr, int i)
 		free(arr);
 }
 
-double	atod(const char *s)
+double	atod(const char *s)// a bosseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer
 {
 	double	n;
 	double	frac;

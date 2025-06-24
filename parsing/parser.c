@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/23 17:57:49 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/24 03:44:02 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,16 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 
 int	others_objects(t_parse *parse, char **tab, char *line)
 {
-	if (check_line(parse, tab, line) == SKIPPED)
+	if (check_others(parse, tab, line) == SKIPPED)
 		return (SKIPPED);
-	printf(GREEN"%s\n"RESET, line);
+	if (tab[0][0] == 's' && tab[0][1] == 'p' && sphere(parse->scene, tab, line) == SKIPPED)
+		return (SKIPPED);
+	else if (tab[0][0] == 'p' && tab[0][1] == 'l' && plane(parse->scene, tab, line) == SKIPPED)
+		return (SKIPPED);
+	else if (tab[0][0] == 'c' && tab[0][1] == 'y' && cylinder(parse->scene, tab, line) == SKIPPED)
+		return (SKIPPED);
 	parse->n_objects++;
+	printf(GREEN"%s\n"RESET, line);
 	return (SUCCESS);
 }
 
@@ -153,6 +159,8 @@ int	main(int ac, char **av)
 	scene->objects[3] = NULL;
 	fd = open("./config.rt", O_RDONLY);
 	if (fd < 0)
+		fd = open("parsing/config.rt", O_RDONLY);
+	if (fd < 0)
 		return (MALLOC_ERROR);
 	parse(scene, fd);
 	(void)ac;
@@ -164,6 +172,7 @@ int	main(int ac, char **av)
 /*
 
 
+// R resolution int int
 
 
 
@@ -195,3 +204,4 @@ typedef struct s_object
 }	t_object;
 
 */
+

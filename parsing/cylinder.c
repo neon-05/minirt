@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.c                                           :+:      :+:    :+:   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 10:52:15 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 03:11:21 by malapoug         ###   ########.fr       */
+/*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
+/*   Updated: 2025/06/24 03:49:39 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ static int	check_ranges(t_val *val, char *line)
 {
 	if (val->aa < -1 || val->aa > 1 || val->ab < -1 \
 		|| val->ab > 1 || val->ac < -1 || val->ac > 1)
-		return (printf("%sCamera orientaion is not in the range [-1 - 1]\
+		return (printf("%sCylinder vector is not in the range [-1 - 1]\
+ :\n%s\n\n", val->error, line), SKIPPED);
+	if (val->r < 0 || val->r > 255 || val->g < 0 \
+		|| val->g > 255 || val->b < 0 || val->b > 255)
+		return (printf("%sCylinder color is not in the range [0 - 255]\
  :\n%s\n\n", val->error, line), SKIPPED);
 	return (SUCCESS);
 }
@@ -25,14 +29,19 @@ static int	check_numbers(t_val *val, char *line)
 {
 	if (!is_number(val->xyz[0]) || !is_number(val->xyz[1]) || \
 		!is_number(val->xyz[2]))
-		return (printf("%sCamera position has non numerics arguments\
+		return (printf("%sCylinder position has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	if (!is_number(val->orient[0]) || !is_number(val->orient[1]) || \
 		!is_number(val->orient[2]))
-		return (printf("%sCamera orientation has non numerics arguments\
+		return (printf("%sCylinder vector has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
-	if (!is_number(val->orient[0]))
-		return (printf("%sCamera fov has non numerics arguments\
+	if (!is_number(val->tab[3]))
+		return (printf("%sCylinder diametre is not numeric :\n%s\n\n", val->error, line), SKIPPED);
+	if (!is_number(val->tab[4]))
+		return (printf("%sCylinder height is not numeric :\n%s\n\n", val->error, line), SKIPPED);
+	if (!is_number(val->colors[0]) || !is_number(val->colors[1]) || \
+		!is_number(val->colors[2]))
+		return (printf("%sCylinder color has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	return (SUCCESS);
 }
@@ -43,30 +52,43 @@ static int	get_data(t_val *val, t_scene *scene, char *line)
 	if (!val->xyz)
 		return (MALLOC_ERROR);
 	if (arr_size(val->xyz) != 3)
-		return (printf("%sCamera position has wrong number\
+		return (printf("%sCylinder position has wrong number\
  of arguments:\n%s\n\n", val->error, line), SKIPPED);
 	val->x = ft_atoi(val->xyz[0]);
 	val->y = ft_atoi(val->xyz[1]);
 	val->z = ft_atoi(val->xyz[2]);
+
 	val->orient = ft_split(val->tab[2], ',');
 	if (!val->orient)
 		return (MALLOC_ERROR);
 	if (arr_size(val->orient) != 3)
-		return (printf("%sCamera orientaion has wrong number\
+		return (printf("%sCylinder vector has wrong number\
+ of arguments:\n%s\n\n", val->error, line), SKIPPED);
+	val->aa = ft_atoi(val->orient[0]);
+	val->ab = ft_atoi(val->orient[1]);
+	val->ac = ft_atoi(val->orient[2]);
+
+	val->diametre = atod(val->tab[3]);
+	val->height = atod(val->tab[4]);
+
+	val->colors = ft_split(val->tab[5], ',');
+	if (!val->colors)
+		return (MALLOC_ERROR);
+	if (arr_size(val->colors) != 3)
+		return (printf("%sCylinder color has wrong number\
  of arguments :\n%s\n\n", val->error, line), SKIPPED);
-	val->aa = atod(val->orient[0]);
-	val->ab = atod(val->orient[1]);
-	val->ac = atod(val->orient[2]);
+	val->r = atod(val->colors[0]);
+	val->g = atod(val->colors[1]);
+	val->b = atod(val->colors[2]);
 	if (check_numbers(val, line) == SKIPPED)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)
 		return (SKIPPED);
-	scene->cam->orientation = quaternion(val->aa, val->ab, val->ac, 0);
-	scene->cam->pos = vec3(val->x, val->y, val->z);
+	(void)scene; //missing light in the scene
 	return (SUCCESS);
 }
 
-int	camera(t_scene *scene, char **tab, char *line)
+int	cylinder(t_scene *scene, char **tab, char *line)
 {
 	t_val	val;
 
@@ -74,23 +96,6 @@ int	camera(t_scene *scene, char **tab, char *line)
 	val.tab = tab;
 	if (get_data(&val, scene, line) == SKIPPED)
 		return (SKIPPED);
-	if (!is_number(tab[3]))
-		return (printf("%sCamera fov has non numerics arguments\
- :\n%s\n\n", val.error, line), SKIPPED);
-	scene->cam->fov_dist = atod(tab[3]);
-	if (!(scene->cam->fov_dist > 0 && scene->cam->fov_dist <= 180))
-		return (printf("%sCamera fov is not in the range [0 - 180]\
- :\n%s\n\n", val.error, line), SKIPPED);
-	scene->cam->fov_dist = cos(scene->cam->fov_dist / 2.);
+	(void)scene;
 	return (SUCCESS);
 }
-
-/*
-typedef struct s_cam
-{
-	t_vec3	pos;
-	t_vec4	orientation;
-	t_mat3	model_view_matrix;		????????????
-	double	fov_dist;
-}	t_cam;
-*/

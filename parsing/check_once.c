@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:52:55 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/23 17:53:54 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:56:10 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	is_number(char	*str)
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]) && str[i] != '.' && str[i] != '\n' && \
-			(str[i] != '+' && i != 0) && (str[i] != '-' && i != 0))
+		if (!(ft_isdigit(str[i]) || str[i] == '.' || str[i] == '\n' || \
+			(i == 0 && (str[i] == '+' || str[i] == '-'))))
 			return (0);
 		i++;
 	}
