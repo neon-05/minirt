@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
+/*   Updated: 2025/06/24 14:39:35 by malapoug         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -23,8 +35,8 @@
 # define RAY_PER_BOUNCE 1
 
 # define SET "ACL"
-# define MALLOC_ERROR 0
 # define SUCCESS 1
+# define MALLOC_ERROR 0
 # define SKIPPED 2
 # define OPEN_ERROR -1
 
@@ -86,7 +98,7 @@ typedef struct s_parse
 {
 	int			n_objects;
 	char		*once;
-	t_scene 	*scene;
+	t_scene		*scene;
 }	t_parse;
 
 typedef struct s_val
@@ -156,5 +168,10 @@ int		cylinder(t_scene *scene, char **tab, char *line);
 //tranfs
 t_vec4	colors(t_val *val, double a);
 t_vec4	quaternion(double a, double b, double c, double teta);
+
+//split_assign
+int		split_assign_vector(t_val *val, char *object, int i, char *line);
+int		split_assign_colors(t_val *val, char *object, int i, char *line);
+int		split_assign_position(t_val *val, char *object, int i, char *line);
 
 #endif

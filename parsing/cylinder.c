@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 03:49:39 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:43:04 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ static int	check_numbers(t_val *val, char *line)
 		return (printf("%sCylinder vector has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	if (!is_number(val->tab[3]))
-		return (printf("%sCylinder diametre is not numeric :\n%s\n\n", val->error, line), SKIPPED);
+		return (printf("%sCylinder diametre is not numeric :\n%s\n\n"\
+			, val->error, line), SKIPPED);
 	if (!is_number(val->tab[4]))
-		return (printf("%sCylinder height is not numeric :\n%s\n\n", val->error, line), SKIPPED);
+		return (printf("%sCylinder height is not numeric :\n%s\n\n"\
+			, val->error, line), SKIPPED);
 	if (!is_number(val->colors[0]) || !is_number(val->colors[1]) || \
 		!is_number(val->colors[2]))
 		return (printf("%sCylinder color has non numerics arguments\
@@ -48,43 +50,24 @@ static int	check_numbers(t_val *val, char *line)
 
 static int	get_data(t_val *val, t_scene *scene, char *line)
 {
-	val->xyz = ft_split(val->tab[1], ',');
-	if (!val->xyz)
-		return (MALLOC_ERROR);
-	if (arr_size(val->xyz) != 3)
-		return (printf("%sCylinder position has wrong number\
- of arguments:\n%s\n\n", val->error, line), SKIPPED);
-	val->x = ft_atoi(val->xyz[0]);
-	val->y = ft_atoi(val->xyz[1]);
-	val->z = ft_atoi(val->xyz[2]);
+	int	ret;
 
-	val->orient = ft_split(val->tab[2], ',');
-	if (!val->orient)
-		return (MALLOC_ERROR);
-	if (arr_size(val->orient) != 3)
-		return (printf("%sCylinder vector has wrong number\
- of arguments:\n%s\n\n", val->error, line), SKIPPED);
-	val->aa = ft_atoi(val->orient[0]);
-	val->ab = ft_atoi(val->orient[1]);
-	val->ac = ft_atoi(val->orient[2]);
-
+	ret = split_assign_position(val, "Cylinder", 1, line);
+	if (ret != SUCCESS)
+		return (ret);
+	ret = split_assign_vector(val, "Cylinder", 2, line);
+	if (ret != SUCCESS)
+		return (ret);
 	val->diametre = atod(val->tab[3]);
 	val->height = atod(val->tab[4]);
-
-	val->colors = ft_split(val->tab[5], ',');
-	if (!val->colors)
-		return (MALLOC_ERROR);
-	if (arr_size(val->colors) != 3)
-		return (printf("%sCylinder color has wrong number\
- of arguments :\n%s\n\n", val->error, line), SKIPPED);
-	val->r = atod(val->colors[0]);
-	val->g = atod(val->colors[1]);
-	val->b = atod(val->colors[2]);
+	ret = split_assign_colors(val, "Cylinder", 5, line);
+	if (ret != SUCCESS)
+		return (ret);
 	if (check_numbers(val, line) == SKIPPED)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)
 		return (SKIPPED);
-	(void)scene; //missing light in the scene
+	(void)scene;
 	return (SUCCESS);
 }
 

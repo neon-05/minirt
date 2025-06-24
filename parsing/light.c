@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:17 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/23 17:54:36 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:27:51 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,15 @@ static int	check_numbers(t_val *val, char *line)
 
 static int	get_data(t_val *val, t_scene *scene, char *line)
 {
+	int	ret;
+
+	ret = split_assign_position(val, "Light", 1, line);
+	if (ret != SUCCESS)
+		return (ret);
 	val->ratio = atod(val->tab[2]);
-	val->xyz = ft_split(val->tab[1], ',');
-	if (arr_size(val->xyz) != 3)
-		return (printf("%sLight position has wrong number\
- of arguments:\n%s\n\n", val->error, line), SKIPPED);
-	if (!val->xyz)
-		return (MALLOC_ERROR);
-	val->x = ft_atoi(val->xyz[0]);
-	val->y = ft_atoi(val->xyz[1]);
-	val->z = ft_atoi(val->xyz[2]);
-	val->colors = ft_split(val->tab[3], ',');
-	if (!val->colors)
-		return (MALLOC_ERROR);
-	if (arr_size(val->colors) != 3)
-		return (printf("%sLight color has wrong number\
- of arguments :\n%s\n\n", val->error, line), SKIPPED);
-	val->r = atod(val->colors[0]);
-	val->g = atod(val->colors[1]);
-	val->b = atod(val->colors[2]);
+	ret = split_assign_colors(val, "Light", 3, line);
+	if (ret != SUCCESS)
+		return (ret);
 	if (check_numbers(val, line) == SKIPPED)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)

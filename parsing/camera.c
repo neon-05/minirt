@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:15 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 03:11:21 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:25:57 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,14 @@ static int	check_numbers(t_val *val, char *line)
 
 static int	get_data(t_val *val, t_scene *scene, char *line)
 {
-	val->xyz = ft_split(val->tab[1], ',');
-	if (!val->xyz)
-		return (MALLOC_ERROR);
-	if (arr_size(val->xyz) != 3)
-		return (printf("%sCamera position has wrong number\
- of arguments:\n%s\n\n", val->error, line), SKIPPED);
-	val->x = ft_atoi(val->xyz[0]);
-	val->y = ft_atoi(val->xyz[1]);
-	val->z = ft_atoi(val->xyz[2]);
-	val->orient = ft_split(val->tab[2], ',');
-	if (!val->orient)
-		return (MALLOC_ERROR);
-	if (arr_size(val->orient) != 3)
-		return (printf("%sCamera orientaion has wrong number\
- of arguments :\n%s\n\n", val->error, line), SKIPPED);
-	val->aa = atod(val->orient[0]);
-	val->ab = atod(val->orient[1]);
-	val->ac = atod(val->orient[2]);
+	int	ret;
+
+	ret = split_assign_position(val, "Camera", 1, line);
+	if (ret != SUCCESS)
+		return (ret);
+	ret = split_assign_vector(val, "Camera", 2, line);
+	if (ret != SUCCESS)
+		return (ret);
 	if (check_numbers(val, line) == SKIPPED)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)

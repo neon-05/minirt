@@ -22,6 +22,7 @@ SRCS = \
 	sphere.c \
 	plane.c \
 	cylinder.c \
+	split_assign.c \
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

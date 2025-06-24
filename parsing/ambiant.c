@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:08 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/23 17:37:25 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:24:34 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,12 @@ static int	check_numbers(t_val *val, char *line)
 
 static int	get_data(t_val *val, char *line)
 {
+	int	ret;
+
 	val->ratio = atod(val->tab[1]);
-	val->colors = ft_split(val->tab[2], ',');
-	if (!val->colors)
-		return (MALLOC_ERROR);
-	if (arr_size(val->colors) != 3)
-		return (printf("%sAmbiant light has wrong number\
- of arguments for color :\n%s\n\n", val->error, line), SKIPPED);
-	val->r = ft_atoi(val->colors[0]);
-	val->g = ft_atoi(val->colors[1]);
-	val->b = ft_atoi(val->colors[2]);
+	ret = split_assign_colors(val, "Ambiant", 2, line);
+	if (ret != SUCCESS)
+		return (ret);
 	if (check_numbers(val, line) == SKIPPED)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)
