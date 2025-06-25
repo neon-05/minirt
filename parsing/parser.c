@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 03:44:02 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:22:08 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,36 +62,33 @@ t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, d
 int	once_objects(t_parse *parse, char **tab, char *line)
 {
 	if (check_line(parse, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	parse->once = ft_strjoin_f(parse->once, tab[0]);
 	if (!parse->once)
-	{
-		ft_free_arr(tab, arr_size(tab));
-		return (MALLOC_ERROR);
-	}
+		return (free_tab(tab), MALLOC_ERROR);
 	if (tab[0][0] == 'A' && ambiant(parse->scene, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'L' && light(parse->scene, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'C' && camera(parse->scene, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	printf(GREEN"%s\n"RESET, line);//print what's accepeted
-	return (SUCCESS);
+	return (free_tab(tab), SUCCESS);
 }
 
 int	others_objects(t_parse *parse, char **tab, char *line)
 {
 	if (check_others(parse, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	if (tab[0][0] == 's' && tab[0][1] == 'p' && sphere(parse->scene, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'p' && tab[0][1] == 'l' && plane(parse->scene, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'c' && tab[0][1] == 'y' && cylinder(parse->scene, tab, line) == SKIPPED)
-		return (SKIPPED);
+		return (free_tab(tab), SKIPPED);
 	parse->n_objects++;
 	printf(GREEN"%s\n"RESET, line);
-	return (SUCCESS);
+	return (free_tab(tab), SUCCESS);
 }
 
 int	get_data(t_parse *parse, char *line)
@@ -100,30 +97,34 @@ int	get_data(t_parse *parse, char *line)
 	char	*error;
 
 	error = RED"ERROR: "RESET;
-	tab = ft_split(line, '\t');
+	tab = split_ispace(line);
 	if (!tab)
 		return (MALLOC_ERROR);
 	if (!(arr_size(tab) >= 3 && arr_size(tab) <= 6))
-	{
-		ft_free_arr(tab, arr_size(tab));
-		return (SUCCESS);
-	}
+		return (free_tab(tab), SUCCESS);
 	if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
 		return (once_objects(parse, tab, line));
+	else if (ft_strlen(tab[0]) == 2 && tab[0][0] == '/' && tab[0][1] == '/')
+		return (free_tab(tab), SUCCESS);
 	else if (ft_strlen(tab[0]) == 2) // &&...
 		return (others_objects(parse, tab, line));
-	else if (ft_strlen(tab[0]) >= 2 && tab[0][0] == '/' && tab[0][1] == '/')
-		return (SUCCESS);
 	else
 	{
 		printf("%sUnrecognized object :\n%s\n\n", error, line);
-		ft_free_arr(tab, arr_size(tab));
+		free_tab(tab);
 		return (SKIPPED);
 	}
 	return (SUCCESS);
 }
 
-size_t	parse(t_scene *scene, int fd)//n of line not parsed
+void	free_parse(t_parse *parse)
+{
+	if (parse->once)
+		free(parse->once);
+	//free_scene(psrae->scene);
+}
+
+size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 {
 	t_parse		parse = {0};
 	char		*line;
@@ -133,12 +134,15 @@ size_t	parse(t_scene *scene, int fd)//n of line not parsed
 	while (get_line(&line, fd))
 	{
 		status = get_data(&parse, line);
+		free(line);
 		if (status == MALLOC_ERROR)
-			return (MALLOC_ERROR);
+			return (free_parse(&parse), MALLOC_ERROR);
 		else if (status == SKIPPED)
-			return (SKIPPED);
+			return (free_parse(&parse), SKIPPED);
 	}
-	return (SUCCESS);
+	if (line)
+		free(line);
+	return (free_parse(&parse), SUCCESS);
 }
 
 int	main(int ac, char **av)

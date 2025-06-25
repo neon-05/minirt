@@ -6,11 +6,31 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:21:43 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 14:21:56 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:48:09 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+void	free_tab(char **tab)
+{
+	int	i;
+
+	i = -1;
+	while (tab[++i])
+		free(tab[i]);
+	free(tab);
+}
+
+void	free_val(t_val *val)
+{
+	if (val->xyz)
+		free_tab(val->xyz);
+	if (val->orient)
+		free_tab(val->orient);
+	if (val->colors)
+		free_tab(val->colors);
+}
 
 int	split_assign_colors(t_val *val, char *object, int i, char *line)
 {
@@ -34,9 +54,9 @@ int	split_assign_vector(t_val *val, char *object, int i, char *line)
 	if (arr_size(val->orient) != 3)
 		return (printf("%s%s vector has wrong number\
  of arguments:\n%s\n\n", val->error, object, line), SKIPPED);
-	val->aa = ft_atoi(val->orient[0]);
-	val->ab = ft_atoi(val->orient[1]);
-	val->ac = ft_atoi(val->orient[2]);
+	val->aa = atod(val->orient[0]);
+	val->ab = atod(val->orient[1]);
+	val->ac = atod(val->orient[2]);
 	return (SUCCESS);
 }
 
@@ -48,8 +68,8 @@ int	split_assign_position(t_val *val, char *object, int i, char *line)
 	if (arr_size(val->xyz) != 3)
 		return (printf("%s%s position has wrong number\
  of arguments:\n%s\n\n", val->error, object, line), SKIPPED);
-	val->x = ft_atoi(val->xyz[0]);
-	val->y = ft_atoi(val->xyz[1]);
-	val->z = ft_atoi(val->xyz[2]);
+	val->x = atod(val->xyz[0]);
+	val->y = atod(val->xyz[1]);
+	val->z = atod(val->xyz[2]);
 	return (SUCCESS);
 }

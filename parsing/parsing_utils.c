@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:56 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 14:40:15 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:24:13 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_free_arr(char **arr, int i)
 
 double	atod(const char *s)// a bosseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer
 {
-	double	n;
+	double	n;//
 	double	frac;
 	double	power;
 	int		sign;

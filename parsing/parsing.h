@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 14:39:35 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:49:41 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,14 @@ t_vec4	colors(t_val *val, double a);
 t_vec4	quaternion(double a, double b, double c, double teta);
 
 //split_assign
+void	free_tab(char **tab);
+void	free_val(t_val *val);
 int		split_assign_vector(t_val *val, char *object, int i, char *line);
 int		split_assign_colors(t_val *val, char *object, int i, char *line);
 int		split_assign_position(t_val *val, char *object, int i, char *line);
+
+//split_ispace
+char	**split_ispace(const char *s);
+int		ft_issispace(char c);
 
 #endif

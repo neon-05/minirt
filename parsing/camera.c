@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:15 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 14:25:57 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:43:19 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int	get_data(t_val *val, t_scene *scene, char *line)
 	ret = split_assign_vector(val, "Camera", 2, line);
 	if (ret != SUCCESS)
 		return (ret);
+	val->ratio = atod(val->tab[3]);
 	if (check_numbers(val, line) == SKIPPED)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)
@@ -60,6 +61,9 @@ int	camera(t_scene *scene, char **tab, char *line)
 {
 	t_val	val;
 
+	val.xyz = NULL;
+	val.orient = NULL;
+	val.colors = NULL;
 	val.error = RED"ERROR: "RESET;
 	val.tab = tab;
 	if (get_data(&val, scene, line) == SKIPPED)
@@ -72,6 +76,8 @@ int	camera(t_scene *scene, char **tab, char *line)
 		return (printf("%sCamera fov is not in the range [0 - 180]\
  :\n%s\n\n", val.error, line), SKIPPED);
 	scene->cam->fov_dist = cos(scene->cam->fov_dist / 2.);
+	printf(YELLOW"C\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f \n"RESET, val.x, val.y, val.z, val.aa, val.ab, val.ac, val.ratio);
+	free_val(&val);
 	return (SUCCESS);
 }
 

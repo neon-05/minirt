@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 14:42:30 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:43:57 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,16 @@ int	plane(t_scene *scene, char **tab, char *line)
 {
 	t_val	val;
 
+	val.xyz = NULL;
+	val.orient = NULL;
+	val.colors = NULL;
 	val.error = RED"ERROR: "RESET;
 	val.tab = tab;
 	if (get_data(&val, scene, line) == SKIPPED)
 		return (SKIPPED);
 	(void)scene;
+	colors(&val, val.ratio);
+	printf(YELLOW"pl\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \n"RESET, val.x, val.y, val.z, val.aa, val.ab, val.ac, val.r, val.g, val.b);
+	free_val(&val);
 	return (SUCCESS);
 }

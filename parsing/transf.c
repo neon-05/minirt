@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:42:06 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 14:42:13 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:11:09 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 t_vec4	colors(t_val *val, double a)
 {
-	static double	inv_range;
+	static double	inv_range = 1.0f * (1. / 255.);
 
-	inv_range = 1.0f * (1 / 255);
 	val->r = val->r * inv_range;
 	val->g = val->g * inv_range;
 	val->b = val->b * inv_range;

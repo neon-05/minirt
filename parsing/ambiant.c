@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:08 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/24 14:24:34 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:43:09 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,15 @@ int	ambiant(t_scene *scene, char **tab, char *line)
 {
 	t_val	val;
 
+	val.xyz = NULL;
+	val.orient = NULL;
+	val.colors = NULL;
 	val.error = RED"ERROR: "RESET;
 	val.tab = tab;
 	if (get_data(&val, line) == SKIPPED)
 		return (SKIPPED);
 	scene->ambient = colors(&val, val.ratio);
+	printf(YELLOW"A\t%.2f\t%.2f,%.2f,%.2f\n"RESET, val.ratio, val.r, val.g, val.b);
+	free_val(&val);
 	return (SUCCESS);
 }
