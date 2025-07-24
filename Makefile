@@ -1,7 +1,7 @@
 VARS_OLD := $(.VARIABLES)
 CC = cc
 
-CFLAGS = -Wall -Wextra $(LDIR:%=-I%) -I/usr/include
+CFLAGS = -Wall -Wextra -Werror $(LDIR:%=-I%) -I/usr/include
 LFLAGS = -L$(LIBDIR) -L/usr/lib -lXext -lX11 -lm -lbsd
 DEBUG = -fsanitize=address
 
@@ -21,7 +21,7 @@ LDIR = $(dir $(LIB))
 SDIR = src/
 ODIR = obj/
 
-all: $(NAME)
+all: $(NAME) target
 
 $(NAME): $(OBJS) $(LIB)
 	$(CC) $(OBJS) $(LIB) $(CFLAGS) $(LFLAGS) -o $(NAME)
@@ -57,10 +57,13 @@ vars:
 	@echo "VARIABLES:";
 	@echo "$(foreach v, $(filter-out $(VARS_OLD) VARS_OLD,$(.VARIABLES)),\n| $(v) : $($(v)))" | sort | column -t -l4 -T4;
 
+target:
+	@echo $(NAME)
+
 targets:
 	@echo "TARGETS:";
 	@LC_ALL=C $(MAKE) -pRrq : 2>/dev/null | awk -v RS= -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data base/ {if ($$1 !~ "^#") {print "| "$$1}}' | sort
 
 info: vars targets
 
-.PHONY: all clean fclean re run libs info vars targets
+.PHONY: all clean fclean re run libs info vars targets target
