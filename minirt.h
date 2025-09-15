@@ -10,12 +10,12 @@
 
 //====================(DEFINES)=============================//
 
-# define PI 3.14159265358979323846
+# define PI 3.141592653589793
 
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 1080
+# define WIN_HEIGHT 720
 # define WIN_TITLE "minirt"
-# define RAY_DEPTH_LIMIT 1
+# define RAY_DEPTH_LIMIT 10
 # define RAY_PER_BOUNCE 1
 
 # define KEY_W 119
@@ -27,7 +27,7 @@
 # define KEY_LE 65361
 # define KEY_RI 65363
 # define KEY_ESC 65307
-# define KEY_SH 65505
+# define KEY_SHIFT 65505
 
 //====================(STRUCTS)=============================//
 
@@ -43,7 +43,9 @@ typedef struct s_cam
 	t_vec3	pos;
 	t_vec4	orientation;
 	t_mat3	model_view_matrix;
+	t_img	*img;
 	double	fov_dist;
+	int		passes;
 	int		shift_pressed;
 }	t_cam;
 
@@ -60,7 +62,6 @@ typedef struct s_ray
 {
 	t_vec3	n_director;
 	t_vec3	origin;
-	double	strength;
 }	t_ray;
 
 typedef struct s_material
@@ -75,6 +76,7 @@ typedef struct s_material
 typedef struct s_hit_info
 {
 	double		distance;
+	t_vec3		point;
 	t_vec3		normal;
 	t_object	*object;
 }	t_hit_info;
@@ -82,6 +84,7 @@ typedef struct s_hit_info
 typedef struct s_object
 {
 	t_mat3		trans_matrix;
+	t_mat3		_inv_trans_matrix;
 	t_vec3		offset;
 	t_material	material;
 	t_hit_info	(*ray_func)(t_ray);
