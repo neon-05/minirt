@@ -15,8 +15,10 @@
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
 # define WIN_TITLE "minirt"
-# define RAY_DEPTH_LIMIT 10
-# define RAY_PER_BOUNCE 1
+# define RAY_DEPTH_LIMIT 5
+# define RAY_PER_BOUNCE 3
+# define MAX_RENDER_PASSES 0
+# define LIGHT_ATTENUATION 0.0001
 
 # define KEY_W 119
 # define KEY_A 97
@@ -37,6 +39,7 @@ typedef struct s_ray		t_ray;
 typedef struct s_material	t_material;
 typedef struct s_hit_info	t_hit_info;
 typedef struct s_object		t_object;
+typedef struct s_bound_vol	t_bound_vol;
 
 typedef struct s_cam
 {
@@ -44,6 +47,7 @@ typedef struct s_cam
 	t_vec4	orientation;
 	t_mat3	model_view_matrix;
 	t_img	*img;
+	t_vec4	*prev_frame;
 	double	fov_dist;
 	int		passes;
 	int		shift_pressed;
@@ -81,8 +85,15 @@ typedef struct s_hit_info
 	t_object	*object;
 }	t_hit_info;
 
+typedef struct s_bound_vol
+{
+	t_vec3	corner1;
+	t_vec3	corner2;
+}	t_bound_vol;
+
 typedef struct s_object
 {
+	t_bound_vol	bounding_volume;
 	t_mat3		trans_matrix;
 	t_mat3		_inv_trans_matrix;
 	t_vec3		offset;
@@ -93,12 +104,13 @@ typedef struct s_object
 //====================(DECLARATIONS)========================//
 
 // fsh.c
-t_vec4 vertex_shader(t_scene *scene, t_vec2 uv);
+void	vertex_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv);
 
 // initialize_structs.c
 t_object	*object_init(
 		t_mat3 trans_matrix, t_vec3 offset,
-		t_material material, t_hit_info (*ray_func)(t_ray)
+		t_material material, t_vec3 b1, t_vec3 b2,
+		t_hit_info (*ray_func)(t_ray)
 	);
 t_material	material_init(int emmissive, t_vec4 color,
 		double roughness, double refraction_index

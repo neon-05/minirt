@@ -15,7 +15,8 @@ t_material	material_init(int emmissive, t_vec4 color,
 
 t_object	*object_init(
 		t_mat3 trans_matrix, t_vec3 offset,
-		t_material material, t_hit_info (*ray_func)(t_ray)
+		t_material material, t_vec3 b1, t_vec3 b2,
+		t_hit_info (*ray_func)(t_ray)
 	)
 {
 	t_object	*obj;
@@ -25,5 +26,7 @@ t_object	*object_init(
 	obj->offset = offset;
 	obj->material = material;
 	obj->ray_func = ray_func;
+	obj->bounding_volume.corner1=b1;
+	obj->bounding_volume.corner2=b2;
 	return (obj);
 }

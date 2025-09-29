@@ -1,5 +1,23 @@
 #include "../minirt.h"
 
+t_hit_info	ray_plane_bound(t_ray ray)
+{
+	t_hit_info	ret;
+
+	ret.normal = vec3(0., 1., 0.);
+	if (ray.n_director.y < 0.)
+	{
+		ret.distance = -(ray.origin.y) / ray.n_director.y;
+		if (ret.distance > 0.)
+			ret.point = vec3_add(ray.origin, vec3_scale(ray.n_director, ret.distance));
+	}
+	else
+		ret.distance = -1.;
+	if (fabs(ret.point.x) > 1. || fabs(ret.point.z) > 1.)
+		ret.distance = -1.;
+	return (ret);
+}
+
 t_hit_info	ray_plane(t_ray ray)
 {
 	t_hit_info	ret;
@@ -13,8 +31,6 @@ t_hit_info	ray_plane(t_ray ray)
 	}
 	else
 		ret.distance = -1.;
-	// if (fabs(ret.point.x) > 1. || fabs(ret.point.z) > 1.)
-	// 	ret.distance = -1.;
 	return (ret);
 }
 
@@ -55,10 +71,16 @@ unsigned int	color_from_vec4(t_vec4 color)
 	unsigned int	c;
 
 	c = 0;
+	c |= ((int) (color.w * 255.) & 0xFF) << 24;
+	c |= ((int) (color.x * 255.) & 0xFF) << 16;
+	c |= ((int) (color.y * 255.) & 0xFF) << 8;
+	c |= ((int) (color.z * 255.) & 0xFF) << 0;
+	/*
 	c |= (int) (color.w * 255.) << 24;
 	c |= (int) (color.x * 255.) << 16;
 	c |= (int) (color.y * 255.) << 8;
 	c |= (int) (color.z * 255.) << 0;
+	*/
 	return (c);
 }
 
@@ -94,11 +116,10 @@ int	pixel_put_image(t_scene *scene, t_img *image, size_t pixel, t_vec4 v_color)
 int	render(t_scene **scene)
 {
 	size_t	frag_pos;
-	t_vec4	frag_color;
 	t_vec2	uv;
 
-	if ((*scene)->cam->passes > 100)
-		return (0);
+	// if ( > MAX_RENDER_PASSES)
+	// 	return (0);
 	frag_pos = 0;
 	printf("\n");
 	while (frag_pos < WIN_WIDTH * WIN_HEIGHT)
@@ -107,11 +128,10 @@ int	render(t_scene **scene)
 			(double) (frag_pos % WIN_WIDTH) / WIN_HEIGHT,
 			1.-(double) (frag_pos / WIN_WIDTH) / WIN_HEIGHT
 		);
-		frag_color = vertex_shader(*scene, vec2_sub(vec2_scale(uv, 2.), vec2((double) WIN_WIDTH / WIN_HEIGHT, 1.)));
-		//mlx_pixel_put((*scene)->mlx, (*scene)->window, (frag_pos % WIN_WIDTH), (frag_pos / WIN_WIDTH), color_from_vec4(frag_color));
-		pixel_put_image(*scene, (*scene)->cam->img, frag_pos * 4, vec4_func(frag_color, clamp));
+		vertex_shader(*scene, &(*scene)->cam->prev_frame[frag_pos], vec2_sub(vec2_scale(uv, 2.), vec2((double) WIN_WIDTH / WIN_HEIGHT, 1.)));
+		pixel_put_image(*scene, (*scene)->cam->img, frag_pos * 4, (*scene)->cam->prev_frame[frag_pos]);
 		frag_pos++;
-		printf("\033[1A\033[2Kpixel %li/%i\n", frag_pos, WIN_WIDTH * WIN_HEIGHT);
+		printf("\033[1A\033[2Kpass %d, pixel %li/%i\n", (*scene)->cam->passes, frag_pos, WIN_WIDTH * WIN_HEIGHT);
 	}
 	(*scene)->cam->passes++;
 	mlx_put_image_to_window((*scene)->mlx, (*scene)->window, (*scene)->cam->img, 0, 0);
@@ -222,7 +242,6 @@ int	on_key_press(int key, t_scene **scene)
 		rot_cam(vec3to4(vec3_scale(vec3(1.,0.,0.), sin(angle/2.)), cos(angle/2.)), (*scene)->cam);
 	else if (key == KEY_UP)
 		rot_cam(vec3to4(vec3_scale(vec3(1.,0.,0.), sin(-angle/2.)), cos(-angle/2.)), (*scene)->cam);
-	(*scene)->cam->passes = 1;
 	return (0);
 }
 
@@ -246,22 +265,41 @@ int	main(void)
 			vec3(0., 0., 1.)
 		);
 
+	t_mat3	i_mat3i2 = mat3(
+			vec3(1., 0., 0.),
+			vec3(0., 0., 1.),
+			vec3(0., -1., 0.)
+		);
+
+	t_mat3	i_mat3ir = mat3(
+			vec3(0., 1., 0.),
+			vec3(-1., 0., 0.),
+			vec3(0., 0., 1.)
+		);
+
+	t_mat3	i_mat3ig = mat3(
+			vec3(0., -1., 0.),
+			vec3(1., 0., 0.),
+			vec3(0., 0., 1.)
+		);
+
 	t_scene	*scene;
 
 	scene = malloc(sizeof(t_scene));
 	scene->cam = malloc(sizeof(t_cam));
-	scene->objects = malloc(sizeof(t_object *) * 5);
+	scene->cam->prev_frame = malloc(sizeof(t_vec4) * WIN_HEIGHT * WIN_WIDTH);
+	scene->objects = malloc(sizeof(t_object *) * 8);
 
-	scene->cam->orientation = vec4(0.000000, -0.173648, 0.000000, 0.984808);
-	scene->cam->pos = vec3(1.663176, -0.173648, 0.925417);
+	scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
+	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), .5, 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
+	scene->objects[2] = object_init(i_mat3i2, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 1., 1.), .5, 1.), vec3(3.,-1.,3.), vec3(-3.,5.,3.), ray_plane);
+	scene->objects[3] = object_init(i_mat3ir, vec3(-3., 0., 0.), material_init(0, vec4(1., .5, .5, 1.), .5, 1.), vec3(-3.,-1.,3.), vec3(-3.,5.,-3.), ray_plane);
+	scene->objects[4] = object_init(i_mat3ig, vec3(3., 0., 0.), material_init(0, vec4(.5, 1., .5, 1.), .5, 1.), vec3(3.,-1.,3.), vec3(3.,5.,-3.), ray_plane);
+	scene->objects[5] = object_init(i_mat3i, vec3(0., 4., 0.), material_init(1, vec4(1., 1., 1., 1.), 0., 1.), vec3(1.,5.,1.), vec3(-1.,3.,-1.), ray_sphere);
+	scene->objects[6] = object_init(i_mat3i, vec3(-1.5, 0., 0.), material_init(0, vec4(1., 1., 1., 1.), 0., 1.), vec3(-.5,1.,1.), vec3(-2.5,-1.,-1.), ray_sphere);
+	scene->objects[7] = NULL;
 
-	scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), ray_sphere);
-	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(1., 1., 1., 1.), 1., 1.), ray_plane);
-	scene->objects[2] = object_init(i_mat3i, vec3(1.5, 0., 0.), material_init(1, vec4(.5, .5, 1., 1.), 0., 1.), ray_sphere);
-	scene->objects[3] = object_init(i_mat3i, vec3(-1.5, 0., 0.), material_init(0, vec4(1., .5, .5, 1.), 0., 1.), ray_sphere);
-	scene->objects[4] = NULL;
-
-	scene->cam->pos = vec3(0., 0., -5.);
+	scene->cam->pos = vec3(0., .5, -5.);
 	scene->cam->orientation = vec4(0., 0., 0., 1.);
 	scene->cam->fov_dist = 1.6;
 	scene->ambient = vec4(0., 0., 0., 0.);
@@ -279,7 +317,9 @@ int	main(void)
 	mlx_destroy_image(scene->mlx, scene->cam->img);
 	mlx_destroy_window(scene->mlx, scene->window);
 	mlx_destroy_display(scene->mlx);
+	free(scene->mlx);
 
+	free(scene->cam->prev_frame);
 	free(scene->cam);
 	free(scene->objects);
 	free(scene);
