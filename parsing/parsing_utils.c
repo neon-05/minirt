@@ -85,7 +85,7 @@ void	ft_free_arr(char **arr, int i)
 
 double	atod(const char *s)// a bosseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer
 {
-	double	n;//
+	double	n;
 	double	frac;
 	double	power;
 	int		sign;

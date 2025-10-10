@@ -173,39 +173,10 @@ int	main(int ac, char **av)
 
 //if line not valid skipp, add 1 to return value
 
-/*
-
 
 // R resolution int int
 
 
 
-
-
-
-
-
-
-size_t	parse(t_scene *scene, int fd)//n of line not parsed
-{
-	scene->objects[0] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), dist_sphere);
-	scene->objects[1] = object_init(i_mat3i, vec3(2.5, -.75, 1.), material_init(0, vec4(1., 1., 1., 1.), 1., 1.), dist_sphere);
-	scene->objects[2] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(1., 0., 1., 1.), 1., 1.), dist_plane);
-	scene->objects[3] = NULL;
-
-	scene->cam->pos = vec3(0., 0., -1.);
-	scene->cam->fov_dist = 1.25;
-	scene->ambient = vec4(0., 0.8, 1., 1.);
-
-}
-
-typedef struct s_object
-{
-	t_mat3		trans_matrix;
-	t_vec3		offset;
-	t_material	material;
-	double		(*ray_dist_func)(t_ray);
-}	t_object;
-
-*/
-
+// scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
+										//					 offset				   material_init(emmissive, vec4(RGBA,roughness,refraction_index) , b1, b2,              t_hit_info (*ray_func)(t_ray)

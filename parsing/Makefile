@@ -8,7 +8,9 @@ DEBUG = -fsanitize=address
 RM = rm -f
 NAME = minirt
 
-LIB = ../42_libft/libft.a ../42_matft/matft.a
+#LIB = ../42_libft/libft.a ../42_matft/matft.a
+LIB = ../42_libft/libft.a ../42_matft/matft.a mlx_linux/libmlx_Linux.a
+
 
 SRCS = \
 	parser.c \
@@ -57,7 +59,9 @@ fclean:
 	-$(foreach lib,$(LDIR), $(MAKE) $@ -C $(lib) -s;)
 	$(RM) $(OBJS) $(NAME)
 
-re: clean all
+re:
+	@make fclean
+	@make
 
 run: $(NAME)
 	./$(NAME)
