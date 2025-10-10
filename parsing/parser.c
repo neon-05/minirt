@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "parsing.h"
+#include "parsing.h"
 
 /*
 
@@ -19,7 +19,7 @@ typedef struct s_object
 	t_mat3		trans_matrix;
 	t_vec3		offset;
 	t_material	material;
-	double		(*ray_dist_func)(t_ray);
+	double		(*ray_func)(t_ray);
 }	t_object;
 
 typedef struct s_scene
@@ -45,7 +45,24 @@ t_material	material_init(int emmissive, t_vec4 color, double roughness, double r
 	return (r);
 }
 
-t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, double (*ray_dist_func)(t_ray))
+// // fsh.c
+// void	vertex_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv);
+// 
+// // initialize_structs.c
+// t_object	*object_init(
+// 		t_mat3 trans_matrix, t_vec3 offset,
+// 		t_material material, t_vec3 b1, t_vec3 b2,
+// 		t_hit_info (*ray_func)(t_ray)
+// 	);
+// t_material	material_init(int emmissive, t_vec4 color,
+// 		double roughness, double refraction_index
+// 	);
+// 
+// double	clamp(double x);
+// t_vec3 q_rot(t_vec3 v, t_vec4 q);
+// 
+
+t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, t_hit_info (*ray_func)(t_ray))
 {
 	t_object	*obj;
 
@@ -55,7 +72,7 @@ t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, d
 	obj->trans_matrix = trans_matrix;
 	obj->offset = offset;
 	obj->material = material;
-	obj->ray_dist_func = ray_dist_func;
+	obj->ray_func = ray_func;
 	return (obj);
 }
 
@@ -121,7 +138,7 @@ void	free_parse(t_parse *parse)
 {
 	if (parse->once)
 		free(parse->once);
-	//free_scene(psrae->scene);
+	//free_scene(parse->scene);
 }
 
 size_t	parse(t_scene *scene, int fd)//n of line parsed ?
@@ -151,16 +168,18 @@ int	main(int ac, char **av)
 	int			fd;
 	t_mat3		i_mat3i;
 
-	// t_mat3	i_mat3 = mat3(vec3(1., 0., 0.), vec3(0., sqrt(3.)/.2, -.5), vec3(0., .5, sqrt(3.)/.2));
 	i_mat3i = mat3(vec3(1., 0., 0.), vec3(0., 1., 0.), vec3(0., 0., 1.));
 	scene = malloc(sizeof(t_scene));
 	scene->cam = malloc(sizeof(t_cam));
 	scene->objects = malloc(sizeof(t_object *) * 4);
 	scene->cam->pos = vec3(0., 0., -1.);
-	scene->objects[0] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), NULL); //dist_sphere);
-	scene->objects[1] = object_init(i_mat3i, vec3(2.5, -.75, 1.), material_init(0, vec4(1., 1., 1., 1.), 1., 1.), NULL); //dist_sphere);
-	scene->objects[2] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(1., 0., 1., 1.), 1., 1.), NULL); //dist_plane);
-	scene->objects[3] = NULL;
+
+
+
+	// scene->objects[0] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), NULL); //dist_sphere);
+	// scene->objects[1] = object_init(i_mat3i, vec3(2.5, -.75, 1.), material_init(0, vec4(1., 1., 1., 1.), 1., 1.), NULL); //dist_sphere);
+	// scene->objects[2] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(1., 0., 1., 1.), 1., 1.), NULL); //dist_plane);
+	// scene->objects[3] = NULL;
 	fd = open("./config.rt", O_RDONLY);
 	if (fd < 0)
 		fd = open("parsing/config.rt", O_RDONLY);

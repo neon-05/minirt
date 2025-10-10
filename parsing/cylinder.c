@@ -49,11 +49,11 @@ static int	check_numbers(t_val *val, char *line)
 }
 
 static int	get_data(t_val *val, t_scene *scene, char *line)
-{
+:
 	int	ret;
 
 	ret = split_assign_position(val, "Cylinder", 1, line);
-	if (ret != SUCCESS)
+if (ret != SUCCESS)
 		return (ret);
 	ret = split_assign_vector(val, "Cylinder", 2, line);
 	if (ret != SUCCESS)
@@ -71,6 +71,12 @@ static int	get_data(t_val *val, t_scene *scene, char *line)
 	return (SUCCESS);
 }
 
+// void	assign(t_scene *scene, t_val *val)
+// {
+	// // object[last] to do
+	// scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(val->x, val->y, val->z), material_init(1, colors(&val, val->ratio), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_cylinder);
+// }
+
 int	cylinder(t_scene *scene, char **tab, char *line)
 {
 	t_val	val;
@@ -82,9 +88,12 @@ int	cylinder(t_scene *scene, char **tab, char *line)
 	val.tab = tab;
 	if (get_data(&val, scene, line) == SKIPPED)
 		return (SKIPPED);
-	(void)scene;
-	colors(&val, val.ratio);
+	assign(scene, &val);
+	// c'est normal de ne pas avoir les valeures transformees ici: la fonction colors est appelee dans assign
 	printf(YELLOW"cy\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, val.x, val.y, val.z, val.aa, val.ab, val.ac, val.diametre, val.height, val.r, val.g, val.b);
 	free_val(&val);
 	return (SUCCESS);
 }
+
+// scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
+										//					 offset				   material_init(emmissive, vec4(RGBA,roughness,refraction_index) , b1, b2,              t_hit_info (*ray_func)(t_ray)
