@@ -51,19 +51,21 @@ static int	get_data(t_val *val, char *line)
 	return (SUCCESS);
 }
 
-int	ambiant(t_scene *scene, char **tab, char *line)
+int	ambiant(t_parse *parse, char **tab, char *line)
 {
-	t_val	val;
+	t_val	*val;
 
-	val.xyz = NULL;
-	val.orient = NULL;
-	val.colors = NULL;
-	val.error = RED"ERROR: "RESET;
-	val.tab = tab;
-	if (get_data(&val, line) == SKIPPED)
-		return (SKIPPED);
-	scene->ambient = colors(&val, val.ratio);
-	printf(YELLOW"A\t%.2f\t%.2f,%.2f,%.2f\n"RESET, val.ratio, val.r, val.g, val.b);
-	free_val(&val);
+	val = malloc(sizeof(t_val));
+	if (!val)
+		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val->type = "A";
+	val->xyz = NULL;
+	val->orient = NULL;
+	val->colors = NULL;
+	val->error = RED"ERROR: "RESET;
+	val->tab = tab;
+	if (get_data(val, line) == SKIPPED)
+		return (SKIPPED); //free val
+	parse->ambiant = val;
 	return (SUCCESS);
 }

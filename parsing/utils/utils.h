@@ -27,15 +27,28 @@
 
 //====================(STRUCTS)=============================//
 
+typedef struct s_parse t_parse;
+typedef struct s_val t_val;
+
+
 typedef struct s_parse
 {
 	int			n_objects;
 	char		*once;
 	t_scene		*scene;
+
+	t_val		*camera;
+	t_val		*ambiant;
+	t_val		*light;
+
+	t_val		*objects;
+	unsigned int	last;
 }	t_parse;
 
 typedef struct s_val
 {
+	char		*type;
+
 	char		**tab;
 	char		*error;
 
@@ -59,6 +72,9 @@ typedef struct s_val
 	double		diametre;
 
 	double		height;
+
+	t_val		*next;
+
 }	t_val;
 
 //====================(DECLARATIONS)========================//

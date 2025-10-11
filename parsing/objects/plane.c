@@ -42,7 +42,7 @@ static int	check_numbers(t_val *val, char *line)
 	return (SUCCESS);
 }
 
-static int	get_data(t_val *val, t_scene *scene, char *line)
+static int	get_data(t_val *val, char *line)
 {
 	int	ret;
 
@@ -59,30 +59,30 @@ static int	get_data(t_val *val, t_scene *scene, char *line)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)
 		return (SKIPPED);
-	(void)scene;
 	return (SUCCESS);
 }
 
-// void	assign(t_scene *scene, t_val *val)
-// {
-	// object[last] to do
-	// scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(val->x, val->y, val->z), material_init(1, colors(&val, val->ratio), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_plane);
-	// where tf do i put the normalised vector ?
-// }
-
-int	plane(t_scene *scene, char **tab, char *line)
+int	plane(t_parse *parse, char **tab, char *line)
 {
-	t_val	val;
+	t_val	*val;
 
-	val.xyz = NULL;
-	val.orient = NULL;
-	val.colors = NULL;
-	val.error = RED"ERROR: "RESET;
-	val.tab = tab;
-	if (get_data(&val, scene, line) == SKIPPED)
+	val = malloc(sizeof(t_val));
+	if (!val)
+		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val = malloc(sizeof(t_val));
+	if (!val)
+		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val->xyz = NULL;
+	val->orient = NULL;
+	val->colors = NULL;
+	val->error = RED"ERROR: "RESET;
+	val->tab = tab;
+	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
-	// c'est normal de ne pas avoir les valeures transformees ici: la fonction colors est appelee dans assign
-	printf(YELLOW"pl\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \n"RESET, val.x, val.y, val.z, val.aa, val.ab, val.ac, val.r, val.g, val.b);
-	free_val(&val);
+	if (!parse->objects)
+		parse->objects = val;
+	else
+		parse->objects->next = val; // a voir comment faiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiire
+	printf(YELLOW"pl\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \n"RESET, val->x, val->y, val->z, val->aa, val->ab, val->ac, val->r, val->g, val->b);
 	return (SUCCESS);
 }

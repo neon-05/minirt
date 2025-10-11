@@ -84,11 +84,11 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 	parse->once = ft_strjoin_f(parse->once, tab[0]);
 	if (!parse->once)
 		return (free_tab(tab), MALLOC_ERROR);
-	if (tab[0][0] == 'A' && ambiant(parse->scene, tab, line) == SKIPPED)
+	if (tab[0][0] == 'A' && ambiant(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'L' && light(parse->scene, tab, line) == SKIPPED)
+	else if (tab[0][0] == 'L' && light(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'C' && camera(parse->scene, tab, line) == SKIPPED)
+	else if (tab[0][0] == 'C' && camera(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	// printf(GREEN"%s\n"RESET, line);//print what's accepeted
 	return (free_tab(tab), SUCCESS);
@@ -99,13 +99,13 @@ int	others_objects(t_parse *parse, char **tab, char *line)
 	if (check_others(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	if (tab[0][0] == 's' && tab[0][1] == 'p' &&
-			sphere(parse->scene, tab, line) == SKIPPED)
+			sphere(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'p' &&
-			tab[0][1] == 'l' && plane(parse->scene, tab, line) == SKIPPED)
+			tab[0][1] == 'l' && plane(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'c' && tab[0][1] == 'y' &&
-			cylinder(parse->scene, tab, line) == SKIPPED)
+			cylinder(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	parse->n_objects++;
 	// printf(GREEN"%s\n"RESET, line);
@@ -142,8 +142,18 @@ void	free_parse(t_parse *parse)
 {
 	if (parse->once)
 		free(parse->once);
-	//free_scene(parse->scene);
+	//free_scene(parse);
 }
+
+
+
+void	show_parse(t_parse parse)
+{
+	printf(YELLOW"A\t%.2f\t%.2f,%.2f,%.2f\n"RESET, parse.ambiant->ratio, parse.ambiant->r, parse.ambiant->g, parse.ambiant->b);
+	printf(YELLOW"C\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f \n"RESET, parse.camera->x, parse.camera->y, parse.camera->z, parse.camera->aa, parse.camera->ab, parse.camera->ac, parse.camera->ratio);
+	printf(YELLOW"L\t %.2f,%.2f,%.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, parse.light->x, parse.light->y, parse.light->z, parse.light->ratio, parse.light->r, parse.light->g, parse.light->b);
+}
+
 
 size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 {
@@ -163,6 +173,8 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 	}
 	if (line)
 		free(line);
+	show_parse(parse);
+	// assign(scene, parse);
 	return (free_parse(&parse), SUCCESS);
 }
 

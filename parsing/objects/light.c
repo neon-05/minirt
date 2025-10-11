@@ -40,7 +40,7 @@ static int	check_numbers(t_val *val, char *line)
 	return (SUCCESS);
 }
 
-static int	get_data(t_val *val, t_scene *scene, char *line)
+static int	get_data(t_val *val, char *line)
 {
 	int	ret;
 
@@ -55,25 +55,25 @@ static int	get_data(t_val *val, t_scene *scene, char *line)
 		return (SKIPPED);
 	if (check_ranges(val, line) == SKIPPED)
 		return (SKIPPED);
-	(void)scene; //missing light in the scene
 	return (SUCCESS);
 }
 
-int	light(t_scene *scene, char **tab, char *line)
+int	light(t_parse *parse, char **tab, char *line)
 {
-	t_val	val;
+	t_val	*val;
 
-	val.xyz = NULL;
-	val.orient = NULL;
-	val.colors = NULL;
-	val.error = RED"ERROR: "RESET;
-	val.tab = tab;
-	if (get_data(&val, scene, line) == SKIPPED)
+	val = malloc(sizeof(t_val));
+	if (!val)
+		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val->xyz = NULL;
+	val->orient = NULL;
+	val->colors = NULL;
+	val->error = RED"ERROR: "RESET;
+	val->tab = tab;
+	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
-	(void)scene;
-	colors(&val, val.ratio);
-	printf(YELLOW"L\t %.2f,%.2f,%.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, val.x, val.y, val.z, val.ratio, val.r, val.g, val.b);
-	free_val(&val);
+	colors(val, val->ratio);
+	parse->light = val;
 	return (SUCCESS);
 }
 

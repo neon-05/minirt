@@ -28,15 +28,28 @@
 
 //====================(STRUCTS)=============================//
 
+typedef struct s_parse t_parse;
+typedef struct s_val t_val;
+
+
 typedef struct s_parse
 {
 	int			n_objects;
 	char		*once;
 	t_scene		*scene;
+
+	t_val		*camera;
+	t_val		*ambiant;
+	t_val		*light;
+
+	t_val		*objects;
+	unsigned int		last;
 }	t_parse;
 
 typedef struct s_val
 {
+	char		*type;
+
 	char		**tab;
 	char		*error;
 
@@ -60,27 +73,31 @@ typedef struct s_val
 	double		diametre;
 
 	double		height;
+
+	t_val		*next;
+
 }	t_val;
+
 
 //====================(DECLARATIONS)========================//
 
 //ambiant
-int		ambiant(t_scene *scene, char **tab, char *line);
+int		ambiant(t_parse *parse, char **tab, char *line);
 
 //light
-int		light(t_scene *scene, char **tab, char *line);
+int		light(t_parse *parse, char **tab, char *line);
 
 //camera
-int		camera(t_scene *scene, char **tab, char *line);
+int		camera(t_parse *parse, char **tab, char *line);
 
 //sphere
-int		sphere(t_scene *scene, char **tab, char *line);
+int		sphere(t_parse *parse, char **tab, char *line);
 
 //plane
-int		plane(t_scene *scene, char **tab, char *line);
+int		plane(t_parse *parse, char **tab, char *line);
 
 //cylinder
-int		cylinder(t_scene *scene, char **tab, char *line);
+int		cylinder(t_parse *parse, char **tab, char *line);
 
 #endif
 
