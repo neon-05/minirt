@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/11 20:29:02 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/12 01:17:47 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,41 @@ void	init_parse(t_parse *parse)
 	parse->objects = NULL;
 }
 
+/*
+typedef struct s_scene
+{
+	t_object	**objects;
+	t_cam		*cam;
+	t_vec4		ambient;
+	t_xvar		*mlx;
+	t_win_list	*window;
+}	t_scene;
+
+typedef struct s_cam
+{
+	t_vec3	pos;
+	t_vec4	orientation;
+	t_mat3	model_view_matrix;
+	t_img	*img;
+	t_vec4	*prev_frame;
+	double	fov_dist;
+	int		passes;
+	int		shift_pressed;
+}	t_cam;
+
+
+
+*/
+
+void	assign(t_scene *scene, t_parse *parse)
+{
+	t_val	*tmp;
+
+	tmp = parse->camera;
+	scene->cam->pos = vec3(tmp->x, tmpy>y, tmp->z);
+	scene->cam->orientation = vec4(tmp->aa, tmpy>ab, tmp->ac, tmp->);
+}
+
 size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 {
 	t_parse		parse;
@@ -101,7 +136,7 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 	if (line)
 		free(line);
 	show_parse(parse);
-	// assign(scene, parse);
+	assign(scene, parse);
 	return (free_parse(&parse), SUCCESS);
 }
 
