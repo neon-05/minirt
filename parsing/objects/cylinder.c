@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 13:43:47 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/11 20:36:00 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	get_data(t_val *val, char *line)
 	int	ret;
 
 	ret = split_assign_position(val, "Cylinder", 1, line);
-if (ret != SUCCESS)
+	if (ret != SUCCESS)
 		return (ret);
 	ret = split_assign_vector(val, "Cylinder", 2, line);
 	if (ret != SUCCESS)
@@ -73,10 +73,12 @@ if (ret != SUCCESS)
 int	cylinder(t_parse *parse, char **tab, char *line)
 {
 	t_val	*val;
+	t_val	*tmp;
 
 	val = malloc(sizeof(t_val));
 	if (!val)
 		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val->type = "Cy";
 	val->xyz = NULL;
 	val->orient = NULL;
 	val->colors = NULL;
@@ -85,13 +87,14 @@ int	cylinder(t_parse *parse, char **tab, char *line)
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
 	colors(val, val->ratio);
-	if (!parse->objects)
+	tmp = parse->objects;
+	if (!tmp)
 		parse->objects = val;
 	else
-		parse->objects->next = val; // a voir comment faiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiire
-	printf(YELLOW"cy\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, val->x, val->y, val->z, val->aa, val->ab, val->ac, val->diametre, val->height, val->r, val->g, val->b);
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = val;
+	}
 	return (SUCCESS);
 }
-
-// scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
-										//					 offset				   material_init(emmissive, vec4(RGBA,roughness,refraction_index) , b1, b2,              t_hit_info (*ray_func)(t_ray)

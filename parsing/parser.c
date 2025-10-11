@@ -6,76 +6,11 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 15:22:08 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/11 20:29:02 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-/*
-
-typedef struct s_object
-{
-	t_mat3		trans_matrix;
-	t_vec3		offset;
-	t_material	material;
-	double		(*ray_func)(t_ray);
-}	t_object;
-
-typedef struct s_scene
-{
-	t_object	**objects;
-	t_cam		*cam;
-	t_vec4		ambient;
-	t_xvar		*mlx;
-	t_win_list	*window;
-}	t_scene;
-
-*/
-
-t_material	material_init(int emmissive, t_vec4 color,
-		double roughness, double refraction_index)
-{
-	t_material	r;
-
-	r.emmissive = emmissive;
-	r.color = color;
-	r.roughness = roughness;
-	r.refraction_index = refraction_index;
-	return (r);
-}
-
-// // fsh.c
-// void	vertex_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv);
-// 
-// // initialize_structs.c
-// t_object	*object_init(
-// 		t_mat3 trans_matrix, t_vec3 offset,
-// 		t_material material, t_vec3 b1, t_vec3 b2,
-// 		t_hit_info (*ray_func)(t_ray)
-// 	);
-// t_material	material_init(int emmissive, t_vec4 color,
-// 		double roughness, double refraction_index
-// 	);
-// 
-// double	clamp(double x);
-// t_vec3 q_rot(t_vec3 v, t_vec4 q);
-// 
-
-t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset,
-		t_material material, t_hit_info (*ray_func)(t_ray))
-{
-	t_object	*obj;
-
-	obj = malloc(sizeof(t_object));
-	if (!obj)
-		return (MALLOC_ERROR);
-	obj->trans_matrix = trans_matrix;
-	obj->offset = offset;
-	obj->material = material;
-	obj->ray_func = ray_func;
-	return (obj);
-}
 
 int	once_objects(t_parse *parse, char **tab, char *line)
 {
@@ -90,7 +25,6 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'C' && camera(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	// printf(GREEN"%s\n"RESET, line);//print what's accepeted
 	return (free_tab(tab), SUCCESS);
 }
 
@@ -108,7 +42,6 @@ int	others_objects(t_parse *parse, char **tab, char *line)
 			cylinder(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	parse->n_objects++;
-	// printf(GREEN"%s\n"RESET, line);
 	return (free_tab(tab), SUCCESS);
 }
 
@@ -127,7 +60,7 @@ int	get_data(t_parse *parse, char *line)
 		return (once_objects(parse, tab, line));
 	else if (ft_strlen(tab[0]) == 2 && tab[0][0] == '/' && tab[0][1] == '/')
 		return (free_tab(tab), SUCCESS);
-	else if (ft_strlen(tab[0]) == 2) // &&...
+	else if (ft_strlen(tab[0]) == 2)
 		return (others_objects(parse, tab, line));
 	else
 	{
@@ -138,29 +71,23 @@ int	get_data(t_parse *parse, char *line)
 	return (SUCCESS);
 }
 
-void	free_parse(t_parse *parse)
+void	init_parse(t_parse *parse)
 {
-	if (parse->once)
-		free(parse->once);
-	//free_scene(parse);
+	parse->once = NULL;
+	parse->scene = NULL;
+	parse->camera = NULL;
+	parse->ambiant = NULL;
+	parse->light = NULL;
+	parse->objects = NULL;
 }
-
-
-
-void	show_parse(t_parse parse)
-{
-	printf(YELLOW"A\t%.2f\t%.2f,%.2f,%.2f\n"RESET, parse.ambiant->ratio, parse.ambiant->r, parse.ambiant->g, parse.ambiant->b);
-	printf(YELLOW"C\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f \n"RESET, parse.camera->x, parse.camera->y, parse.camera->z, parse.camera->aa, parse.camera->ab, parse.camera->ac, parse.camera->ratio);
-	printf(YELLOW"L\t %.2f,%.2f,%.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, parse.light->x, parse.light->y, parse.light->z, parse.light->ratio, parse.light->r, parse.light->g, parse.light->b);
-}
-
 
 size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 {
-	t_parse		parse = {0};
+	t_parse		parse;
 	char		*line;
 	int			status;
 
+	init_parse(&parse);
 	parse.scene = scene;
 	while (get_line(&line, fd))
 	{
@@ -178,40 +105,14 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 	return (free_parse(&parse), SUCCESS);
 }
 
-int	main(int ac, char **av)
-{
-	t_scene		*scene;
-	int			fd;
-	// t_mat3		i_mat3i;
-
-	// i_mat3i = mat3(vec3(1., 0., 0.), vec3(0., 1., 0.), vec3(0., 0., 1.));
-	scene = malloc(sizeof(t_scene));
-	scene->cam = malloc(sizeof(t_cam));
-	scene->objects = malloc(sizeof(t_object *) * 4);
-	scene->cam->pos = vec3(0., 0., -1.);
-
-
-
-	// scene->objects[0] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 0., 1.), 1., 1.), NULL); //dist_sphere);
-	// scene->objects[1] = object_init(i_mat3i, vec3(2.5, -.75, 1.), material_init(0, vec4(1., 1., 1., 1.), 1., 1.), NULL); //dist_sphere);
-	// scene->objects[2] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(1., 0., 1., 1.), 1., 1.), NULL); //dist_plane);
-	// scene->objects[3] = NULL;
-	fd = open("./config.rt", O_RDONLY);
-	if (fd < 0)
-		fd = open("parsing/config.rt", O_RDONLY);
-	if (fd < 0)
-		return (MALLOC_ERROR);
-	parse(scene, fd);
-	(void)ac;
-	(void)av;
-}
-
 //if line not valid skipp, add 1 to return value
-
 
 // R resolution int int
 
+/*
 
+scene->objects[0] = 
+object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
+										 offset				   material_init(emmissive, vec4(RGBA,roughness,refraction_index) , b1, b2,              t_hit_info (*ray_func)(t_ray)
 
-// scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
-										//					 offset				   material_init(emmissive, vec4(RGBA,roughness,refraction_index) , b1, b2,              t_hit_info (*ray_func)(t_ray)
+*/

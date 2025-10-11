@@ -62,6 +62,7 @@ int	camera(t_parse *parse, char **tab, char *line)
 	val = malloc(sizeof(t_val));
 	if (!val)
 		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val->type = "C";
 	val->xyz = NULL;
 	val->orient = NULL;
 	val->colors = NULL;
@@ -79,13 +80,3 @@ int	camera(t_parse *parse, char **tab, char *line)
 	parse->camera = val;
 	return (SUCCESS);
 }
-
-/*
-typedef struct s_cam
-{
-	t_vec3	pos;
-	t_vec4	orientation;
-	t_mat3	model_view_matrix;		????????????
-	double	fov_dist;
-}	t_cam;
-*/

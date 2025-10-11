@@ -65,6 +65,7 @@ int	light(t_parse *parse, char **tab, char *line)
 	val = malloc(sizeof(t_val));
 	if (!val)
 		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val->type = "L";
 	val->xyz = NULL;
 	val->orient = NULL;
 	val->colors = NULL;
@@ -76,5 +77,3 @@ int	light(t_parse *parse, char **tab, char *line)
 	parse->light = val;
 	return (SUCCESS);
 }
-
-//missing light in the scene

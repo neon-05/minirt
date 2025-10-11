@@ -12,6 +12,7 @@ LIB = ../42_libft/libft.a ../42_matft/matft.a
 
 
 SRCS = \
+	main.c \
 	parser.c \
 	utils/parsing_utils.c \
 	utils/check_once.c \
@@ -19,12 +20,15 @@ SRCS = \
 	utils/split_assign.c \
 	utils/split_ispace.c \
 	utils/transf.c \
+	utils/debug.c \
+	utils/clear.c \
 	objects/ambiant.c \
 	objects/light.c \
 	objects/camera.c \
 	objects/sphere.c \
 	objects/plane.c \
 	objects/cylinder.c \
+	externals_copies.c
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

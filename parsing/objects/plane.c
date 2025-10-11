@@ -65,13 +65,12 @@ static int	get_data(t_val *val, char *line)
 int	plane(t_parse *parse, char **tab, char *line)
 {
 	t_val	*val;
+	t_val	*tmp;
 
 	val = malloc(sizeof(t_val));
 	if (!val)
 		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
-	val = malloc(sizeof(t_val));
-	if (!val)
-		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+	val->type = "Pl";
 	val->xyz = NULL;
 	val->orient = NULL;
 	val->colors = NULL;
@@ -79,10 +78,14 @@ int	plane(t_parse *parse, char **tab, char *line)
 	val->tab = tab;
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
-	if (!parse->objects)
+	tmp = parse->objects;
+	if (!tmp)
 		parse->objects = val;
 	else
-		parse->objects->next = val; // a voir comment faiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiire
-	printf(YELLOW"pl\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \n"RESET, val->x, val->y, val->z, val->aa, val->ab, val->ac, val->r, val->g, val->b);
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = val;
+	}
 	return (SUCCESS);
 }

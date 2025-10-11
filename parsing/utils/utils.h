@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 13:49:41 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/11 20:39:12 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 # define UTILS_H
 
 //====================(INCLUDES)============================//
-
 # include "../parsing.h"
 
 //====================(DEFINES)=============================//
-
 # define SET "ACL"
 # define SUCCESS 1
 # define MALLOC_ERROR 0
@@ -26,59 +24,56 @@
 # define OPEN_ERROR -1
 
 //====================(STRUCTS)=============================//
-
-typedef struct s_parse t_parse;
-typedef struct s_val t_val;
-
+typedef struct s_parse	t_parse;
+typedef struct s_val	t_val;
 
 typedef struct s_parse
 {
-	int			n_objects;
-	char		*once;
-	t_scene		*scene;
+	int				n_objects;
+	char			*once;
+	t_scene			*scene;
 
-	t_val		*camera;
-	t_val		*ambiant;
-	t_val		*light;
+	t_val			*camera;
+	t_val			*ambiant;
+	t_val			*light;
 
-	t_val		*objects;
+	t_val			*objects;
 	unsigned int	last;
 }	t_parse;
 
 typedef struct s_val
 {
-	char		*type;
+	char			*type;
 
-	char		**tab;
-	char		*error;
+	char			**tab;
+	char			*error;
 
-	double		ratio;
-	char		**colors;
-	double		r;
-	double		g;
-	double		b;
+	double			ratio;
+	char			**colors;
+	double			r;
+	double			g;
+	double			b;
 
-	char		**xyz;
-	char		**orient;
-	double		teta;
-	double		x;
-	double		y;
-	double		z;
-	double		aa;
-	double		ab;
-	double		ac;
-	double		fov;
+	char			**xyz;
+	char			**orient;
+	double			teta;
+	double			x;
+	double			y;
+	double			z;
+	double			aa;
+	double			ab;
+	double			ac;
+	double			fov;
 
-	double		diametre;
+	double			diametre;
 
-	double		height;
+	double			height;
 
-	t_val		*next;
+	t_val			*next;
 
 }	t_val;
 
 //====================(DECLARATIONS)========================//
-
 //parsing_utils
 int		get_line(char **line, int fd);
 char	*ft_strjoin_f(char *s1, char *s2);
@@ -108,5 +103,10 @@ int		split_assign_position(t_val *val, char *object, int i, char *line);
 char	**split_ispace(const char *s);
 int		ft_issispace(char c);
 
-#endif
+//clear
+void	free_parse(t_parse *parse);
 
+//debug
+void	show_parse(t_parse parse);
+
+#endif

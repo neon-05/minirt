@@ -19,7 +19,7 @@ t_vec4	colors(t_val *val, double a)
 	val->r = val->r * inv_range;
 	val->g = val->g * inv_range;
 	val->b = val->b * inv_range;
-	return (vec4(val->r, val->g, val->b, a));// je met quoi en a ?
+	return (vec4(val->r, val->g, val->b, a));
 }
 
 t_vec4	quaternion(double a, double b, double c, double teta)
