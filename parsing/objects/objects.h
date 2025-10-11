@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   objects.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,22 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef OBJECTS_H
+# define OBJECTS_H
 
 //====================(INCLUDES)============================//
 
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <libft.h>
-# include <matft.h>
-# include "colors.h"
-//# include <mlx.h>
-//# include <mlx_int.h>
-# include "../minirt.h"
-# include "objects/objects.h"
+# include "../parsing.h"
+# include "../colors.h"
 
 //====================(DEFINES)=============================//
 
@@ -73,18 +64,6 @@ typedef struct s_val
 
 //====================(DECLARATIONS)========================//
 
-
-
-
-
-//============(PARSER)================//
-
-//parser
-size_t	parse(t_scene *scene, int fd);
-
-
-//============(OBJCTS)================//
-
 //ambiant
 int		ambiant(t_scene *scene, char **tab, char *line);
 
@@ -103,36 +82,5 @@ int		plane(t_scene *scene, char **tab, char *line);
 //cylinder
 int		cylinder(t_scene *scene, char **tab, char *line);
 
-
-//============(UTILS )================//
-
-//parsing_utils
-int		get_line(char **line, int fd);
-char	*ft_strjoin_f(char *s1, char *s2);
-int		arr_size(char **arr);
-void	ft_free_arr(char **arr, int i);
-double	atod(const char *s);
-
-//check_once
-int		check_line(t_parse *parse, char **tab, char *line);
-int		is_number(char *str);
-
-//check_others
-int		check_others(t_parse *parse, char **tab, char *line);
-
-//tranfs
-t_vec4	colors(t_val *val, double a);
-t_vec4	quaternion(double a, double b, double c, double teta);
-
-//split_assign
-void	free_tab(char **tab);
-void	free_val(t_val *val);
-int		split_assign_vector(t_val *val, char *object, int i, char *line);
-int		split_assign_colors(t_val *val, char *object, int i, char *line);
-int		split_assign_position(t_val *val, char *object, int i, char *line);
-
-//split_ispace
-char	**split_ispace(const char *s);
-int		ft_issispace(char c);
-
 #endif
+

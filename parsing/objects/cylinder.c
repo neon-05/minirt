@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "objects.h"
 
 static int	check_ranges(t_val *val, char *line)
 {
@@ -49,7 +49,7 @@ static int	check_numbers(t_val *val, char *line)
 }
 
 static int	get_data(t_val *val, t_scene *scene, char *line)
-:
+{
 	int	ret;
 
 	ret = split_assign_position(val, "Cylinder", 1, line);
@@ -88,7 +88,7 @@ int	cylinder(t_scene *scene, char **tab, char *line)
 	val.tab = tab;
 	if (get_data(&val, scene, line) == SKIPPED)
 		return (SKIPPED);
-	assign(scene, &val);
+	// assign(scene, &val);
 	// c'est normal de ne pas avoir les valeures transformees ici: la fonction colors est appelee dans assign
 	printf(YELLOW"cy\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, val.x, val.y, val.z, val.aa, val.ab, val.ac, val.diametre, val.height, val.r, val.g, val.b);
 	free_val(&val);

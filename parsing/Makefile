@@ -13,18 +13,18 @@ LIB = ../42_libft/libft.a ../42_matft/matft.a
 
 SRCS = \
 	parser.c \
-	parsing_utils.c \
-	check_once.c \
-	check_others.c \
-	ambiant.c \
-	light.c \
-	camera.c \
-	transf.c \
-	sphere.c \
-	plane.c \
-	cylinder.c \
-	split_assign.c \
-	split_ispace.c \
+	utils/parsing_utils.c \
+	utils/check_once.c \
+	utils/check_others.c \
+	utils/split_assign.c \
+	utils/split_ispace.c \
+	utils/transf.c \
+	objects/ambiant.c \
+	objects/light.c \
+	objects/camera.c \
+	objects/sphere.c \
+	objects/plane.c \
+	objects/cylinder.c \
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

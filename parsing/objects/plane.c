@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere.c                                           :+:      :+:    :+:   */
+/*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 13:44:06 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:43:57 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "objects.h"
 
 static int	check_ranges(t_val *val, char *line)
 {
+	if (val->aa < -1 || val->aa > 1 || val->ab < -1 \
+		|| val->ab > 1 || val->ac < -1 || val->ac > 1)
+		return (printf("%sPlane vector is not in the range [-1 - 1]\
+ :\n%s\n\n", val->error, line), SKIPPED);
 	if (val->r < 0 || val->r > 255 || val->g < 0 \
 		|| val->g > 255 || val->b < 0 || val->b > 255)
-		return (printf("%ssphere color is not in the range [0 - 255]\
+		return (printf("%sPlane color is not in the range [0 - 255]\
  :\n%s\n\n", val->error, line), SKIPPED);
 	return (SUCCESS);
 }
@@ -25,14 +29,15 @@ static int	check_numbers(t_val *val, char *line)
 {
 	if (!is_number(val->xyz[0]) || !is_number(val->xyz[1]) || \
 		!is_number(val->xyz[2]))
-		return (printf("%sSphere position has non numerics arguments\
+		return (printf("%sPlane position has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
-	if (!is_number(val->tab[2]))
-		return (printf("%sSphere ratio argument isn't numeric\
+	if (!is_number(val->orient[0]) || !is_number(val->orient[1]) || \
+		!is_number(val->orient[2]))
+		return (printf("%sPlane vector has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	if (!is_number(val->colors[0]) || !is_number(val->colors[1]) || \
 		!is_number(val->colors[2]))
-		return (printf("%sSphere color has non numerics arguments\
+		return (printf("%sPlane color has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	return (SUCCESS);
 }
@@ -41,11 +46,13 @@ static int	get_data(t_val *val, t_scene *scene, char *line)
 {
 	int	ret;
 
-	ret = split_assign_position(val, "Sphere", 1, line);
+	ret = split_assign_position(val, "Plane", 1, line);
 	if (ret != SUCCESS)
 		return (ret);
-	val->diametre = atod(val->tab[2]);
-	ret = split_assign_colors(val, "Sphere", 3, line);
+	ret = split_assign_vector(val, "Plane", 2, line);
+	if (ret != SUCCESS)
+		return (ret);
+	ret = split_assign_colors(val, "Plane", 3, line);
 	if (ret != SUCCESS)
 		return (ret);
 	if (check_numbers(val, line) == SKIPPED)
@@ -56,7 +63,14 @@ static int	get_data(t_val *val, t_scene *scene, char *line)
 	return (SUCCESS);
 }
 
-int	sphere(t_scene *scene, char **tab, char *line)
+// void	assign(t_scene *scene, t_val *val)
+// {
+	// object[last] to do
+	// scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(val->x, val->y, val->z), material_init(1, colors(&val, val->ratio), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_plane);
+	// where tf do i put the normalised vector ?
+// }
+
+int	plane(t_scene *scene, char **tab, char *line)
 {
 	t_val	val;
 
@@ -67,9 +81,8 @@ int	sphere(t_scene *scene, char **tab, char *line)
 	val.tab = tab;
 	if (get_data(&val, scene, line) == SKIPPED)
 		return (SKIPPED);
-	(void)scene;
-	colors(&val, val.ratio);
-	printf(YELLOW"sp\t %.2f,%.2f,%.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, val.x, val.y, val.z, val.diametre, val.r, val.g, val.b);
+	// c'est normal de ne pas avoir les valeures transformees ici: la fonction colors est appelee dans assign
+	printf(YELLOW"pl\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \n"RESET, val.x, val.y, val.z, val.aa, val.ab, val.ac, val.r, val.g, val.b);
 	free_val(&val);
 	return (SUCCESS);
 }

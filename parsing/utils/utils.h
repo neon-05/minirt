@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,22 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef UTILS_H
+# define UTILS_H
 
 //====================(INCLUDES)============================//
 
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <libft.h>
-# include <matft.h>
-# include "colors.h"
-//# include <mlx.h>
-//# include <mlx_int.h>
-# include "../minirt.h"
-# include "objects/objects.h"
+# include "../parsing.h"
 
 //====================(DEFINES)=============================//
 
@@ -73,39 +63,6 @@ typedef struct s_val
 
 //====================(DECLARATIONS)========================//
 
-
-
-
-
-//============(PARSER)================//
-
-//parser
-size_t	parse(t_scene *scene, int fd);
-
-
-//============(OBJCTS)================//
-
-//ambiant
-int		ambiant(t_scene *scene, char **tab, char *line);
-
-//light
-int		light(t_scene *scene, char **tab, char *line);
-
-//camera
-int		camera(t_scene *scene, char **tab, char *line);
-
-//sphere
-int		sphere(t_scene *scene, char **tab, char *line);
-
-//plane
-int		plane(t_scene *scene, char **tab, char *line);
-
-//cylinder
-int		cylinder(t_scene *scene, char **tab, char *line);
-
-
-//============(UTILS )================//
-
 //parsing_utils
 int		get_line(char **line, int fd);
 char	*ft_strjoin_f(char *s1, char *s2);
@@ -136,3 +93,4 @@ char	**split_ispace(const char *s);
 int		ft_issispace(char c);
 
 #endif
+

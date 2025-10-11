@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "utils.h"
 
 t_vec4	colors(t_val *val, double a)
 {

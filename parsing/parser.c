@@ -33,8 +33,8 @@ typedef struct s_scene
 
 */
 
-t_material	material_init(int emmissive, t_vec4 color, double roughness, double refraction_index
-	)
+t_material	material_init(int emmissive, t_vec4 color,
+		double roughness, double refraction_index)
 {
 	t_material	r;
 
@@ -62,7 +62,8 @@ t_material	material_init(int emmissive, t_vec4 color, double roughness, double r
 // t_vec3 q_rot(t_vec3 v, t_vec4 q);
 // 
 
-t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, t_hit_info (*ray_func)(t_ray))
+t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset,
+		t_material material, t_hit_info (*ray_func)(t_ray))
 {
 	t_object	*obj;
 
@@ -89,7 +90,7 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'C' && camera(parse->scene, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	printf(GREEN"%s\n"RESET, line);//print what's accepeted
+	// printf(GREEN"%s\n"RESET, line);//print what's accepeted
 	return (free_tab(tab), SUCCESS);
 }
 
@@ -97,14 +98,17 @@ int	others_objects(t_parse *parse, char **tab, char *line)
 {
 	if (check_others(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	if (tab[0][0] == 's' && tab[0][1] == 'p' && sphere(parse->scene, tab, line) == SKIPPED)
+	if (tab[0][0] == 's' && tab[0][1] == 'p' &&
+			sphere(parse->scene, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'p' && tab[0][1] == 'l' && plane(parse->scene, tab, line) == SKIPPED)
+	else if (tab[0][0] == 'p' &&
+			tab[0][1] == 'l' && plane(parse->scene, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'c' && tab[0][1] == 'y' && cylinder(parse->scene, tab, line) == SKIPPED)
+	else if (tab[0][0] == 'c' && tab[0][1] == 'y' &&
+			cylinder(parse->scene, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	parse->n_objects++;
-	printf(GREEN"%s\n"RESET, line);
+	// printf(GREEN"%s\n"RESET, line);
 	return (free_tab(tab), SUCCESS);
 }
 
@@ -166,9 +170,9 @@ int	main(int ac, char **av)
 {
 	t_scene		*scene;
 	int			fd;
-	t_mat3		i_mat3i;
+	// t_mat3		i_mat3i;
 
-	i_mat3i = mat3(vec3(1., 0., 0.), vec3(0., 1., 0.), vec3(0., 0., 1.));
+	// i_mat3i = mat3(vec3(1., 0., 0.), vec3(0., 1., 0.), vec3(0., 0., 1.));
 	scene = malloc(sizeof(t_scene));
 	scene->cam = malloc(sizeof(t_cam));
 	scene->objects = malloc(sizeof(t_object *) * 4);

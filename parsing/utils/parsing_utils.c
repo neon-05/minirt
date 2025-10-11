@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "utils.h"
 
 int	get_line(char **line, int fd)
 {
