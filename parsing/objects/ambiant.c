@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:08 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 13:43:09 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/12 01:30:50 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	ambiant(t_parse *parse, char **tab, char *line)
 	val->colors = NULL;
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;
+	colors()
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED); //free val
 	parse->ambiant = val;
