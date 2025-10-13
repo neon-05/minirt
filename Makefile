@@ -14,6 +14,7 @@ SRCS = \
 	src/minirt.c \
 	src/vsh.c \
 	src/initialize_structs.c \
+	src/allocs.c \
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

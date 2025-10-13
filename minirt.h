@@ -15,10 +15,9 @@
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
 # define WIN_TITLE "minirt"
-# define RAY_DEPTH_LIMIT 5
-# define RAY_PER_BOUNCE 3
+# define RAY_DEPTH_LIMIT 4
+# define RAY_PER_BOUNCE 4
 # define MAX_RENDER_PASSES 0
-# define LIGHT_ATTENUATION 0.0001
 
 # define KEY_W 119
 # define KEY_A 97
@@ -73,8 +72,6 @@ typedef struct s_material
 	int			emmissive;
 	t_vec4		color;
 	double		roughness;
-	double		refraction_index;
-	double		specularity;
 }	t_material;
 
 typedef struct s_hit_info
@@ -113,10 +110,13 @@ t_object	*object_init(
 		t_hit_info (*ray_func)(t_ray)
 	);
 t_material	material_init(int emmissive, t_vec4 color,
-		double roughness, double refraction_index
-	);
+		double roughness);
 
 double	clamp(double x);
 t_vec3 q_rot(t_vec3 v, t_vec4 q);
+
+void	free_obj_arr(t_object **arr);
+void	free_all(t_scene *scene);
+int	alloc_all(t_scene **scene, int n_obj);
 
 #endif

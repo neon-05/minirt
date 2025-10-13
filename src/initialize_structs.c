@@ -1,16 +1,26 @@
 #include "../minirt.h"
 
 t_material	material_init(int emmissive, t_vec4 color,
-		double roughness, double refraction_index
-	)
+		double roughness)
 {
 	t_material	r;
 
 	r.emmissive = emmissive;
 	r.color = color;
 	r.roughness = roughness;
-	r.refraction_index = refraction_index;
 	return (r);
+}
+
+void	free_obj_arr(t_object **arr)
+{
+	int i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
 
 t_object	*object_init(

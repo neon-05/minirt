@@ -71,11 +71,11 @@ t_vec4	calculate_color_mix(t_scene *scene, t_hit_info hit, t_vec3 hit_direction,
 	spec_dir = vec3_scale(q_rot(hit_direction, vec3to4(hit.normal, 0.)), -1.);
 	do
 	{
-		ray.n_director = vec3_lerp(vec3_normalize(vec3_add(hit.normal, vec3_random_normalized())), spec_dir, hit.object->material.roughness);
+		ray.n_director = vec3_normalize(vec3_lerp(vec3_add(hit.normal, vec3_random_normalized()), spec_dir, hit.object->material.roughness));
 		col = vec4_add(col, get_ray_color(scene, ray, depth - 1));
 	}
-	while (hit.object->material.roughness > .1 && i++ < RAY_PER_BOUNCE);
-	col = vec4_scale(col, 1./RAY_PER_BOUNCE);
+	while (i++ < RAY_PER_BOUNCE && hit.object->material.roughness > .1);
+	col = vec4_scale(col, 1./i);
 	return (vec4_cwmul(col, hit.object->material.color));
 }
 
@@ -173,7 +173,6 @@ t_vec4	get_ray_color(t_scene *scene, t_ray ray, int depth)
 	else
 	{
 		col = calculate_color_mix(scene, hit, ray.n_director, depth);
-		col.w /= hit.distance * LIGHT_ATTENUATION;
 		return (col);
 	}
 }
@@ -184,7 +183,8 @@ void	vertex_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv)
 	t_vec4	col;
 
 	ray.origin = scene->cam->pos;
-	ray.n_director = q_rot(vec3_normalize(vec2to3(uv, scene->cam->fov_dist)), scene->cam->orientation);
-	col = vec4_lerp(*frag_color, get_ray_color(scene, ray, RAY_DEPTH_LIMIT), clamp(frag_color->w));
+	ray.n_director = q_rot(vec2to3(uv, scene->cam->fov_dist), scene->cam->orientation);
+	col = vec4_lerp(*frag_color, get_ray_color(scene, ray, RAY_DEPTH_LIMIT), (double )scene->cam->passes/(scene->cam->passes+1.));
+	//col = get_ray_color(scene, ray, RAY_DEPTH_LIMIT);
 	*frag_color = col;
 }

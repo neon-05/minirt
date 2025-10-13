@@ -285,43 +285,30 @@ int	main(void)
 
 	t_scene	*scene;
 
-	scene = malloc(sizeof(t_scene));
-	scene->cam = malloc(sizeof(t_cam));
-	scene->cam->prev_frame = malloc(sizeof(t_vec4) * WIN_HEIGHT * WIN_WIDTH);
-	scene->objects = malloc(sizeof(t_object *) * 8);
+	if (alloc_all(&scene, 8))
+		return (1);
 
-	scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
-	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), .5, 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
-	scene->objects[2] = object_init(i_mat3i2, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 1., 1.), .5, 1.), vec3(3.,-1.,3.), vec3(-3.,5.,3.), ray_plane);
-	scene->objects[3] = object_init(i_mat3ir, vec3(-3., 0., 0.), material_init(0, vec4(1., .5, .5, 1.), .5, 1.), vec3(-3.,-1.,3.), vec3(-3.,5.,-3.), ray_plane);
-	scene->objects[4] = object_init(i_mat3ig, vec3(3., 0., 0.), material_init(0, vec4(.5, 1., .5, 1.), .5, 1.), vec3(3.,-1.,3.), vec3(3.,5.,-3.), ray_plane);
-	scene->objects[5] = object_init(i_mat3i, vec3(0., 4., 0.), material_init(1, vec4(1., 1., 1., 1.), 0., 1.), vec3(1.,5.,1.), vec3(-1.,3.,-1.), ray_sphere);
-	scene->objects[6] = object_init(i_mat3i, vec3(-1.5, 0., 0.), material_init(0, vec4(1., 1., 1., 1.), 0., 1.), vec3(-.5,1.,1.), vec3(-2.5,-1.,-1.), ray_sphere);
+	scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
+	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
+	scene->objects[2] = object_init(i_mat3i2, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 1., 1.), .5), vec3(3.,-1.,3.), vec3(-3.,5.,3.), ray_plane);
+	scene->objects[3] = object_init(i_mat3ir, vec3(-3., 0., 0.), material_init(0, vec4(1., .5, .5, 1.), .5), vec3(-3.,-1.,3.), vec3(-3.,5.,-3.), ray_plane);
+	scene->objects[4] = object_init(i_mat3ig, vec3(3., 0., 0.), material_init(0, vec4(.5, 1., .5, 1.), .5), vec3(3.,-1.,3.), vec3(3.,5.,-3.), ray_plane);
+	scene->objects[5] = object_init(i_mat3i, vec3(0., 4., 2.), material_init(1, vec4(1., 1., 1., 1.), 0.), vec3(1.,5.,1.), vec3(-1.,3.,3.), ray_sphere);
+	scene->objects[6] = object_init(i_mat3i, vec3(-1.5, 0., 0.), material_init(0, vec4(1., 1., 1., 1.), 0.), vec3(-.5,1.,1.), vec3(-2.5,-1.,-1.), ray_sphere);
 	scene->objects[7] = NULL;
 
+	scene->cam->passes = 0;
 	scene->cam->pos = vec3(0., .5, -5.);
 	scene->cam->orientation = vec4(0., 0., 0., 1.);
 	scene->cam->fov_dist = 1.6;
 	scene->ambient = vec4(0., 0., 0., 0.);
-	printf("cam(%p)\n", scene->cam);
 
 	calculate_inverses(scene->objects);
-	scene->mlx = mlx_init();
-	scene->window = mlx_new_window(scene->mlx, WIN_WIDTH, WIN_HEIGHT, WIN_TITLE);
-	scene->cam->img = mlx_new_image(scene->mlx, WIN_WIDTH, WIN_HEIGHT);
 	mlx_hook(scene->window, DestroyNotify, 0, mlx_loop_end, scene->mlx);
 	mlx_hook(scene->window, KeyPress, KeyPressMask, on_key_press, &scene);
 	mlx_hook(scene->window, KeyRelease, KeyReleaseMask, on_key_rel, &scene);
 	mlx_loop_hook(scene->mlx, render, &scene);
 	mlx_loop(scene->mlx);
-	mlx_destroy_image(scene->mlx, scene->cam->img);
-	mlx_destroy_window(scene->mlx, scene->window);
-	mlx_destroy_display(scene->mlx);
-	free(scene->mlx);
-
-	free(scene->cam->prev_frame);
-	free(scene->cam);
-	free(scene->objects);
-	free(scene);
+	free_all(scene);
 	return 0;
 }
