@@ -8,7 +8,7 @@ DEBUG = -fsanitize=address
 RM = rm -f
 NAME = minirt
 
-LIB = libft/libft.a matft/matft.a mlx_linux/libmlx_Linux.a
+LIB = 42_libft/libft.a 42_matft/matft.a mlx_linux/libmlx_Linux.a
 
 SRCS = \
 	src/minirt.c \
