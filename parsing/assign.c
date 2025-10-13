@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   assign.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
+/*   Updated: 2025/10/13 22:05:03 by malapoug         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 /*
@@ -30,16 +42,26 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 
 	tmp = parse->camera;
 	scene->cam->pos = vec3(tmp->x, tmp->y, tmp->z);
-	scene->cam->orientation = vec4(tmp->aa, tmpy>ab, tmp->ac, 0); // je mets quoi en dernier argument la ??
-	scene->cam->model_view_matrix = NULL; // a faire
+	scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 0); // je mets quoi en dernier argument la ??
+	// scene->cam->model_view_matrix = ; // a faire
 	scene->cam->fov_dist = tmp->fov;
 }
 
 // scene->obj[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), border1, border2, ray_func);
-void	assign_obj(t_scene *scene, t_val *obj, int i)
+int	assign_obj(t_scene *scene, t_val *obj, int i)
 {
-	t_vec3 pos = vec3(obj->x, obj->y, obj->z);
-	t_vec4 rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
+	t_vec3 pos;
+	t_vec4 rgba;
+	
+	scene->objects[i] = malloc(sizeof(t_object));
+	if (!scene->objects[i])
+		return (MALLOC_ERROR);
+
+	pos = vec3(obj->x, obj->y, obj->z);
+	if (obj->type[0] == 'L')
+		rgba = vec4(obj->r, obj->g, obj->b, obj->ratio);
+	else
+		rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
 	// matrix ?
 	// emmissive ?
 	// roughness ?
@@ -48,21 +70,49 @@ void	assign_obj(t_scene *scene, t_val *obj, int i)
 	// border2 ?
 	// ray_func ?
 	
-	scene->obj[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), border1, border2, ray_func);
+	(void)pos;
+	(void)rgba;
+	// scene->objects[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), border1, border2, ray_func);
+	return (SUCCESS);
 }
 
-void	assign(t_scene *scene, t_parse *parse)
+int	ft_lst(t_val *lst)
+{
+	int	count;
+
+	if (!lst)
+		return (0);
+	count = 1;
+	while (lst->next)
+	{
+		count += 1;
+		lst = lst->next;
+	}
+	return (count);
+}
+
+int	assign(t_scene *scene, t_parse *parse)
 {
 	t_val	*tmp;
+	int		i;
 
 	tmp = parse->objects;
+	i = ft_lst(tmp);
+	scene->objects = malloc(sizeof(t_object) * (i + 1));
+	if (!scene->objects)
+		return (MALLOC_ERROR);
+	scene->objects[i + 1] = NULL;
 	assign_cam(scene, parse);
-	scene->ambient = colors(&val, val.ratio);
+	scene->ambient = colors(parse->ambiant, parse->ambiant->ratio);
+	i = 0;
 	while (tmp)
 	{
-		assign_obj(scene, tmp);
+		if (assign_obj(scene, tmp, i) == MALLOC_ERROR)
+			return (MALLOC_ERROR); // free
+		i++;
 		tmp = tmp->next;
 	}
+	return (SUCCESS);
 }
 
 /*

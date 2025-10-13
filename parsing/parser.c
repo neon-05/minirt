@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/12 01:47:56 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/13 22:00:28 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 	if (line)
 		free(line);
 	show_parse(parse);
-	// assign(scene, parse);
+	if (assign(scene, &parse) == MALLOC_ERROR)
+		return (MALLOC_ERROR);
 	return (free_parse(&parse), SUCCESS);
 }
 

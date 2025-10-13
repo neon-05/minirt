@@ -14,6 +14,7 @@ LIB = ../42_libft/libft.a ../42_matft/matft.a
 SRCS = \
 	main.c \
 	parser.c \
+	assign.c \
 	utils/parsing_utils.c \
 	utils/check_once.c \
 	utils/check_others.c \

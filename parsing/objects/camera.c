@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:15 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 13:43:19 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/13 22:08:07 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	camera(t_parse *parse, char **tab, char *line)
 	val->colors = NULL;
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;
+	val->next = NULL;
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
 	if (!is_number(tab[3]))
