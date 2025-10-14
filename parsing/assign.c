@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/13 22:05:03 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/14 01:59:33 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,53 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 	scene->cam->fov_dist = tmp->fov;
 }
 
+
+
+
+
+
+
+t_hit_info	ray_sphere(t_ray ray)
+{
+	t_hit_info	ret;
+	double	d1;
+	double	d2;
+	t_vec3	p2;
+
+	d1 = -vec3_dot(ray.n_director, ray.origin);
+	p2 = vec3_add(ray.origin, vec3_scale(ray.n_director, d1));
+	d2 = vec3_dot(p2, p2);
+	if (d2 > 1.)
+		ret.distance = -1.;
+	else
+		ret.distance = d1 - sqrt(1. - d2);
+	if (ret.distance > 0.)
+	{
+		ret.point = vec3_add(ray.origin, vec3_scale(ray.n_director, ret.distance));
+		ret.normal = ret.point;
+	}
+	return (ret);
+}
+
+
+
+
+
+
+
+
+
+
 // scene->obj[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), border1, border2, ray_func);
 int	assign_obj(t_scene *scene, t_val *obj, int i)
 {
 	t_vec3 pos;
 	t_vec4 rgba;
+	t_mat3	i_mat3i = mat3(
+		vec3(1., 0., 0.),
+		vec3(0., 1., 0.),
+		vec3(0., 0., 1.)
+	);
 	
 	scene->objects[i] = malloc(sizeof(t_object));
 	if (!scene->objects[i])
@@ -70,8 +112,7 @@ int	assign_obj(t_scene *scene, t_val *obj, int i)
 	// border2 ?
 	// ray_func ?
 	
-	(void)pos;
-	(void)rgba;
+	scene->objects[i] = object_init(i_mat3i, pos, material_init(1, rgba, 0.5, 0.5), vec3(100, 100, 100), vec3(100, 100, 100), ray_sphere);//change ray_func
 	// scene->objects[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), border1, border2, ray_func);
 	return (SUCCESS);
 }

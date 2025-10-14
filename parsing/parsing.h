@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/13 22:00:55 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/14 01:58:47 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,6 @@ void	show_parse(t_parse parse);
 
 //============(TO DELETE)================//
 t_material	material_init(int emmissive, t_vec4 color, double roughness, double refraction_index);
-t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, t_hit_info (*ray_func)(t_ray));
+t_object	*object_init(t_mat3 trans_matrix, t_vec3 offset, t_material material, t_vec3 b1, t_vec3 b2, t_hit_info (*ray_func)(t_ray));
 
 #endif
