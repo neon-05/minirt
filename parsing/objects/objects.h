@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/11 20:38:10 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/14 15:39:12 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define OBJECTS_H
 
 //====================(INCLUDES)============================//
+# include <matft.h>
 # include "../parsing.h"
 # include "../colors.h"
 
@@ -92,5 +93,11 @@ int		plane(t_parse *parse, char **tab, char *line);
 
 //cylinder
 int		cylinder(t_parse *parse, char **tab, char *line);
+
+//boundings
+t_vec3	bbox_min_cylinder(t_val val);
+t_vec3	bbox_max_cylinder(t_val val);
+t_vec3	bbox_min_sphere(t_val val);
+t_vec3	bbox_max_sphere(t_val val);
 
 #endif

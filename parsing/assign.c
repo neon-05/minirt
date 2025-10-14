@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/14 01:59:33 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/14 16:05:45 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,44 +47,7 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 	scene->cam->fov_dist = tmp->fov;
 }
 
-
-
-
-
-
-
-t_hit_info	ray_sphere(t_ray ray)
-{
-	t_hit_info	ret;
-	double	d1;
-	double	d2;
-	t_vec3	p2;
-
-	d1 = -vec3_dot(ray.n_director, ray.origin);
-	p2 = vec3_add(ray.origin, vec3_scale(ray.n_director, d1));
-	d2 = vec3_dot(p2, p2);
-	if (d2 > 1.)
-		ret.distance = -1.;
-	else
-		ret.distance = d1 - sqrt(1. - d2);
-	if (ret.distance > 0.)
-	{
-		ret.point = vec3_add(ray.origin, vec3_scale(ray.n_director, ret.distance));
-		ret.normal = ret.point;
-	}
-	return (ret);
-}
-
-
-
-
-
-
-
-
-
-
-// scene->obj[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), border1, border2, ray_func);
+// scene->obj[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), bounding 1, bounding 2, ray_func);
 int	assign_obj(t_scene *scene, t_val *obj, int i)
 {
 	t_vec3 pos;
@@ -100,20 +63,32 @@ int	assign_obj(t_scene *scene, t_val *obj, int i)
 		return (MALLOC_ERROR);
 
 	pos = vec3(obj->x, obj->y, obj->z);
-	if (obj->type[0] == 'L')
+	if (obj->type[0] == 'L' || (obj->type[0] == 'S' && obj->type[1] == 'p'))
+	{
 		rgba = vec4(obj->r, obj->g, obj->b, obj->ratio);
-	else
+		scene->objects[i] = object_init(i_mat3i, pos, material_init(1, rgba, 0.5, 0.5), bbox_min_sphere(*obj), bbox_max_sphere(*obj), ray_sphere);
+	}
+//	else if (obj->type[0] == 'C' && obj->type[0] == 'y' )
+//	{
+//		rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
+//		scene->objects[i] = object_init(i_mat3i, pos, material_init(1, rgba, 0.5, 0.5), bbox_min_cylinder(*obj), bbox_max_cylinder(*obj),  ray_cylinder);
+//	}
+	else if (obj->type[0] == 'P' && obj->type[0] == 'l' )
+	{
 		rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
+		scene->objects[i] = object_init(i_mat3i, pos, material_init(1, rgba, 0.5, 0.5), vec3(1,1,1), vec3(1,1,1),  ray_plane);
+	}
+	else
+		return (printf("WTF is that? %s", obj->type), SKIPPED);
 	// matrix ?
 	// emmissive ?
 	// roughness ?
 	// refraction_index ?
-	// border1 ?
-	// border2 ?
+	// bounding 1 ?
+	// bounding 2 ?
 	// ray_func ?
 	
-	scene->objects[i] = object_init(i_mat3i, pos, material_init(1, rgba, 0.5, 0.5), vec3(100, 100, 100), vec3(100, 100, 100), ray_sphere);//change ray_func
-	// scene->objects[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), border1, border2, ray_func);
+	// scene->objects[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), bounding 1, bounding 2, ray_func);
 	return (SUCCESS);
 }
 
