@@ -15,6 +15,7 @@ SRCS = \
 	src/vsh.c \
 	src/initialize_structs.c \
 	src/allocs.c \
+	src/ray_dist_functions.c \
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

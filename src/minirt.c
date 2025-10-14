@@ -1,61 +1,5 @@
 #include "../minirt.h"
 
-t_hit_info	ray_plane_bound(t_ray ray)
-{
-	t_hit_info	ret;
-
-	ret.normal = vec3(0., 1., 0.);
-	if (ray.n_director.y < 0.)
-	{
-		ret.distance = -(ray.origin.y) / ray.n_director.y;
-		if (ret.distance > 0.)
-			ret.point = vec3_add(ray.origin, vec3_scale(ray.n_director, ret.distance));
-	}
-	else
-		ret.distance = -1.;
-	if (fabs(ret.point.x) > 1. || fabs(ret.point.z) > 1.)
-		ret.distance = -1.;
-	return (ret);
-}
-
-t_hit_info	ray_plane(t_ray ray)
-{
-	t_hit_info	ret;
-
-	ret.normal = vec3(0., 1., 0.);
-	if (ray.n_director.y < 0.)
-	{
-		ret.distance = -(ray.origin.y) / ray.n_director.y;
-		if (ret.distance > 0.)
-			ret.point = vec3_add(ray.origin, vec3_scale(ray.n_director, ret.distance));
-	}
-	else
-		ret.distance = -1.;
-	return (ret);
-}
-
-t_hit_info	ray_sphere(t_ray ray)
-{
-	t_hit_info	ret;
-	double	d1;
-	double	d2;
-	t_vec3	p2;
-
-	d1 = -vec3_dot(ray.n_director, ray.origin);
-	p2 = vec3_add(ray.origin, vec3_scale(ray.n_director, d1));
-	d2 = vec3_dot(p2, p2);
-	if (d2 > 1.)
-		ret.distance = -1.;
-	else
-		ret.distance = d1 - sqrt(1. - d2);
-	if (ret.distance > 0.)
-	{
-		ret.point = vec3_add(ray.origin, vec3_scale(ray.n_director, ret.distance));
-		ret.normal = ret.point;
-	}
-	return (ret);
-}
-
 double	clamp(double x)
 {
 	if (x > 1.)
@@ -167,7 +111,29 @@ double	mat3_det(t_mat3 m)
 
 t_mat3	mat3_inverse(t_mat3 m)
 {
-	return (mat3_scale(mat3_trans(m), 1./mat3_det(m)));
+	double	d;
+	t_mat3	m2;
+
+	d = mat3_det(m);
+
+	/*
+	a = m.l1.x
+	b = m.l1.y
+	c = m.l1.z
+	d = m.l2.x
+	e = m.l2.y
+	f = m.l2.z
+	g = m.l3.x
+	h = m.l3.y
+	i = m.l3.z
+	*/
+	m2 = mat3(
+		vec3(m.l2.y * m.l3.z - m.l2.z * m.l3.y, m.l1.z * m.l3.y - m.l1.y * m.l3.z, m.l1.y * m.l2.z - m.l1.z * m.l2.y),
+		vec3(m.l2.z * m.l3.x - m.l2.x * m.l3.z, m.l1.x * m.l3.z - m.l1.z * m.l3.x, m.l1.z * m.l2.x - m.l1.x * m.l2.z),
+		vec3(m.l2.x * m.l3.y - m.l2.y * m.l3.x, m.l1.y * m.l3.x - m.l1.x * m.l3.y, m.l1.x * m.l2.y - m.l1.y * m.l2.x)
+	);
+
+	return (mat3_scale(m2, 1./d));
 }
 
 t_vec3 q_rot(t_vec3 v, t_vec4 q)
@@ -267,19 +233,19 @@ int	main(void)
 
 	t_mat3	i_mat3i2 = mat3(
 			vec3(1., 0., 0.),
-			vec3(0., 0., 1.),
-			vec3(0., -1., 0.)
+			vec3(0., 0., -1.),
+			vec3(0., 1., 0.)
 		);
 
 	t_mat3	i_mat3ir = mat3(
-			vec3(0., 1., 0.),
-			vec3(-1., 0., 0.),
+			vec3(0., -1., 0.),
+			vec3(1., 0., 0.),
 			vec3(0., 0., 1.)
 		);
 
 	t_mat3	i_mat3ig = mat3(
-			vec3(0., -1., 0.),
-			vec3(1., 0., 0.),
+			vec3(0., 1., 0.),
+			vec3(-1., 0., 0.),
 			vec3(0., 0., 1.)
 		);
 
@@ -288,7 +254,7 @@ int	main(void)
 	if (alloc_all(&scene, 8))
 		return (1);
 
-	scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
+	scene->objects[0] = object_init(mat3_scale(i_mat3i, 30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
 	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
 	scene->objects[2] = object_init(i_mat3i2, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 1., 1.), .5), vec3(3.,-1.,3.), vec3(-3.,5.,3.), ray_plane);
 	scene->objects[3] = object_init(i_mat3ir, vec3(-3., 0., 0.), material_init(0, vec4(1., .5, .5, 1.), .5), vec3(-3.,-1.,3.), vec3(-3.,5.,-3.), ray_plane);
@@ -298,7 +264,7 @@ int	main(void)
 	scene->objects[7] = NULL;
 
 	scene->cam->passes = 0;
-	scene->cam->pos = vec3(0., .5, -5.);
+	scene->cam->pos = vec3(0., 1.5, -5.);
 	scene->cam->orientation = vec4(0., 0., 0., 1.);
 	scene->cam->fov_dist = 1.6;
 	scene->ambient = vec4(0., 0., 0., 0.);

@@ -8,12 +8,12 @@ static void	replace_hit_info(t_object *obj, t_hit_info *cur_hit, t_ray ray)
 	t_hit_info	tmp_hit_info;
 	t_ray		new_ray;
 
-	new_ray.origin = mat3_mul_vec3(obj->trans_matrix, vec3_sub(ray.origin, obj->offset));
-	new_ray.n_director = vec3_normalize(mat3_mul_vec3(obj->trans_matrix, ray.n_director));
+	new_ray.origin = mat3_mul_vec3(obj->_inv_trans_matrix, vec3_sub(ray.origin, obj->offset));
+	new_ray.n_director = vec3_normalize(mat3_mul_vec3(obj->_inv_trans_matrix, ray.n_director));
 	tmp_hit_info = obj->ray_func(new_ray);
 	if (0. < tmp_hit_info.distance)
 	{
-		hit_info.point = vec3_add(mat3_mul_vec3(obj->_inv_trans_matrix, tmp_hit_info.point), obj->offset);
+		hit_info.point = vec3_add(mat3_mul_vec3(obj->trans_matrix, tmp_hit_info.point), obj->offset);
 		hit_info.distance = vec3_distance(ray.origin, hit_info.point);
 		if (cur_hit->distance <= 0. || hit_info.distance < cur_hit->distance)
 		{
@@ -39,7 +39,7 @@ static t_hit_info	calculate_ray(t_scene *scene, t_ray ray)
 		i++;
 	}
 	if (hit_info.object)
-		hit_info.normal = vec3_normalize(mat3_mul_vec3(hit_info.object->trans_matrix, hit_info.normal));
+		hit_info.normal = vec3_normalize(mat3_mul_vec3(hit_info.object->_inv_trans_matrix, hit_info.normal));
 	return (hit_info);
 }
 
@@ -74,8 +74,9 @@ t_vec4	calculate_color_mix(t_scene *scene, t_hit_info hit, t_vec3 hit_direction,
 		ray.n_director = vec3_normalize(vec3_lerp(vec3_add(hit.normal, vec3_random_normalized()), spec_dir, hit.object->material.roughness));
 		col = vec4_add(col, get_ray_color(scene, ray, depth - 1));
 	}
-	while (i++ < RAY_PER_BOUNCE && hit.object->material.roughness > .1);
-	col = vec4_scale(col, 1./i);
+	while (i++ < RAY_PER_BOUNCE >> (RAY_DEPTH_LIMIT - depth) && hit.object->material.roughness > .1);
+	if (i > 0)
+		col = vec4_scale(col, 1./i);
 	return (vec4_cwmul(col, hit.object->material.color));
 }
 

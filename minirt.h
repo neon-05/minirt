@@ -16,7 +16,7 @@
 # define WIN_HEIGHT 720
 # define WIN_TITLE "minirt"
 # define RAY_DEPTH_LIMIT 4
-# define RAY_PER_BOUNCE 4
+# define RAY_PER_BOUNCE 6
 # define MAX_RENDER_PASSES 0
 
 # define KEY_W 119
@@ -118,5 +118,11 @@ t_vec3 q_rot(t_vec3 v, t_vec4 q);
 void	free_obj_arr(t_object **arr);
 void	free_all(t_scene *scene);
 int	alloc_all(t_scene **scene, int n_obj);
+
+// ray_dist_functions.c
+t_hit_info	ray_plane(t_ray ray);
+t_hit_info	ray_plane_bound(t_ray ray);
+t_hit_info	ray_sphere(t_ray ray);
+t_hit_info	ray_cylinder_bound(t_ray ray);
 
 #endif
