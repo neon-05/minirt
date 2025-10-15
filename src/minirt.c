@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
-/*   Updated: 2025/10/15 23:05:26 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/15 23:13:26 by malapoug         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -315,10 +315,10 @@ int	main(void)
 //	scene->objects[7] = NULL;
 
 	scene->cam->passes = 0;
-	scene->cam->pos = vec3(0., 0., -5.);
-	scene->cam->orientation = vec4(0., 0., 0., 1.);
-	scene->cam->fov_dist = 1.6;
-	scene->ambient = vec4(0., 0., 0., 0.);
+//	scene->cam->pos = vec3(0., 0., -5.);
+//	scene->cam->orientation = vec4(0., 0., 0., 1.);
+//	scene->cam->fov_dist = 1.6;
+//	scene->ambient = vec4(0., 0., 0., 0.);
 
 	calculate_inverses(scene->objects);
 	mlx_hook(scene->window, DestroyNotify, 0, mlx_loop_end, scene->mlx);

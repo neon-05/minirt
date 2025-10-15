@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/15 23:04:16 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/16 00:56:01 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,13 @@ int	get_data(t_parse *parse, char *line)
 	tab = split_ispace(line);
 	if (!tab)
 		return (MALLOC_ERROR);
+	if (!tab[0])
+		return (SUCCESS);
 	if (!(arr_size(tab) >= 3 && arr_size(tab) <= 6))
 		return (free_tab(tab), SUCCESS);
 	if (ft_strlen(tab[0]) == 1 && ft_strchr(SET, tab[0][0]))
 		return (once_objects(parse, tab, line));
-	else if (ft_strlen(tab[0]) == 2 && tab[0][0] == '/' && tab[0][1] == '/')
+	else if (ft_strlen(tab[0]) == 1 && tab[0][0] == '#')
 		return (free_tab(tab), SUCCESS);
 	else if (ft_strlen(tab[0]) == 2)
 		return (others_objects(parse, tab, line));
@@ -92,11 +94,11 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 	while (get_line(&line, fd))
 	{
 		status = get_data(&parse, line);
-		free(line);
+		line = NULL;
 		if (status == MALLOC_ERROR)
-			return (free_parse(&parse), MALLOC_ERROR);
+			return (MALLOC_ERROR);
 		else if (status == SKIPPED)
-			return (free_parse(&parse), SKIPPED);
+			return (SKIPPED);
 	}
 	if (line)
 		free(line);
