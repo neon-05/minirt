@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
-/*   Updated: 2025/10/15 22:48:43 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/15 23:05:26 by malapoug         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -280,29 +280,30 @@ int	main(void)
 			vec3(0., 0., 1.)
 		);*/
 	t_scene	*scene;
-	int		err;
+//	int		err;
 
 	if (alloc_all(&scene, 8))
 		return (1);
 	//scene->objects[0] = object_init((t_object) {.bounding_volume = {.corner1 = vec3(1.,1.,1.), .corner2 = vec3(-1.,-1.,-1.)}, .trans_matrix = i_mat3i, .offset = vec3(0. ,0., 0.), .material = material_init(1, vec4(1., 1., 1., 1.), 0.), .ray_func = ray_sphere});
-	err = 0;
-	err |= new_obj("sp", (double[]){0., 0., 0., 1.}, scene->objects, 8) == -1;
-	err |= new_obj("pl", (double[]){0., 0., 0., sqrt(2), 0., -sqrt(2)}, scene->objects, 8) == -1;
-	err |= new_obj("cy", (double[]){0., 2., 0., 0., 1., 0., 1., 1.}, scene->objects, 8) == -1;
-	if (err)
-	{
-		free_all(scene);
-		return (1);
-	}
+//	err = 0;
+//	err |= new_obj("sp", (double[]){0., 0., 0., 1.}, scene->objects, 8) == -1;
+//	err |= new_obj("pl", (double[]){0., 0., 0., sqrt(2), 0., -sqrt(2)}, scene->objects, 8) == -1;
+//	err |= new_obj("cy", (double[]){0., 2., 0., 0., 1., 0., 1., 1.}, scene->objects, 8) == -1;
+//	if (err)
+//	{
+//		free_all(scene);
+//		return (1);
+//	}
 	
 
-//	int fd;
-//	fd = open("./config.rt", O_RDONLY);
-//	if (fd < 0)
-//			fd = open("parsing/config.rt", O_RDONLY);
-//	if (fd < 0)
-//			return (MALLOC_ERROR);
-//	parse(scene, fd);
+	int fd;
+	fd = open("./config.rt", O_RDONLY);
+	if (fd < 0)
+			fd = open("parsing/config.rt", O_RDONLY);
+	if (fd < 0)
+			return (MALLOC_ERROR);
+	if (parse(scene, fd) != SUCCESS)
+		return 1;
 /*
 	scene->objects[0] = object_init(mat3_scale(i_mat3i, 30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
 	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);

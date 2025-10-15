@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/13 22:00:28 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/15 23:04:16 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	get_data(t_parse *parse, char *line)
 		return (MALLOC_ERROR);
 	if (!(arr_size(tab) >= 3 && arr_size(tab) <= 6))
 		return (free_tab(tab), SUCCESS);
-	if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
+	if (ft_strlen(tab[0]) == 1 && ft_strchr(SET, tab[0][0]))
 		return (once_objects(parse, tab, line));
 	else if (ft_strlen(tab[0]) == 2 && tab[0][0] == '/' && tab[0][1] == '/')
 		return (free_tab(tab), SUCCESS);
@@ -100,6 +100,8 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 	}
 	if (line)
 		free(line);
+	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0]) || !ft_strchr(SET, parse.once[1]) || !ft_strchr(SET, parse.once[2]))
+		return (SKIPPED);
 	show_parse(parse);
 	if (assign(scene, &parse) == MALLOC_ERROR)
 		return (MALLOC_ERROR);
