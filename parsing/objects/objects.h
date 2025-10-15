@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/14 15:39:12 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/14 22:57:02 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,54 +26,16 @@
 # define OPEN_ERROR -1
 
 //====================(STRUCTS)=============================//
+typedef struct s_cam		t_cam;
+typedef struct s_scene		t_scene;
+typedef struct s_ray		t_ray;
+typedef struct s_material	t_material;
+typedef struct s_hit_info	t_hit_info;
+typedef struct s_object		t_object;
+typedef struct s_bound_vol	t_bound_vol;
+
 typedef struct s_parse	t_parse;
 typedef struct s_val	t_val;
-
-typedef struct s_parse
-{
-	int				n_objects;
-	char			*once;
-	t_scene			*scene;
-
-	t_val			*camera;
-	t_val			*ambiant;
-	t_val			*light;
-
-	t_val			*objects;
-	unsigned int	last;
-}	t_parse;
-
-typedef struct s_val
-{
-	char			*type;
-
-	char			**tab;
-	char			*error;
-
-	double			ratio;
-	char			**colors;
-	double			r;
-	double			g;
-	double			b;
-
-	char			**xyz;
-	char			**orient;
-	double			teta;
-	double			x;
-	double			y;
-	double			z;
-	double			aa;
-	double			ab;
-	double			ac;
-	double			fov;
-
-	double			diametre;
-
-	double			height;
-
-	t_val			*next;
-
-}	t_val;
 
 //====================(DECLARATIONS)========================//
 //ambiant
