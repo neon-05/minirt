@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialize_structs.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/15 16:38:09 by ylabussi          #+#    #+#             */
+/*   Updated: 2025/10/15 17:33:50 by ylabussi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minirt.h"
 
 t_material	material_init(int emmissive, t_vec4 color,
@@ -13,7 +25,7 @@ t_material	material_init(int emmissive, t_vec4 color,
 
 void	free_obj_arr(t_object **arr)
 {
-	int i;
+	int	i;
 
 	if (!arr)
 		return ;
@@ -23,20 +35,20 @@ void	free_obj_arr(t_object **arr)
 	free(arr);
 }
 
-t_object	*object_init(
-		t_mat3 trans_matrix, t_vec3 offset,
-		t_material material, t_vec3 b1, t_vec3 b2,
-		t_hit_info (*ray_func)(t_ray)
-	)
+t_object	*object_init(t_object o)
 {
 	t_object	*obj;
 
 	obj = malloc(sizeof(t_object));
+	if (!obj)
+		return NULL;
+	*obj = o;
+	/*
 	obj->trans_matrix = trans_matrix;
 	obj->offset = offset;
 	obj->material = material;
 	obj->ray_func = ray_func;
-	obj->bounding_volume.corner1=b1;
-	obj->bounding_volume.corner2=b2;
+	obj->bounding_volume.corner1 = b1;
+	obj->bounding_volume.corner2 = b2;*/
 	return (obj);
 }
