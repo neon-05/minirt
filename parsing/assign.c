@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/15 03:51:29 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/15 19:14:05 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,31 +61,26 @@ int	assign_obj(t_scene *scene, t_val *obj, int i)
 	pos = vec3(obj->x, obj->y, obj->z);
 	if (obj->type[0] == 'L' || (obj->type[0] == 'S' && obj->type[1] == 'p'))
 	{
-		int emissive = 1;// (obj->type[0] == 'L');
 		rgba = vec4(obj->r, obj->g, obj->b, 1);
-		scene->objects[i] = object_init(i_mat3i, pos, material_init(emissive, rgba, 0.5), bbox_min_sphere(*obj), bbox_max_sphere(*obj), ray_sphere);
+		scene->objects[i] = object_init(i_mat3i, pos, material_init((obj->type[0] == 'L'), rgba, .5), bbox_min_sphere(*obj), bbox_max_sphere(*obj), ray_sphere);
 	}
 //	else if (obj->type[0] == 'C' && obj->type[0] == 'y' )
 //	{
 //		rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
-//		scene->objects[i] = object_init(i_mat3i, pos, material_init(1, rgba, 0.5), bbox_min_cylinder(*obj), bbox_max_cylinder(*obj),  ray_cylinder);
+//		scene->objects[i] = object_init(i_mat3i, pos, material_init(0, rgba, 0.5), bbox_min_cylinder(*obj), bbox_max_cylinder(*obj),  ray_cylinder);
 //	}
 	else if (obj->type[0] == 'P' && obj->type[1] == 'l' )
 	{
 		rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
-		scene->objects[i] = object_init(i_mat3i, pos, material_init(1, rgba, 0.5), vec3(-11, -11, -11), vec3(11, 11, 11),  ray_plane);
+		scene->objects[i] = object_init(i_mat3i, pos, material_init(0, rgba, 0.5), vec3(-11, -11, -11), vec3(11, 11, 11),  ray_plane);
 	}
 	else
 		return (printf("WTF is that? %s", obj->type), SKIPPED);
 	// matrix ?
-	// emmissive ?
-	// roughness ?
-	// refraction_index ?
-	// bounding 1 ?
-	// bounding 2 ?
 	// ray_func ?
+	// je definis comment l'emmissive ptnnnnn
 	
-	// scene->objects[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), bounding 1, bounding 2, ray_func);
+	// scene->objects[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness), bounding 1, bounding 2, ray_func);
 	return (SUCCESS);
 }
 
@@ -138,29 +133,15 @@ int	assign(t_scene *scene, t_parse *parse)
 		);
 
 
-
-	scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
-	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
-	scene->objects[2] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 1., 1.), .5), vec3(3.,-1.,3.), vec3(-3.,5.,3.), ray_plane);
-	scene->objects[3] = object_init(i_mat3i, vec3(-3., 0., 0.), material_init(0, vec4(1., .5, .5, 1.), .5), vec3(-3.,-1.,3.), vec3(-3.,5.,-3.), ray_plane);
-	scene->objects[4] = object_init(i_mat3i, vec3(3., 0., 0.), material_init(0, vec4(.5, 1., .5, 1.), .5), vec3(3.,-1.,3.), vec3(3.,5.,-3.), ray_plane);
-	scene->objects[5] = object_init(i_mat3i, vec3(0., 4., 2.), material_init(1, vec4(1., 1., 1., 1.), 0.), vec3(1.,5.,1.), vec3(-1.,3.,3.), ray_sphere);
-	scene->objects[6] = object_init(i_mat3i, vec3(-1.5, 0., 0.), material_init(0, vec4(1., 1., 1., 1.), 0.), vec3(-.5,1.,1.), vec3(-2.5,-1.,-1.), ray_sphere);
-	scene->objects[7] = NULL;
-
-	scene->cam->passes = 0;
-	scene->cam->pos = vec3(0., .5, -5.);
-	scene->cam->orientation = vec4(0., 0., 0., 1.);
-	scene->cam->fov_dist = 1.6;
-	scene->ambient = vec4(0., 0., 0., 0.);
-
+//	scene->objects[0] = object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
+//	scene->objects[1] = object_init(i_mat3i, vec3(-1.5, 0., 0.), material_init(0, vec4(1., 1., 1., 1.), 0.), vec3(-.5,1.,1.), vec3(-2.5,-1.,-1.), ray_sphere);
+//	scene->objects[2] = object_init(i_mat3i, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 1., 1.), .5), vec3(3.,-1.,3.), vec3(-3.,5.,3.), ray_plane);
+//	scene->objects[3] = object_init(i_mat3i, vec3(-3., 0., 0.), material_init(0, vec4(1., .5, .5, 1.), .5), vec3(-3.,-1.,3.), vec3(-3.,5.,-3.), ray_plane);
+//	scene->objects[4] = object_init(i_mat3i, vec3(3., 0., 0.), material_init(0, vec4(.5, 1., .5, 1.), .5), vec3(3.,-1.,3.), vec3(3.,5.,-3.), ray_plane);
+//	scene->objects[5] = object_init(i_mat3i, vec3(0., 4., 2.), material_init(1, vec4(1., 1., 1., 1.), 0.), vec3(1.,5.,1.), vec3(-1.,3.,3.), ray_sphere);
+//	scene->objects[6] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
+//	scene->objects[7] = NULL;
+(void)i_mat3i;
 
 	return (SUCCESS);
 }
-
-/*
-
-scene->objects[4] = object_init(i_mat3ig, vec3(3., 0., 0.), material_init(0, vec4(.5, 1., .5, 1.), .5, 1.), vec3(3.,-1.,3.), vec3(3.,5.,-3.), ray_plane);
-scene->objects[5] = object_init(i_mat3i, vec3(0., 4., 0.), material_init(1, vec4(1., 1., 1., 1.), 0., 1.), vec3(1.,5.,1.), vec3(-1.,3.,-1.), ray_sphere);
-
-*/

@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:56 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 13:24:13 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/15 18:31:40 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,23 @@ double	atod(const char *s)// a bosseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer
 	n = 0;
 	frac = 0;
 	sign = 1;
+	power = 0.1;
 	if (!s)
 		return (0);
+	while (*s == ' ' || (*s >= 9 && *s <= 13))
+		s++;
+	if (*s == '-' || *s == '+')
+	{
+		if (*s == '-')
+			sign = -1;
+		s++;
+	}
 	n = ft_atoi(s);
 	while (*s && *s != '.')
 		s++;
 	if (*s == '.')
 	{
 		s++;
-		power = 0.1;
 		while (ft_isdigit(*s))
 		{
 			frac += (*s - '0') * power;

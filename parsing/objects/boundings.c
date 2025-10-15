@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 15:20:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/15 03:22:11 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/15 18:56:08 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ t_vec3	bbox_max_cylinder(t_val val)
 
 t_vec3	bbox_min_sphere(t_val val)
 {
-	return (vec3(val.x - val.diametre / 2, val.y - val.diametre / 2, val.z - val.diametre / 2));
+	return (vec3(val.x - val.diametre, val.y - val.diametre, val.z - val.diametre));
+	//return (vec3(val.x - val.diametre / 2, val.y - val.diametre / 2, val.z - val.diametre / 2));
 }
 
 t_vec3	bbox_max_sphere(t_val val)
 {
-	return (vec3(val.x + val.diametre / 2, val.y + val.diametre / 2, val.z + val.diametre / 2));
+	return (vec3(val.x + val.diametre, val.y + val.diametre, val.z + val.diametre));
+	//return (vec3(val.x + val.diametre / 2, val.y + val.diametre / 2, val.z + val.diametre / 2));
 }
