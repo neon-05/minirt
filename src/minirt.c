@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+/*																			*/
+/*														:::	  ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/15 16:38:16 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/15 18:59:07 by ylabussi         ###   ########.fr       */
-/*                                                                            */
+/*													+:+ +:+		 +:+	 */
+/*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
+/*   Updated: 2025/10/15 19:29:28 by malapoug         ###   ########.fr       */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../minirt.h"
@@ -295,6 +295,15 @@ int	main(void)
 		return (1);
 	}
 	
+
+//	int fd;
+//	fd = open("./config.rt", O_RDONLY);
+//	if (fd < 0)
+//			fd = open("parsing/config.rt", O_RDONLY);
+//	if (fd < 0)
+//			return (MALLOC_ERROR);
+//	parse(scene, fd);
+
 
 /*
 	scene->objects[0] = object_init(mat3_scale(i_mat3i, 30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);

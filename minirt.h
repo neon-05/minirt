@@ -7,6 +7,7 @@
 # include <libft.h>
 # include <mlx.h>
 # include <mlx_int.h>
+# include "parsing/parsing.h"
 
 //====================(DEFINES)=============================//
 
