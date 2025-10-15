@@ -112,4 +112,6 @@ t_hit_info	ray_plane_bound(t_ray ray);
 t_hit_info	ray_sphere(t_ray ray);
 t_hit_info	ray_cylinder_bound(t_ray ray);
 
+
+int	new_obj(const char *id, double *params, t_object **objs, int max_obj);
 #endif
