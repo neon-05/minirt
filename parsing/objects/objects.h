@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/14 22:57:02 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/20 19:34:43 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,8 @@ t_vec3	bbox_min_cylinder(t_val val);
 t_vec3	bbox_max_cylinder(t_val val);
 t_vec3	bbox_min_sphere(t_val val);
 t_vec3	bbox_max_sphere(t_val val);
+
+//added
+int	added(t_parse *parse, char **tab, char *line);
 
 #endif

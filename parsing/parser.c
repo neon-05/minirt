@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/20 18:52:39 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/20 20:20:40 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	get_data(t_parse *parse, char *line)
 		return (MALLOC_ERROR);
 	if (tab[0] && tab[0][0] == '#')
 		return (free_tab(tab), SUCCESS);
-	if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
+	if (tab[0] && tab[0][0] == '+')  //added
+		return (added(parse, tab, line));  //added
+	else if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
 		return (once_objects(parse, tab, line));
 	else if (ft_strlen(tab[0]) == 2)
 		return (others_objects(parse, tab, line));
