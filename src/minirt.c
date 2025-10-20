@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
-/*   Updated: 2025/10/15 19:29:28 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:49:01 by malapoug         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	calculate_inverses(t_object **objs)
 	}
 }
 
-static int	new_sphere(double params[4], t_object **objs, int max_obj)
+static int	new_sphere(double params[7], t_object **objs, int max_obj)
 {
 	t_object	o;
 	int			i;
@@ -188,11 +188,12 @@ static int	new_sphere(double params[4], t_object **objs, int max_obj)
 	while (objs[i] && i < max_obj - 1)
 		i++;
 	objs[i] = object_init(o);
+	objs[i]->material.color = vec4(params[4], params[5], params[6], 1.);
 	objs[i + 1] = NULL;
 	return (i);
 }
 
-static int	new_plane(double params[6], t_object **objs, int max_obj)
+static int	new_plane(double params[9], t_object **objs, int max_obj)
 {
 	t_object	o;
 	int			i;
@@ -217,11 +218,12 @@ static int	new_plane(double params[6], t_object **objs, int max_obj)
 	while (objs[i] && i < max_obj - 1)
 		i++;
 	objs[i] = object_init(o);
+	objs[i]->material.color = vec4(params[6], params[7], params[8], 1.);
 	objs[i + 1] = NULL;
 	return (i);
 }
 
-static int	new_cyl(double params[8], t_object **objs, int max_obj)
+static int	new_cyl(double params[11], t_object **objs, int max_obj)
 {
 	int		i;
 	t_mat3	m;
@@ -236,7 +238,7 @@ static int	new_cyl(double params[8], t_object **objs, int max_obj)
 		return (i);
 	objs[i]->trans_matrix = mat3_mul(m, objs[i]->trans_matrix);
 	objs[i]->ray_func = ray_cylinder_bound;
-	objs[i]->material.color = vec4(.5, .5, 1., 1.);
+	objs[i]->material.color = vec4(params[8], params[9], params[10], 1.);
 	return (i);
 }
 
@@ -280,31 +282,30 @@ int	main(void)
 			vec3(0., 0., 1.)
 		);*/
 	t_scene	*scene;
-	int		err;
+//	int		err;
 
 	if (alloc_all(&scene, 8))
 		return (1);
 	//scene->objects[0] = object_init((t_object) {.bounding_volume = {.corner1 = vec3(1.,1.,1.), .corner2 = vec3(-1.,-1.,-1.)}, .trans_matrix = i_mat3i, .offset = vec3(0. ,0., 0.), .material = material_init(1, vec4(1., 1., 1., 1.), 0.), .ray_func = ray_sphere});
-	err = 0;
-	err |= new_obj("sp", (double[]){0., 0., 0., 1.}, scene->objects, 8) == -1;
-	err |= new_obj("pl", (double[]){0., 0., 0., sqrt(2.), 0., -sqrt(2.)}, scene->objects, 8) == -1;
-	err |= new_obj("cy", (double[]){0., 2., 0., 0., 1., 0., 1., 1.}, scene->objects, 8) == -1;
-	if (err)
-	{
-		free_all(scene);
-		return (1);
-	}
+//	err = 0;
+//	err |= new_obj("sp", (double[]){0., 0., 0., 1.}, scene->objects, 8) == -1;
+//	err |= new_obj("pl", (double[]){0., 0., 0., sqrt(2), 0., -sqrt(2)}, scene->objects, 8) == -1;
+//	err |= new_obj("cy", (double[]){0., 2., 0., 0., 1., 0., 1., 1.}, scene->objects, 8) == -1;
+//	if (err)
+//	{
+//		free_all(scene);
+//		return (1);
+//	}
 	
 
-//	int fd;
-//	fd = open("./config.rt", O_RDONLY);
-//	if (fd < 0)
-//			fd = open("parsing/config.rt", O_RDONLY);
-//	if (fd < 0)
-//			return (MALLOC_ERROR);
-//	parse(scene, fd);
-
-
+	int fd;
+	fd = open("./config.rt", O_RDONLY);
+	if (fd < 0)
+			fd = open("parsing/config.rt", O_RDONLY);
+	if (fd < 0)
+			return (MALLOC_ERROR);
+	if (parse(scene, fd) != SUCCESS)
+		return 1;
 /*
 	scene->objects[0] = object_init(mat3_scale(i_mat3i, 30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
 	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
@@ -316,10 +317,10 @@ int	main(void)
 //	scene->objects[7] = NULL;
 
 	scene->cam->passes = 0;
-	scene->cam->pos = vec3(0., 0., -5.);
-	scene->cam->orientation = vec4(0., 0., 0., 1.);
-	scene->cam->fov_dist = 1.6;
-	scene->ambient = vec4(0., 0., 0., 0.);
+//	scene->cam->pos = vec3(0., 0., -5.);
+//	scene->cam->orientation = vec4(0., 0., 0., 1.);
+//	scene->cam->fov_dist = 1.6;
+//	scene->ambient = vec4(0., 0., 0., 0.);
 
 	calculate_inverses(scene->objects);
 	mlx_hook(scene->window, DestroyNotify, 0, mlx_loop_end, scene->mlx);

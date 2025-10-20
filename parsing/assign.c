@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/15 19:43:16 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:44:26 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,53 +36,40 @@ typedef struct s_cam
 
 */
 
+//	scene->cam->pos = vec3(0., 0., -5.);
+//	scene->cam->orientation = vec4(0., 0., 0., 1.);
+//	scene->cam->fov_dist = 1.6;
+//	scene->ambient = vec4(0., 0., 0., 0.);5
+
 void	assign_cam(t_scene *scene, t_parse *parse)
 {
 	t_val	*tmp;
 
 	tmp = parse->camera;
+	// printf("%f, %f, %f, %f, %f, %f, %f \n\n", tmp->x, tmp->y, tmp->z, tmp->aa, tmp->ab, tmp->ac, tmp->fov);
 	scene->cam->pos = vec3(tmp->x, tmp->y, tmp->z);
-	scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 0); // je mets quoi en dernier argument la ??
+scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 0); // je mets quoi en dernier argument la ??
 	// scene->cam->model_view_matrix = ; // a faire
-	scene->cam->fov_dist = tmp->fov;
+	scene->cam->fov_dist = WIN_WIDTH/WIN_HEIGHT * (tan((PI - tmp->fov) / 2));
 }
 
-// scene->obj[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness, refraction_index), bounding 1, bounding 2, ray_func);
-//int	assign_obj(t_scene *scene, t_val *obj, int i)
-//{
-//	t_vec3 pos;
-//	t_vec4 rgba;
-//	t_mat3	i_mat3i = mat3(
-//		vec3(1., 0., 0.),
-//		vec3(0., 1., 0.),
-//		vec3(0., 0., 1.)
-//	);
-//	
-//	pos = vec3(obj->x, obj->y, obj->z);
-//	if (obj->type[0] == 'L' || (obj->type[0] == 'S' && obj->type[1] == 'p'))
-//	{
-//		rgba = vec4(obj->r, obj->g, obj->b, 1);
-//		scene->objects[i] = object_init(i_mat3i, pos, material_init((obj->type[0] == 'L'), rgba, .5), bbox_min_sphere(*obj), bbox_max_sphere(*obj), ray_sphere);
-//	}
-////	else if (obj->type[0] == 'C' && obj->type[0] == 'y' )
-////	{
-////		rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
-////		scene->objects[i] = object_init(i_mat3i, pos, material_init(0, rgba, 0.5), bbox_min_cylinder(*obj), bbox_max_cylinder(*obj),  ray_cylinder);
-////	}
-//	else if (obj->type[0] == 'P' && obj->type[1] == 'l' )
-//	{
-//		rgba = vec4(obj->r, obj->g, obj->b, 1); // je met quoi en a ?
-//		scene->objects[i] = object_init(i_mat3i, pos, material_init(0, rgba, 0.5), vec3(-11, -11, -11), vec3(11, 11, 11),  ray_plane);
-//	}
-//	else
-//		return (printf("WTF is that? %s", obj->type), SKIPPED);
-//	// matrix ?
-//	// ray_func ?
-//	// je definis comment l'emmissive ptnnnnn
-//	
-//	// scene->objects[i] = object_init(martix, pos, material_init(emmissive, rgba, roughness), bounding 1, bounding 2, ray_func);
-//	return (SUCCESS);
-//}
+int	assign_obj(t_scene *scene, t_val *obj, int i)
+{
+	//printf("%s, %f, %f, %f, %f, %f, %f, %f, %f \n\n", obj->type, obj->x, obj->y, obj->z, obj->aa, obj->ab, obj->ac, obj->diametre, obj->height);
+	if (obj->type[0] == 'L' || (obj->type[0] == 'S' && obj->type[1] == 'p'))
+		new_obj("sp", (double []){obj->x, obj->y, obj->z, obj->diametre/2, obj->r, obj->g, obj->b},
+			scene->objects, i);
+	else if (obj->type[0] == 'P' && obj->type[1] == 'l' )
+		new_obj("pl", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
+			obj->ac, obj->r, obj->g, obj->b}, scene->objects, i);
+	else if (obj->type[0] == 'C' && obj->type[1] == 'y' )
+	{
+		new_obj("cy", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
+			obj->ac, obj->diametre, obj->height, obj->r, obj->g, obj->b}, scene->objects, i);
+	}
+(void)i;
+	return (SUCCESS);
+}
 
 int	ft_lst(t_val *lst)
 {
@@ -113,12 +100,10 @@ int	assign(t_scene *scene, t_parse *parse)
 	assign_cam(scene, parse);
 	scene->ambient = colors(parse->ambiant, parse->ambiant->ratio);
 
-	i = 0;
 	while (tmp)
 	{
-	//	if (assign_obj(scene, tmp, i) == MALLOC_ERROR)
-	//		return (MALLOC_ERROR); // free
-		i++;
+		if (assign_obj(scene, tmp, i) == MALLOC_ERROR)
+			return (MALLOC_ERROR); // free
 		tmp = tmp->next;
 	}
 

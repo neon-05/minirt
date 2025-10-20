@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:56 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/15 18:31:40 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:17:39 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	get_line(char **line, int fd)
 	int		i;
 
 	i = 0;
-	buffer = (char *)malloc(sizeof(char) * 50);
+	buffer = (char *)malloc(sizeof(char) * 200);
 	if (!buffer)
 		return (-1);
 	bytes = read(fd, &c, 1);
