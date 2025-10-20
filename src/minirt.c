@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
-/*   Updated: 2025/10/15 23:13:26 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:49:01 by malapoug         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	calculate_inverses(t_object **objs)
 	}
 }
 
-static int	new_sphere(double params[4], t_object **objs, int max_obj)
+static int	new_sphere(double params[7], t_object **objs, int max_obj)
 {
 	t_object	o;
 	int			i;
@@ -188,11 +188,12 @@ static int	new_sphere(double params[4], t_object **objs, int max_obj)
 	while (objs[i] && i < max_obj - 1)
 		i++;
 	objs[i] = object_init(o);
+	objs[i]->material.color = vec4(params[4], params[5], params[6], 1.);
 	objs[i + 1] = NULL;
 	return (i);
 }
 
-static int	new_plane(double params[6], t_object **objs, int max_obj)
+static int	new_plane(double params[9], t_object **objs, int max_obj)
 {
 	t_object	o;
 	int			i;
@@ -217,11 +218,12 @@ static int	new_plane(double params[6], t_object **objs, int max_obj)
 	while (objs[i] && i < max_obj - 1)
 		i++;
 	objs[i] = object_init(o);
+	objs[i]->material.color = vec4(params[6], params[7], params[8], 1.);
 	objs[i + 1] = NULL;
 	return (i);
 }
 
-static int	new_cyl(double params[8], t_object **objs, int max_obj)
+static int	new_cyl(double params[11], t_object **objs, int max_obj)
 {
 	int		i;
 	t_mat3	m;
@@ -236,7 +238,7 @@ static int	new_cyl(double params[8], t_object **objs, int max_obj)
 		return (i);
 	objs[i]->trans_matrix = mat3_mul(m, objs[i]->trans_matrix);
 	objs[i]->ray_func = ray_cylinder_bound;
-	objs[i]->material.color = vec4(.5, .5, 1., 1.);
+	objs[i]->material.color = vec4(params[8], params[9], params[10], 1.);
 	return (i);
 }
 

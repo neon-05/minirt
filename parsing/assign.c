@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/16 00:26:32 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:44:26 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,24 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 	tmp = parse->camera;
 	// printf("%f, %f, %f, %f, %f, %f, %f \n\n", tmp->x, tmp->y, tmp->z, tmp->aa, tmp->ab, tmp->ac, tmp->fov);
 	scene->cam->pos = vec3(tmp->x, tmp->y, tmp->z);
-	scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 1); // je mets quoi en dernier argument la ??
+scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 0); // je mets quoi en dernier argument la ??
 	// scene->cam->model_view_matrix = ; // a faire
-	scene->cam->fov_dist = WIN_WIDTH/WIN_HEIGHT * (tan((PI - tmp->fov)/2));
+	scene->cam->fov_dist = WIN_WIDTH/WIN_HEIGHT * (tan((PI - tmp->fov) / 2));
 }
 
 int	assign_obj(t_scene *scene, t_val *obj, int i)
 {
 	//printf("%s, %f, %f, %f, %f, %f, %f, %f, %f \n\n", obj->type, obj->x, obj->y, obj->z, obj->aa, obj->ab, obj->ac, obj->diametre, obj->height);
 	if (obj->type[0] == 'L' || (obj->type[0] == 'S' && obj->type[1] == 'p'))
-		new_obj("sp", (double []){obj->x, obj->y, obj->z, obj->diametre/2},
+		new_obj("sp", (double []){obj->x, obj->y, obj->z, obj->diametre/2, obj->r, obj->g, obj->b},
 			scene->objects, i);
 	else if (obj->type[0] == 'P' && obj->type[1] == 'l' )
 		new_obj("pl", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
-			obj->ac}, scene->objects, i);
+			obj->ac, obj->r, obj->g, obj->b}, scene->objects, i);
 	else if (obj->type[0] == 'C' && obj->type[1] == 'y' )
 	{
 		new_obj("cy", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
-			obj->ac, obj->diametre, obj->height}, scene->objects, i);
+			obj->ac, obj->diametre, obj->height, obj->r, obj->g, obj->b}, scene->objects, i);
 	}
 (void)i;
 	return (SUCCESS);
