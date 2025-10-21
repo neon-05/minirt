@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
-/*   Updated: 2025/10/20 18:49:01 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/21 15:38:05 by malapoug         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -193,6 +193,34 @@ static int	new_sphere(double params[7], t_object **objs, int max_obj)
 	return (i);
 }
 
+
+//do not handle orientation here
+static int	new_cube(double params[7], t_object **objs, int max_obj)
+{
+	t_object	o;
+	int			i;
+
+	i = 0;
+	o.offset = vec3(params[0], params[1], params[2]);
+	o.trans_matrix = mat3(
+			vec3(params[3], 0., 0.),
+			vec3(0., params[3], 0.),
+			vec3(0., 0., params[3])
+			);
+	o.bounding_volume.corner1 = vec3_add(o.offset,
+			vec3(params[3]/2, params[3]/2, params[3]/2));
+	o.bounding_volume.corner2 = vec3_sub(o.offset,
+			vec3(params[3]/2, params[3]/2, params[3]/2));
+	o.ray_func = ray_sphere;
+	o.material = material_init(1, vec4(1., .5, .5, 1.), 0.);
+	while (objs[i] && i < max_obj - 1)
+		i++;
+	objs[i] = object_init(o);
+	objs[i]->material.color = vec4(params[4], params[5], params[6], 1.);
+	objs[i + 1] = NULL;
+	return (i);
+}
+
 static int	new_plane(double params[9], t_object **objs, int max_obj)
 {
 	t_object	o;
@@ -253,6 +281,8 @@ int	new_obj(const char *id, double *params, t_object **objs, int max_obj)
 		err = new_plane(params, objs, max_obj);
 	else if (ft_strncmp(id, "cy", 3) == 0)
 		err = new_cyl(params, objs, max_obj);
+	else if (ft_strncmp(id, "cu", 3) == 0)
+		err = new_cube(params, objs, max_obj);
 	return (err);
 }
 

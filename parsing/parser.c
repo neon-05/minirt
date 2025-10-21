@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/20 20:20:40 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/21 13:39:18 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ int	others_objects(t_parse *parse, char **tab, char *line)
 		return (free_tab(tab), SKIPPED);
 	if (tab[0][0] == 's' && tab[0][1] == 'p' &&
 			sphere(parse, tab, line) == SKIPPED)
+		return (free_tab(tab), SKIPPED);
+	else if (tab[0][0] == 'c' && tab[0][1] == 'u' &&
+			cube(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'p' &&
 			tab[0][1] == 'l' && plane(parse, tab, line) == SKIPPED)

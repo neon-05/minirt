@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/14 22:54:26 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/21 13:39:29 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ int		camera(t_parse *parse, char **tab, char *line);
 
 //sphere
 int		sphere(t_parse *parse, char **tab, char *line);
+
+//square
+int		cube(t_parse *parse, char **tab, char *line);
 
 //plane
 int		plane(t_parse *parse, char **tab, char *line);

@@ -27,6 +27,7 @@ SRCS = \
 	objects/light.c \
 	objects/camera.c \
 	objects/sphere.c \
+	objects/cube.c \
 	objects/plane.c \
 	objects/cylinder.c \
 	objects/boundings.c \

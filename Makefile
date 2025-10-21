@@ -25,6 +25,7 @@ SRCSP = \
 	parsing/objects/light.c \
 	parsing/objects/camera.c \
 	parsing/objects/sphere.c \
+	parsing/objects/cube.c \
 	parsing/objects/plane.c \
 	parsing/objects/cylinder.c \
 	parsing/objects/boundings.c \

@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/20 21:35:54 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/21 15:36:54 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,7 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 	// printf("%f, %f, %f, %f, %f, %f, %f \n\n", tmp->x, tmp->y, tmp->z, tmp->aa, tmp->ab, tmp->ac, tmp->fov);
 	scene->cam->pos = vec3(tmp->x, tmp->y, tmp->z);
 	scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 0); // je mets quoi en dernier argument la ??
-
-	double fov_rad = tmp->fov * PI / 180.0;
-	scene->cam->fov_dist = (WIN_WIDTH / WIN_HEIGHT) / tan(fov_rad / 2.0);
-
-	printf("\n\n\nddddddddd%f\n\n\n", scene->cam->fov_dist);
-
+	scene->cam->fov_dist = (WIN_WIDTH / WIN_HEIGHT) / tan((tmp->fov * PI / 180.0) / 2.0);
 }
 
 int	assign_obj(t_scene *scene, t_val *obj, int i)
@@ -38,10 +33,10 @@ int	assign_obj(t_scene *scene, t_val *obj, int i)
 		new_obj("pl", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
 			obj->ac, obj->r, obj->g, obj->b}, scene->objects, i);
 	else if (obj->type[0] == 'C' && obj->type[1] == 'y' )
-	{
 		new_obj("cy", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
 			obj->ac, obj->diametre, obj->height, obj->r, obj->g, obj->b}, scene->objects, i);
-	}
+	else if (obj->type[0] == 'C' && obj->type[1] == 'u' )
+		new_obj("cu", (double []){obj->x, obj->y, obj->z, obj->diametre, obj->r, obj->g, obj->b}, scene->objects, i);
 	return (SUCCESS);
 }
 
@@ -72,9 +67,7 @@ int	assign(t_scene *scene, t_parse *parse)
 		return (MALLOC_ERROR);
 	scene->objects[i + 1] = NULL;
 	assign_cam(scene, parse);
-	printf("qqqqqqqqqqqqqqqqqqqqqqqqq");
 	scene->ambient = colors(parse->ambiant, parse->ambiant->ratio);
-
 	while (tmp)
 	{
 		if (assign_obj(scene, tmp, i) == MALLOC_ERROR)
