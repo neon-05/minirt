@@ -118,7 +118,7 @@ int		alloc_all(t_scene **scene, int n_obj);
 
 // ray_dist_functions.c
 t_hit_info	ray_plane(t_ray ray);
-t_hit_info	ray_plane_bound(t_ray ray);
+t_hit_info	ray_plane_circle(t_ray ray);
 t_hit_info	ray_sphere(t_ray ray);
 t_hit_info	ray_cylinder_bound(t_ray ray);
 
@@ -130,6 +130,6 @@ double	mat3_det(t_mat3 m);
 t_mat3	mat3_inverse(t_mat3 m);
 
 // create_objs.c
-int	new_obj(const char *id, double *params, t_object **objs, int max_obj);
+int	new_obj(const char *id, double *params, t_object **objs, int emmissive);
 
 #endif

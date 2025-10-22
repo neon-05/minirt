@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/13 22:08:07 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:16:06 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	plane(t_parse *parse, char **tab, char *line)
 	val->next = NULL;
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
+	colors(val, val->ratio);
 	tmp = parse->objects;
 	if (!tmp)
 		parse->objects = val;

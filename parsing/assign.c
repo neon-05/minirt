@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assign.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/20 18:44:26 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/22 22:24:14 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ int	assign_obj(t_scene *scene, t_val *obj, int i)
 	//printf("%s, %f, %f, %f, %f, %f, %f, %f, %f \n\n", obj->type, obj->x, obj->y, obj->z, obj->aa, obj->ab, obj->ac, obj->diametre, obj->height);
 	if (obj->type[0] == 'L' || (obj->type[0] == 'S' && obj->type[1] == 'p'))
 		new_obj("sp", (double []){obj->x, obj->y, obj->z, obj->diametre/2, obj->r, obj->g, obj->b},
-			scene->objects, i);
+			scene->objects, 0);
 	else if (obj->type[0] == 'P' && obj->type[1] == 'l' )
 		new_obj("pl", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
-			obj->ac, obj->r, obj->g, obj->b}, scene->objects, i);
+			obj->ac, obj->r, obj->g, obj->b}, scene->objects, 0);
 	else if (obj->type[0] == 'C' && obj->type[1] == 'y' )
 	{
 		new_obj("cy", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
-			obj->ac, obj->diametre, obj->height, obj->r, obj->g, obj->b}, scene->objects, i);
+			obj->ac, obj->diametre, obj->height, obj->r, obj->g, obj->b}, scene->objects, 0);
 	}
 (void)i;
 	return (SUCCESS);
@@ -77,10 +77,12 @@ int	ft_lst(t_val *lst)
 
 	if (!lst)
 		return (0);
-	count = 1;
-	while (lst->next)
+	count = 0;
+	while (lst)
 	{
 		count += 1;
+		if (ft_strncmp(lst->type, "Cy", 2) == 0)
+			count += 2;
 		lst = lst->next;
 	}
 	return (count);

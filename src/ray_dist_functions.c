@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ray_dist_functions.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 17:02:46 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/15 17:06:05 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:45:40 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minirt.h"
 
-t_hit_info	ray_plane_bound(t_ray ray)
+t_hit_info	ray_plane_circle(t_ray ray)
 {
 	t_hit_info	ret;
+	t_vec2		v;
 
 	ret = ray_plane(ray);
-	if (fabs(ret.point.x) > 1. || fabs(ret.point.z) > 1.)
+	v = vec2(ret.point.x, ret.point.z);
+	if (vec2_dot(v, v) > 1.)
 		ret.distance = -1.;
 	return (ret);
 }
