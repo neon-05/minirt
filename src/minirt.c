@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
-/*   Updated: 2025/10/20 18:49:01 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/23 00:49:02 by malapoug         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	on_key_press(int key, t_scene **scene)
 	return (0);
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	/*t_mat3	i_mat3i = mat3(
 			vec3(1., 0., 0.),
@@ -132,13 +132,15 @@ int	main(void)
 	
 
 	int fd;
-	fd = open("./config.rt", O_RDONLY);
-	if (fd < 0)
-			fd = open("parsing/config.rt", O_RDONLY);
+	if (ac == 2)
+		fd = open(av[1], O_RDONLY);
+	else
+		fd = open("parsing/config.rt", O_RDONLY);
 	if (fd < 0)
 			return (MALLOC_ERROR);
 	if (parse(scene, fd) != SUCCESS)
 		return 1;
+
 /*
 	scene->objects[0] = object_init(mat3_scale(i_mat3i, 30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
 	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);

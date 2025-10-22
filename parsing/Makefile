@@ -29,6 +29,7 @@ SRCS = \
 	objects/sphere.c \
 	objects/plane.c \
 	objects/cylinder.c \
+	objects/cube.c \
 	objects/boundings.c \
 	externals_copies.c
 

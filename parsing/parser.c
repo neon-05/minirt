@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/22 17:17:43 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/23 00:39:52 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ int	others_objects(t_parse *parse, char **tab, char *line)
 	if (tab[0][0] == 's' && tab[0][1] == 'p' &&
 			sphere(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
+	else if (tab[0][0] == 'c' && tab[0][1] == 'u' &&
+			cube(parse, tab, line) == SKIPPED)
+		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'p' &&
 			tab[0][1] == 'l' && plane(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
@@ -56,7 +59,9 @@ int	get_data(t_parse *parse, char *line)
 		return (MALLOC_ERROR);
 	if (tab[0] && tab[0][0] == '#')
 		return (free_tab(tab), SUCCESS);
-	if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
+	// if (tab[0] && tab[0][0] == '+')  //added
+		// return (added(parse, tab, line));  //added
+	else if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
 		return (once_objects(parse, tab, line));
 	else if (ft_strlen(tab[0]) == 2)
 		return (others_objects(parse, tab, line));

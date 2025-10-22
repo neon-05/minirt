@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:05:05 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/22 22:23:51 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/23 01:19:27 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,29 @@ static t_object	*new_cyl(
 	return (objs[i]);
 }
 
+//do not handle orientation here
+static t_object	*new_cube(double params[7], t_object **objs, int i, int emmissive)
+{
+	t_object	o;
+
+	o.offset = vec3(params[0], params[1], params[2]);
+	o.trans_matrix = mat3(
+			vec3(params[3], 0., 0.),
+			vec3(0., params[3], 0.),
+			vec3(0., 0., params[3])
+			);
+	o.bounding_volume.corner1 = vec3_add(o.offset,
+			vec3(params[3] / 2, params[3] / 2, params[3] / 2));
+	o.bounding_volume.corner2 = vec3_sub(o.offset,
+			vec3(params[3] / 2, params[3] / 2, params[3] / 2));
+	o.ray_func = ray_sphere;
+	o.material = material_init(emmissive, vec4(1., .5, .5, 1.), 1.);
+	objs[i] = object_init(o);
+	objs[i]->material.color = vec4(params[4], params[5], params[6], 1.);
+	objs[i + 1] = NULL;
+	return (objs[i]);
+}
+
 int	new_obj(const char *id, double *params, t_object **objs, int emmissive)
 {
 	t_object	*o;
@@ -115,6 +138,8 @@ int	new_obj(const char *id, double *params, t_object **objs, int emmissive)
 		o = new_plane(params, objs, i, emmissive);
 	else if (ft_strncmp(id, "cy", 3) == 0)
 		o = new_cyl(params, objs, i, emmissive);
+	else if (ft_strncmp(id, "cu", 3) == 0)
+		o = new_cube(params, objs, i, emmissive);
 	else
 		return (1);
 	return (!o);
