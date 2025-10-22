@@ -3,4 +3,4 @@ obj/*
 .vscode/
 gmon.out
 matft
-o
+*.o

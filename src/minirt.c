@@ -12,16 +12,6 @@
 
 #include "../minirt.h"
 
-double	clamp(double x)
-{
-	if (x > 1.)
-		return (1.);
-	else if (0. > x)
-		return (0.);
-	else
-		return (x);
-}
-
 unsigned int	color_from_vec4(t_vec4 color)
 {
 	unsigned int	c;
@@ -76,7 +66,7 @@ int	render(t_scene **scene)
 				(double)(frag_pos % WIN_WIDTH) / WIN_HEIGHT,
 				1. - (double)(frag_pos / WIN_WIDTH) / WIN_HEIGHT
 				);
-		vertex_shader(*scene, &(*scene)->cam->prev_frame[frag_pos],
+		fragment_shader(*scene, &(*scene)->cam->prev_frame[frag_pos],
 			vec2_sub(vec2_scale(uv, 2.),
 				vec2((double) WIN_WIDTH / WIN_HEIGHT, 1.)));
 		pixel_put_image(*scene, (*scene)->cam->img, frag_pos * 4,
@@ -91,169 +81,12 @@ int	render(t_scene **scene)
 	return (0);
 }
 
-t_vec4	q_mul(t_vec4 a, t_vec4 b)
-{
-	return (vec4(
-			(a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y),
-			(a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x),
-			(a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w),
-			(a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z)
-		));
-}
-
-double	mat2_det(t_mat2 m)
-{
-	return (m.l1.x * m.l2.y - m.l1.y * m.l2.x);
-}
-
-double	mat3_det(t_mat3 m)
-{
-	t_mat2	subm1;
-	t_mat2	subm2;
-	t_mat2	subm3;
-
-	subm1 = mat2(vec2(m.l2.y, m.l2.z), vec2(m.l3.y, m.l3.z));
-	subm2 = mat2(vec2(m.l2.x, m.l2.z), vec2(m.l3.x, m.l3.z));
-	subm3 = mat2(vec2(m.l2.x, m.l2.y), vec2(m.l3.x, m.l3.y));
-	return (m.l1.x * mat2_det(subm1)
-		- m.l1.y * mat2_det(subm2) + m.l1.z * mat2_det(subm3));
-}
-
-t_mat3	mat3_inverse(t_mat3 m)
-{
-	double	d;
-	t_mat3	m2;
-
-	d = mat3_det(m);
-	m2 = mat3(
-			vec3(m.l2.y * m.l3.z - m.l2.z * m.l3.y,
-				m.l1.z * m.l3.y - m.l1.y * m.l3.z,
-				m.l1.y * m.l2.z - m.l1.z * m.l2.y),
-			vec3(m.l2.z * m.l3.x - m.l2.x * m.l3.z,
-				m.l1.x * m.l3.z - m.l1.z * m.l3.x,
-				m.l1.z * m.l2.x - m.l1.x * m.l2.z),
-			vec3(m.l2.x * m.l3.y - m.l2.y * m.l3.x,
-				m.l1.y * m.l3.x - m.l1.x * m.l3.y,
-				m.l1.x * m.l2.y - m.l1.y * m.l2.x)
-			);
-	return (mat3_scale(m2, 1. / d));
-}
-
-t_vec3	q_rot(t_vec3 v, t_vec4 q)
-{
-	return (vec3_add(v, vec3_scale(
-				vec3_cross(vec3(q.x, q.y, q.z),
-					vec3_add(vec3_cross(vec3(q.x, q.y, q.z), v),
-						vec3_scale(v, q.w))), 2.)));
-}
-
 int	on_key_press(int key, t_scene **scene)
 {
 	printf("key -p[%i]\n", key);
 	if (key == KEY_ESC)
 		mlx_loop_end((*scene)->mlx);
 	return (0);
-}
-
-void	calculate_inverses(t_object **objs)
-{
-	size_t	i;
-
-	i = 0;
-	while (objs[i])
-	{
-		objs[i]->_inv_trans_matrix = mat3_inverse(objs[i]->trans_matrix);
-		i++;
-	}
-}
-
-static int	new_sphere(double params[7], t_object **objs, int max_obj)
-{
-	t_object	o;
-	int			i;
-
-	i = 0;
-	o.offset = vec3(params[0], params[1], params[2]);
-	o.trans_matrix = mat3(
-			vec3(params[3], 0., 0.),
-			vec3(0., params[3], 0.),
-			vec3(0., 0., params[3])
-			);
-	o.bounding_volume.corner1 = vec3_add(o.offset,
-			vec3(params[3], params[3], params[3]));
-	o.bounding_volume.corner2 = vec3_sub(o.offset,
-			vec3(params[3], params[3], params[3]));
-	o.ray_func = ray_sphere;
-	o.material = material_init(1, vec4(1., .5, .5, 1.), 0.);
-	while (objs[i] && i < max_obj - 1)
-		i++;
-	objs[i] = object_init(o);
-	objs[i]->material.color = vec4(params[4], params[5], params[6], 1.);
-	objs[i + 1] = NULL;
-	return (i);
-}
-
-static int	new_plane(double params[9], t_object **objs, int max_obj)
-{
-	t_object	o;
-	int			i;
-
-	i = 0;
-	o.offset = vec3(params[0], params[1], params[2]);
-	o.trans_matrix = mat3(
-			vec3(0., 0., 0.),
-			vec3(params[3], params[4], params[5]),
-			vec3(0., 0., 0.)
-			);
-	if (fabs(params[4]) == 1.)
-		o.trans_matrix.l1 = vec3(1., 0., 0.);
-	else
-		o.trans_matrix.l1 = vec3_normalize(
-				vec3_cross(o.trans_matrix.l2, vec3(0., 1., 0.)));
-	o.trans_matrix.l3 = vec3_cross(o.trans_matrix.l1, o.trans_matrix.l2);
-	o.bounding_volume.corner1 = vec3(INFINITY, INFINITY, INFINITY);
-	o.bounding_volume.corner2 = vec3(-INFINITY, -INFINITY, -INFINITY);
-	o.ray_func = ray_plane;
-	o.material = material_init(1, vec4(.5, 1., .5, 1.), 0.);
-	while (objs[i] && i < max_obj - 1)
-		i++;
-	objs[i] = object_init(o);
-	objs[i]->material.color = vec4(params[6], params[7], params[8], 1.);
-	objs[i + 1] = NULL;
-	return (i);
-}
-
-static int	new_cyl(double params[11], t_object **objs, int max_obj)
-{
-	int		i;
-	t_mat3	m;
-
-	m = mat3(
-			vec3(params[6] * .5, 0., 0.),
-			vec3(0., params[7] * .5, 0.),
-			vec3(0., 0., params[6] * .5)
-			);
-	i = new_plane(params, objs, max_obj);
-	if (i < 0)
-		return (i);
-	objs[i]->trans_matrix = mat3_mul(m, objs[i]->trans_matrix);
-	objs[i]->ray_func = ray_cylinder_bound;
-	objs[i]->material.color = vec4(params[8], params[9], params[10], 1.);
-	return (i);
-}
-
-int	new_obj(const char *id, double *params, t_object **objs, int max_obj)
-{
-	int	err;
-
-	err = 0;
-	if (ft_strncmp(id, "sp", 3) == 0)
-		err = new_sphere(params, objs, max_obj);
-	else if (ft_strncmp(id, "pl", 3) == 0)
-		err = new_plane(params, objs, max_obj);
-	else if (ft_strncmp(id, "cy", 3) == 0)
-		err = new_cyl(params, objs, max_obj);
-	return (err);
 }
 
 int	main(void)
@@ -322,7 +155,6 @@ int	main(void)
 //	scene->cam->fov_dist = 1.6;
 //	scene->ambient = vec4(0., 0., 0., 0.);
 
-	calculate_inverses(scene->objects);
 	mlx_hook(scene->window, DestroyNotify, 0, mlx_loop_end, scene->mlx);
 	mlx_hook(scene->window, KeyPress, KeyPressMask, on_key_press, &scene);
 	mlx_loop_hook(scene->mlx, render, &scene);

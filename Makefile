@@ -32,13 +32,18 @@ SRCSP = \
 OBJSP = $(SRCSP:$(SDIRP)%.c=%.o)
 
 SRCS = \
-	src/minirt.c \
-	src/vsh.c \
-	src/initialize_structs.c \
-	src/allocs.c \
-	src/ray_dist_functions.c \
+	allocs.c \
+	create_objs.c \
+	fsh_bbox.c \
+	fsh_math.c \
+	fsh_ray_logic.c \
+	initialize_structs.c \
+	math_utils.c \
+	minirt.c \
+	ray_dist_functions.c\
 
-OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
+
+OBJS = $(SRCS:%.c=$(ODIR)%.o)
 
 LDIR = $(dir $(LIB))
 SDIR = src/

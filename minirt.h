@@ -20,6 +20,9 @@
 # define RAY_PER_BOUNCE 6
 # define MAX_RENDER_PASSES 0
 
+# define LCG_MULT 1103515245
+# define LCG_INCR 12345
+
 # define KEY_ESC 65307
 
 //====================(STRUCTS)=============================//
@@ -50,6 +53,7 @@ typedef struct s_scene
 	t_vec4		ambient;
 	t_xvar		*mlx;
 	t_win_list	*window;
+	int			lcg_seed;
 }	t_scene;
 
 typedef struct s_ray
@@ -91,8 +95,14 @@ typedef struct s_object
 
 //====================(DECLARATIONS)========================//
 
-// fsh.c
-void	vertex_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv);
+// fsh_ray_logic.c
+void	fragment_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv);
+
+// fsh_math.c
+t_vec3	vec3_random_normalized(int *seed);
+double	unsigned_max(double a, double b);
+double	unsigned_min(double a, double b);
+double	clamp(double x);
 
 // initialize_structs.c
 t_object	*object_init(t_object o);
@@ -112,6 +122,14 @@ t_hit_info	ray_plane_bound(t_ray ray);
 t_hit_info	ray_sphere(t_ray ray);
 t_hit_info	ray_cylinder_bound(t_ray ray);
 
+// math_utils.c
+t_vec4	q_mul(t_vec4 a, t_vec4 b);
+t_vec3	q_rot(t_vec3 v, t_vec4 q);
+double	mat2_det(t_mat2 m);
+double	mat3_det(t_mat3 m);
+t_mat3	mat3_inverse(t_mat3 m);
 
+// create_objs.c
 int	new_obj(const char *id, double *params, t_object **objs, int max_obj);
+
 #endif
