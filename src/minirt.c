@@ -81,7 +81,7 @@ int	render(t_scene **scene)
 	return (0);
 }
 
-int	on_key_press(int key, t_scene **scene)
+static int	on_key_press(int key, t_scene **scene)
 {
 	printf("key -p[%i]\n", key);
 	if (key == KEY_ESC)
@@ -89,78 +89,29 @@ int	on_key_press(int key, t_scene **scene)
 	return (0);
 }
 
-int	main(int ac, char **av)
+int	main(int argc, char **argv)
 {
-	/*t_mat3	i_mat3i = mat3(
-			vec3(1., 0., 0.),
-			vec3(0., 1., 0.),
-			vec3(0., 0., 1.)
-		);
-
-	t_mat3	i_mat3i2 = mat3(
-			vec3(1., 0., 0.),
-			vec3(0., 0., -1.),
-			vec3(0., 1., 0.)
-		);
-
-	t_mat3	i_mat3ir = mat3(
-			vec3(0., -1., 0.),
-			vec3(1., 0., 0.),
-			vec3(0., 0., 1.)
-		);
-
-	t_mat3	i_mat3ig = mat3(
-			vec3(0., 1., 0.),
-			vec3(-1., 0., 0.),
-			vec3(0., 0., 1.)
-		);*/
 	t_scene	*scene;
-//	int		err;
+	int		fd;
 
-	if (alloc_all(&scene, 8))
-		return (1);
-	//scene->objects[0] = object_init((t_object) {.bounding_volume = {.corner1 = vec3(1.,1.,1.), .corner2 = vec3(-1.,-1.,-1.)}, .trans_matrix = i_mat3i, .offset = vec3(0. ,0., 0.), .material = material_init(1, vec4(1., 1., 1., 1.), 0.), .ray_func = ray_sphere});
-//	err = 0;
-//	err |= new_obj("sp", (double[]){0., 0., 0., 1.}, scene->objects, 8) == -1;
-//	err |= new_obj("pl", (double[]){0., 0., 0., sqrt(2), 0., -sqrt(2)}, scene->objects, 8) == -1;
-//	err |= new_obj("cy", (double[]){0., 2., 0., 0., 1., 0., 1., 1.}, scene->objects, 8) == -1;
-//	if (err)
-//	{
-//		free_all(scene);
-//		return (1);
-//	}
-	
-
-	int fd;
-	if (ac == 2)
-		fd = open(av[1], O_RDONLY);
-	else
-		fd = open("parsing/config.rt", O_RDONLY);
-	if (fd < 0)
-			return (MALLOC_ERROR);
-	if (parse(scene, fd) != SUCCESS)
-		return 1;
-
-/*
-	scene->objects[0] = object_init(mat3_scale(i_mat3i, 30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
-	scene->objects[1] = object_init(i_mat3i, vec3(0., -1., 0.), material_init(0, vec4(.5, .5, 1., 1.), 1.), vec3(3.,-1.,3.), vec3(-3.,-1.,-3.), ray_plane);
-	scene->objects[2] = object_init(i_mat3i2, vec3(0., 0., 3.), material_init(0, vec4(1., 1., 1., 1.), .5), vec3(3.,-1.,3.), vec3(-3.,5.,3.), ray_plane);
-	scene->objects[3] = object_init(i_mat3ir, vec3(-3., 0., 0.), material_init(0, vec4(1., .5, .5, 1.), .5), vec3(-3.,-1.,3.), vec3(-3.,5.,-3.), ray_plane);
-	scene->objects[4] = object_init(i_mat3ig, vec3(3., 0., 0.), material_init(0, vec4(.5, 1., .5, 1.), .5), vec3(3.,-1.,3.), vec3(3.,5.,-3.), ray_plane);
-	scene->objects[5] = object_init(i_mat3i, vec3(0., 4., 2.), material_init(1, vec4(1., 1., 1., 1.), 0.), vec3(1.,5.,1.), vec3(-1.,3.,3.), ray_sphere);
-	scene->objects[6] = object_init(i_mat3i, vec3(-1.5, 0., 0.), material_init(0, vec4(1., 1., 1., 1.), 0.), vec3(-.5,1.,1.), vec3(-2.5,-1.,-1.), ray_sphere);*/
-//	scene->objects[7] = NULL;
-
-	scene->cam->passes = 0;
-//	scene->cam->pos = vec3(0., 0., -5.);
-//	scene->cam->orientation = vec4(0., 0., 0., 1.);
-//	scene->cam->fov_dist = 1.6;
-//	scene->ambient = vec4(0., 0., 0., 0.);
-
+	if (argc < 2)
+		return (ft_putendl_fd("missing filename", 2), 1);
+	if (alloc_all(&scene))
+		return (2);
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0 || parse(scene, fd) != SUCCESS)
+	{
+		if (fd < 0)
+			ft_putendl_fd("could not open file", 2);
+		else
+			ft_putendl_fd("allocation error", 2);
+		free_all(scene);
+		return (2);
+	}
 	mlx_hook(scene->window, DestroyNotify, 0, mlx_loop_end, scene->mlx);
 	mlx_hook(scene->window, KeyPress, KeyPressMask, on_key_press, &scene);
 	mlx_loop_hook(scene->mlx, render, &scene);
 	mlx_loop(scene->mlx);
 	free_all(scene);
-	return 0;
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 16:29:40 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/15 18:06:19 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/23 23:19:27 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	alloc_mlx(t_scene *scene)
 	return (err);
 }
 
-int	alloc_all(t_scene **scene, int n_obj)
+int	alloc_all(t_scene **scene)
 {
 	t_scene	*ret;
 	int		err;
@@ -87,8 +87,7 @@ int	alloc_all(t_scene **scene, int n_obj)
 	ret->cam->prev_frame = malloc_e(
 			sizeof(t_vec4) * WIN_HEIGHT * WIN_WIDTH, &err
 			);
-	ret->objects = malloc_e(sizeof(t_object *) * n_obj, &err);
-	ret->objects[0] = NULL;
+	ret->cam->passes = 0;
 	err |= alloc_mlx(ret);
 	if (err)
 		free_all(ret);

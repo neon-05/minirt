@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 17:06:46 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/22 22:05:17 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/23 23:04:20 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,11 @@ t_vec4	calculate_color_mix(
 	while ((i == 0 || i < RAY_PER_BOUNCE)
 		&& hit.object->material.roughness > .1)
 	{
-		ray.n_director = vec3_normalize(vec3_lerp(
-					vec3_add(hit.normal, vec3_random_normalized(
-							&scene->lcg_seed)),
-					spec_dir,
-					hit.object->material.roughness
-					));
+		ray.n_director = vec3_lerp(vec3_add(hit.normal, vec3_random_normalized(
+						&scene->lcg_seed)),
+				spec_dir,
+				hit.object->material.roughness
+				);
 		col = vec4_add(col, get_ray_color(scene, ray, depth - 1));
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:05:05 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/23 01:19:27 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/24 00:01:15 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,17 @@ static t_object	*new_plane(
 
 static t_object	*new_cyl_cap(t_object **objs, int i)
 {
+	t_vec3	v;
+
+	v = vec3_add(vec3_func(objs[i - 1]->trans_matrix.l1, fabs),
+			vec3_func(objs[i - 1]->trans_matrix.l3, fabs));
 	objs[i] = object_init(*(objs[i - 1]));
 	if (!objs[i])
 		return (NULL);
 	objs[i]->offset = vec3_add(objs[i]->offset, objs[i]->trans_matrix.l2);
 	objs[i]->ray_func = ray_plane_circle;
+	objs[i]->bounding_volume.corner1 = vec3_add(objs[i]->offset, v);
+	objs[i]->bounding_volume.corner2 = vec3_sub(objs[i]->offset, v);
 	objs[i + 1] = object_init(*(objs[i - 1]));
 	if (!objs[i])
 		return (NULL);
@@ -77,6 +83,8 @@ static t_object	*new_cyl_cap(t_object **objs, int i)
 	objs[i + 1]->offset = vec3_add(objs[i + 1]->offset,
 			objs[i + 1]->trans_matrix.l2);
 	objs[i + 1]->ray_func = ray_plane_circle;
+	objs[i + 1]->bounding_volume.corner1 = vec3_add(objs[i + 1]->offset, v);
+	objs[i + 1]->bounding_volume.corner2 = vec3_sub(objs[i + 1]->offset, v);
 	return (objs[i]);
 }
 
@@ -85,6 +93,7 @@ static t_object	*new_cyl(
 {
 	t_object	*o;
 	t_mat3		m;
+	t_vec3		v;
 
 	m = mat3(
 			vec3(params[6] * .5, 0., 0.),
@@ -97,6 +106,11 @@ static t_object	*new_cyl(
 	o->_inv_trans_matrix = mat3_inverse(o->trans_matrix);
 	o->ray_func = ray_cylinder_bound;
 	new_cyl_cap(objs, i + 1);
+	v = vec3_add(vec3_add(vec3_func(o->trans_matrix.l1, fabs),
+				vec3_func(o->trans_matrix.l2, fabs)),
+			vec3_func(o->trans_matrix.l3, fabs));
+	o->bounding_volume.corner1 = vec3_add(o->offset, v);
+	o->bounding_volume.corner2 = vec3_sub(o->offset, v);
 	objs[i + 3] = NULL;
 	return (objs[i]);
 }

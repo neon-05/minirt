@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:12:10 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/21 17:00:54 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/23 23:25:53 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	random(int *seed)
 {
 	*seed = (*seed * LCG_MULT + LCG_INCR) & __INT_MAX__;
-	return (rand());
+	return (*seed);
 }
 
 t_vec3	vec3_random_normalized(int *seed)
