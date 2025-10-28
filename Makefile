@@ -35,13 +35,15 @@ OBJSP = $(SRCSP:$(SDIRP)%.c=%.o)
 SRCS = \
 	allocs.c \
 	create_objs.c \
+	create_objs_2.c \
 	fsh_bbox.c \
 	fsh_math.c \
 	fsh_ray_logic.c \
 	initialize_structs.c \
 	math_utils.c \
 	minirt.c \
-	ray_dist_functions.c\
+	ray_dist_functions.c \
+	ray_dist_functions_2.c \
 
 
 OBJS = $(SRCS:%.c=$(ODIR)%.o)

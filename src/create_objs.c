@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:05:05 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/24 00:01:15 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/28 23:47:37 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,37 +105,15 @@ static t_object	*new_cyl(
 	o->trans_matrix = mat3_mul(m, o->trans_matrix);
 	o->_inv_trans_matrix = mat3_inverse(o->trans_matrix);
 	o->ray_func = ray_cylinder_bound;
-	new_cyl_cap(objs, i + 1);
+	//new_cyl_cap(objs, i + 1);
 	v = vec3_add(vec3_add(vec3_func(o->trans_matrix.l1, fabs),
 				vec3_func(o->trans_matrix.l2, fabs)),
 			vec3_func(o->trans_matrix.l3, fabs));
 	o->bounding_volume.corner1 = vec3_add(o->offset, v);
 	o->bounding_volume.corner2 = vec3_sub(o->offset, v);
-	objs[i + 3] = NULL;
-	return (objs[i]);
-}
-
-//do not handle orientation here
-static t_object	*new_cube(double params[7], t_object **objs, int i, int emmissive)
-{
-	t_object	o;
-
-	o.offset = vec3(params[0], params[1], params[2]);
-	o.trans_matrix = mat3(
-			vec3(params[3], 0., 0.),
-			vec3(0., params[3], 0.),
-			vec3(0., 0., params[3])
-			);
-	o.bounding_volume.corner1 = vec3_add(o.offset,
-			vec3(params[3] / 2, params[3] / 2, params[3] / 2));
-	o.bounding_volume.corner2 = vec3_sub(o.offset,
-			vec3(params[3] / 2, params[3] / 2, params[3] / 2));
-	o.ray_func = ray_sphere;
-	o.material = material_init(emmissive, vec4(1., .5, .5, 1.), 1.);
-	objs[i] = object_init(o);
-	objs[i]->material.color = vec4(params[4], params[5], params[6], 1.);
 	objs[i + 1] = NULL;
 	return (objs[i]);
+	new_cyl_cap(objs, i + 1);
 }
 
 int	new_obj(const char *id, double *params, t_object **objs, int emmissive)
@@ -154,6 +132,8 @@ int	new_obj(const char *id, double *params, t_object **objs, int emmissive)
 		o = new_cyl(params, objs, i, emmissive);
 	else if (ft_strncmp(id, "cu", 3) == 0)
 		o = new_cube(params, objs, i, emmissive);
+	else if (ft_strncmp(id, "L", 2) == 0)
+		o = new_light(params, objs, i, emmissive);
 	else
 		return (1);
 	return (!o);

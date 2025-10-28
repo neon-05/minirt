@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/23 01:15:59 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/28 23:43:20 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 int	assign_obj(t_scene *scene, t_val *obj)
 {
 	//printf("%s, %f, %f, %f, %f, %f, %f, %f, %f \n\n", obj->type, obj->x, obj->y, obj->z, obj->aa, obj->ab, obj->ac, obj->diametre, obj->height);
-	if (obj->type[0] == 'L' || (obj->type[0] == 'S' && obj->type[1] == 'p'))
+	if (obj->type[0] == 'L')
+		new_obj("L", (double []){obj->x, obj->y, obj->z, obj->diametre/2, obj->r, obj->g, obj->b},
+			scene->objects, 1);
+	else if (obj->type[0] == 'S' && obj->type[1] == 'p')
 		new_obj("sp", (double []){obj->x, obj->y, obj->z, obj->diametre/2, obj->r, obj->g, obj->b},
 			scene->objects, 0);
 	else if (obj->type[0] == 'P' && obj->type[1] == 'l' )

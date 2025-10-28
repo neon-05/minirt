@@ -6,14 +6,14 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 16:29:40 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/23 23:19:27 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/29 00:06:20 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minirt.h"
 
 static void	*malloc_e(int n, int *e);
-static int	alloc_mlx(t_scene *scene);
+static int	alloc_mlx(t_scene *scene, const char *filename);
 
 static void	*malloc_e(int n, int *e)
 {
@@ -51,18 +51,20 @@ void	free_all(t_scene *scene)
 	free_c((void **) &scene);
 }
 
-static int	alloc_mlx(t_scene *scene)
+static int	alloc_mlx(t_scene *scene, const char *filename)
 {
-	int	err;
+	int		err;
+	char	*win_name;
 
 	err = 0;
 	scene->mlx = mlx_init();
-	if (!scene->mlx)
+	win_name = ft_strjoin(WIN_TITLE" - ", filename);
+	if (!scene->mlx || !win_name)
 		err = 1;
 	else
 	{
 		scene->window = mlx_new_window(
-				scene->mlx, WIN_WIDTH, WIN_HEIGHT, WIN_TITLE
+				scene->mlx, WIN_WIDTH, WIN_HEIGHT, win_name
 				);
 		if (!scene->window)
 			err = 1;
@@ -73,10 +75,11 @@ static int	alloc_mlx(t_scene *scene)
 				err = 1;
 		}
 	}
+	free_c((void **) &win_name);
 	return (err);
 }
 
-int	alloc_all(t_scene **scene)
+int	alloc_all(t_scene **scene, const char *filename)
 {
 	t_scene	*ret;
 	int		err;
@@ -88,7 +91,7 @@ int	alloc_all(t_scene **scene)
 			sizeof(t_vec4) * WIN_HEIGHT * WIN_WIDTH, &err
 			);
 	ret->cam->passes = 0;
-	err |= alloc_mlx(ret);
+	err |= alloc_mlx(ret, filename);
 	if (err)
 		free_all(ret);
 	*scene = ret;

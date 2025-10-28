@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/26 15:28:32 by neon-05           #+#    #+#             */
+/*   Updated: 2025/10/28 23:56:48 by neon-05          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -16,8 +28,8 @@
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
 # define WIN_TITLE "minirt"
-# define RAY_DEPTH_LIMIT 4
-# define RAY_PER_BOUNCE 1
+# define RAY_DEPTH_LIMIT 6
+# define RAY_PER_BOUNCE 4
 # define MAX_RENDER_PASSES 0
 
 # define LCG_MULT 1103515245
@@ -96,40 +108,49 @@ typedef struct s_object
 //====================(DECLARATIONS)========================//
 
 // fsh_ray_logic.c
-void	fragment_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv);
+void		fragment_shader(t_scene *scene, t_vec4 *frag_color, t_vec2 uv);
 
 // fsh_math.c
-t_vec3	vec3_random_normalized(int *seed);
-double	unsigned_max(double a, double b);
-double	unsigned_min(double a, double b);
-double	clamp(double x);
+t_vec3		vec3_random_normalized(int *seed);
+double		unsigned_max(double a, double b);
+double		unsigned_min(double a, double b);
+double		clamp(double x);
 
 // initialize_structs.c
 t_object	*object_init(t_object o);
 t_material	material_init(int emmissive, t_vec4 color,
-		double roughness);
+				double roughness);
 
-double	clamp(double x);
-t_vec3	q_rot(t_vec3 v, t_vec4 q);
+double		clamp(double x);
+t_vec3		q_rot(t_vec3 v, t_vec4 q);
 
-void	free_obj_arr(t_object **arr);
-void	free_all(t_scene *scene);
-int		alloc_all(t_scene **scene);
+void		free_obj_arr(t_object **arr);
+void		free_all(t_scene *scene);
+int			alloc_all(t_scene **scene, const char *filename);
 
 // ray_dist_functions.c
 t_hit_info	ray_plane(t_ray ray);
 t_hit_info	ray_plane_circle(t_ray ray);
 t_hit_info	ray_sphere(t_ray ray);
 t_hit_info	ray_cylinder_bound(t_ray ray);
+t_hit_info	ray_light(t_ray ray);
 
 // math_utils.c
-t_vec4	q_mul(t_vec4 a, t_vec4 b);
-t_vec3	q_rot(t_vec3 v, t_vec4 q);
-double	mat2_det(t_mat2 m);
-double	mat3_det(t_mat3 m);
-t_mat3	mat3_inverse(t_mat3 m);
+t_vec4		q_mul(t_vec4 a, t_vec4 b);
+t_vec3		q_rot(t_vec3 v, t_vec4 q);
+double		mat2_det(t_mat2 m);
+double		mat3_det(t_mat3 m);
+t_mat3		mat3_inverse(t_mat3 m);
 
 // create_objs.c
-int	new_obj(const char *id, double *params, t_object **objs, int emmissive);
+int			new_obj(
+				const char *id, double *params, t_object **objs, int emmissive);
+
+t_object	*new_light(
+				double params[7], t_object **objs, int i, int emmissive);
+
+/* todo: remake this properly */
+t_object	*new_cube(
+				double params[7], t_object **objs, int i, int emmissive);
 
 #endif
