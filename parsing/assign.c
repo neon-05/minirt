@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 17:48:22 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:07:35 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 	tmp = parse->camera;
 	scene->cam->pos = vec3(tmp->x, tmp->y, tmp->z);
 	scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 0);
+	scene->cam->passes = 0;
 	scene->cam->fov_dist = (WIN_WIDTH / WIN_HEIGHT) \
 		/ tan((tmp->fov * PI / 180.0) / 2.0);
 }
@@ -71,7 +72,7 @@ int	assign(t_scene *scene, t_parse *parse)
 	scene->objects = malloc(sizeof(t_object) * (i + 1));
 	if (!scene->objects)
 		return (MALLOC_ERROR);
-	scene->objects[i + 1] = NULL;
+	scene->objects[i] = NULL;
 	assign_cam(scene, parse);
 	scene->ambient = colors(parse->ambiant, parse->ambiant->ratio);
 	new_obj("L", (double []){parse->light->x, parse->light->y, \

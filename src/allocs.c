@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 16:29:40 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/29 00:06:20 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/29 18:31:38 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	alloc_all(t_scene **scene, const char *filename)
 {
 	t_scene	*ret;
 	int		err;
+	int		i;
 
 	err = 0;
 	ret = malloc_e(sizeof(t_scene), &err);
@@ -90,6 +91,9 @@ int	alloc_all(t_scene **scene, const char *filename)
 	ret->cam->prev_frame = malloc_e(
 			sizeof(t_vec4) * WIN_HEIGHT * WIN_WIDTH, &err
 			);
+	i = -1;
+	while (++i < WIN_WIDTH * WIN_HEIGHT)
+		ret->cam->prev_frame[i] = (t_vec4){0.0, 0.0, 0.0, 0.0};
 	ret->cam->passes = 0;
 	err |= alloc_mlx(ret, filename);
 	if (err)
