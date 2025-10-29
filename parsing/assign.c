@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 18:37:10 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:42:24 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int	assign(t_scene *scene, t_parse *parse)
 	scene->objects = malloc(sizeof(t_object) * ((ft_lst(tmp) + 1) + 1));
 	if (!scene->objects)
 		return (MALLOC_ERROR);
-	i = 0;
-	while (i < ft_lst(tmp) + 1)
+	i = -1;
+	while (++i < ft_lst(tmp) + 1)
 		scene->objects[i] = NULL;
 	assign_cam(scene, parse);
 	scene->ambient = colors(parse->ambiant, parse->ambiant->ratio);
