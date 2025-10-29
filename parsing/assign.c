@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 12:57:59 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:54:53 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ int	assign(t_scene *scene, t_parse *parse)
 	scene->objects[i + 1] = NULL;
 	assign_cam(scene, parse);
 	scene->ambient = colors(parse->ambiant, parse->ambiant->ratio);
-	new_obj("L", (double []){parse->light->x, parse->light->y, parse->light->z, parse->light->diametre / 2, \
-			parse->light->r, parse->light->g, parse->light->b}, scene->objects, 1);
+	new_obj("L", (double []){parse->light->x, parse->light->y, \
+		parse->light->z, parse->light->diametre / 2, \
+		parse->light->r, parse->light->g, parse->light->b}, scene->objects, 1);
 	while (tmp)
 	{
 		if (assign_obj(scene, tmp) == MALLOC_ERROR)

@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:17 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/13 22:08:07 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:59:56 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int	light(t_parse *parse, char **tab, char *line)
 
 	val = malloc(sizeof(t_val));
 	if (!val)
-		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+		return (SKIPPED);
+	parse->light = val;
 	val->type = "L";
 	val->xyz = NULL;
 	val->orient = NULL;
@@ -75,6 +76,5 @@ int	light(t_parse *parse, char **tab, char *line)
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
 	colors(val, val->ratio);
-	parse->light = val;
 	return (SUCCESS);
 }

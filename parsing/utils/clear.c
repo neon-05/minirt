@@ -6,59 +6,11 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:28:38 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 13:36:58 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:54:32 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-/*
-typedef struct s_parse
-{
-	int				n_objects;
-	char			*once;
-	t_scene			*scene;
-
-	t_val			*camera;
-	t_val			*ambiant;
-	t_val			*light;
-
-	t_val			*objects;
-	unsigned int	last;
-}	t_parse;
-
-typedef struct s_val
-{
-	char			*type;
-
-	char			**tab;
-	char			*error;
-
-	double			ratio;
-	char			**colors;
-	double			r;
-	double			g;
-	double			b;
-
-	char			**xyz;
-	char			**orient;
-	double			teta;
-	double			x;
-	double			y;
-	double			z;
-	double			aa;
-	double			ab;
-	double			ac;
-	double			fov;
-
-	double			diametre;
-
-	double			height;
-
-	t_val			*next;
-
-}	t_val;
-*/
 
 void	free_tab(char **tab)
 {
@@ -72,8 +24,6 @@ void	free_tab(char **tab)
 
 void	free_val(t_val *val)
 {
-	//if (val->tab)
-	//	free_tab(val->tab);
 	if (val->xyz)
 		free_tab(val->xyz);
 	if (val->orient)

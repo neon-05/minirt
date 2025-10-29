@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:08 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/13 22:08:07 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:00:15 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	ambiant(t_parse *parse, char **tab, char *line)
 
 	val = malloc(sizeof(t_val));
 	if (!val)
-		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
+		return (SKIPPED);
+	parse->ambiant = val;
 	val->type = "A";
 	val->xyz = NULL;
 	val->orient = NULL;
@@ -66,7 +67,6 @@ int	ambiant(t_parse *parse, char **tab, char *line)
 	val->tab = tab;
 	val->next = NULL;
 	if (get_data(val, line) == SKIPPED)
-		return (SKIPPED); //free val
-	parse->ambiant = val;
+		return (SKIPPED);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 12:38:14 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 11:44:56 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:59:38 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,7 @@ int	cube(t_parse *parse, char **tab, char *line)
 
 	val = malloc(sizeof(t_val));
 	if (!val)
-		return (SKIPPED); // voir comment faire pour changer en MALLOC)ERROR ou si on laisse comme ca meme si c'est pas entierement accurate du coup
-	val->type = "Cu";
-	val->xyz = NULL;
-	val->orient = NULL;
-	val->error = RED"ERROR: "RESET;
-	val->tab = tab;
-	val->next = NULL;
-	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
-	colors(val, val->ratio);
 	tmp = parse->objects;
 	if (!tmp)
 		parse->objects = val;
@@ -92,5 +83,14 @@ int	cube(t_parse *parse, char **tab, char *line)
 			tmp = tmp->next;
 		tmp->next = val;
 	}
+	val->type = "Cu";
+	val->xyz = NULL;
+	val->orient = NULL;
+	val->error = RED"ERROR: "RESET;
+	val->tab = tab;
+	val->next = NULL;
+	if (get_data(val, line) == SKIPPED)
+		return (SKIPPED);
+	colors(val, val->ratio);
 	return (SUCCESS);
 }

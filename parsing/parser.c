@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 13:37:51 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:03:35 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ size_t	parse(t_scene *scene, int fd)
 		free(line);
 	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0]) \
 		|| !ft_strchr(SET, parse.once[1]) || !ft_strchr(SET, parse.once[2]))
-		return (printf("Not all the mandatory elements are here..."), SKIPPED);
-	show_parse(parse);
+		return (free_parse(&parse), \
+			printf("Not all the mandatory elements are here..."), SKIPPED);
 	if (assign(scene, &parse) == MALLOC_ERROR)
 		return (free_parse(&parse), MALLOC_ERROR);
-	return (free_parse(&parse), SKIPPED);//change SKIPPED by SUCCESS
+	return (free_parse(&parse), SUCCESS);
 }
