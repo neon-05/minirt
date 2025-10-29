@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 11:39:24 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 17:24:27 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ int		split_assign_position(t_val *val, char *object, int i, char *line);
 char	**split_ispace(const char *s);
 int		ft_issispace(char c);
 int		arr_size(char **arr);
+
+//init
+void	init_parse(t_parse *parse);
+void	init_val(t_val *v);
 
 //clear
 void	free_parse(t_parse *parse);

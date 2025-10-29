@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 12:38:14 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 15:59:38 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 17:29:00 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	cube(t_parse *parse, char **tab, char *line)
 	val = malloc(sizeof(t_val));
 	if (!val)
 		return (SKIPPED);
+	init_val(val);
 	tmp = parse->objects;
 	if (!tmp)
 		parse->objects = val;

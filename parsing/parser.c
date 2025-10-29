@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 16:03:35 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 17:18:22 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,6 @@ int	get_data(t_parse *parse, char *line)
 		return (SKIPPED);
 	}
 	return (free_tab(tab), SUCCESS);
-}
-
-void	init_parse(t_parse *parse)
-{
-	parse->once = NULL;
-	parse->scene = NULL;
-	parse->camera = NULL;
-	parse->ambiant = NULL;
-	parse->light = NULL;
-	parse->objects = NULL;
 }
 
 size_t	parse(t_scene *scene, int fd)

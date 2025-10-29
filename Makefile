@@ -19,6 +19,7 @@ SRCSP = \
 	parsing/utils/split_assign.c \
 	parsing/utils/split_ispace.c \
 	parsing/utils/transf.c \
+	parsing/utils/init.c \
 	parsing/utils/debug.c \
 	parsing/utils/clear.c \
 	parsing/objects/ambiant.c \

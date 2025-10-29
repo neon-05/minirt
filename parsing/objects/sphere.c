@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 16:00:15 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 17:29:00 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	sphere(t_parse *parse, char **tab, char *line)
 	val = malloc(sizeof(t_val));
 	if (!val)
 		return (SKIPPED);
+	init_val(val);
 	tmp = parse->objects;
 	if (!tmp)
 		parse->objects = val;

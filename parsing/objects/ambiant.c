@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 10:52:08 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 16:00:15 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 17:29:00 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	ambiant(t_parse *parse, char **tab, char *line)
 	val = malloc(sizeof(t_val));
 	if (!val)
 		return (SKIPPED);
+	init_val(val);
 	parse->ambiant = val;
 	val->type = "A";
 	val->xyz = NULL;
