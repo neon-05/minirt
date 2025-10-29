@@ -59,7 +59,8 @@ int	render(t_scene **scene)
 	t_vec2	uv;
 
 	frag_pos = 0;
-	printf("\n");
+	if ((*scene)->cam->passes >= MAX_RENDER_PASSES)
+		mlx_loop_hook((*scene)->mlx, NULL, NULL);
 	while (frag_pos < WIN_WIDTH * WIN_HEIGHT)
 	{
 		uv = vec2(
@@ -72,8 +73,6 @@ int	render(t_scene **scene)
 		pixel_put_image(*scene, (*scene)->cam->img, frag_pos * 4,
 			(*scene)->cam->prev_frame[frag_pos]);
 		frag_pos++;
-		printf("\033[1A\033[2Kpass %d, pixel %li/%i\n",
-			(*scene)->cam->passes, frag_pos, WIN_WIDTH * WIN_HEIGHT);
 	}
 	(*scene)->cam->passes++;
 	mlx_put_image_to_window((*scene)->mlx,
@@ -83,7 +82,6 @@ int	render(t_scene **scene)
 
 static int	on_key_press(int key, t_scene **scene)
 {
-	printf("key -p[%i]\n", key);
 	if (key == KEY_ESC)
 		mlx_loop_end((*scene)->mlx);
 	return (0);
@@ -108,9 +106,9 @@ int	main(int argc, char **argv)
 		free_all(scene);
 		return (2);
 	}
+	mlx_loop_hook(scene->mlx, render, &scene);
 	mlx_hook(scene->window, DestroyNotify, 0, mlx_loop_end, scene->mlx);
 	mlx_hook(scene->window, KeyPress, KeyPressMask, on_key_press, &scene);
-	mlx_loop_hook(scene->mlx, render, &scene);
 	mlx_loop(scene->mlx);
 	free_all(scene);
 	return (0);

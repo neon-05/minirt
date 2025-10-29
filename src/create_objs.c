@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:05:05 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/28 23:47:37 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/29 18:56:26 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,14 @@ static t_object	*new_cyl(
 	o->trans_matrix = mat3_mul(m, o->trans_matrix);
 	o->_inv_trans_matrix = mat3_inverse(o->trans_matrix);
 	o->ray_func = ray_cylinder_bound;
-	//new_cyl_cap(objs, i + 1);
+	new_cyl_cap(objs, i + 1);
 	v = vec3_add(vec3_add(vec3_func(o->trans_matrix.l1, fabs),
 				vec3_func(o->trans_matrix.l2, fabs)),
 			vec3_func(o->trans_matrix.l3, fabs));
 	o->bounding_volume.corner1 = vec3_add(o->offset, v);
 	o->bounding_volume.corner2 = vec3_sub(o->offset, v);
-	objs[i + 1] = NULL;
+	objs[i + 3] = NULL;
 	return (objs[i]);
-	new_cyl_cap(objs, i + 1);
 }
 
 int	new_obj(const char *id, double *params, t_object **objs, int emmissive)

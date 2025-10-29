@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 17:02:46 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/26 15:11:13 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/29 19:53:32 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_hit_info	ray_plane_circle(t_ray ray)
 	t_vec2		v;
 
 	ret = ray_plane(ray);
+	if (ret.distance <= 0.)
+		return (ret);
 	v = vec2(ret.point.x, ret.point.z);
 	if (vec2_dot(v, v) > 1.)
 		ret.distance = -1.;

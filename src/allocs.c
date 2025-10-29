@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 16:29:40 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/29 18:31:38 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:53:46 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ static void	*malloc_e(int n, int *e)
 	else
 	{
 		ptr = malloc(n);
-		*e |= !ptr;
+		if (ptr)
+			ft_bzero(ptr, n);
+		else
+			*e = 1;
 	}
 	return (ptr);
 }
@@ -64,8 +67,7 @@ static int	alloc_mlx(t_scene *scene, const char *filename)
 	else
 	{
 		scene->window = mlx_new_window(
-				scene->mlx, WIN_WIDTH, WIN_HEIGHT, win_name
-				);
+				scene->mlx, WIN_WIDTH, WIN_HEIGHT, win_name);
 		if (!scene->window)
 			err = 1;
 		else
