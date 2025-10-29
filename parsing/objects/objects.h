@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/23 00:39:38 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:41:17 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ typedef struct s_hit_info	t_hit_info;
 typedef struct s_object		t_object;
 typedef struct s_bound_vol	t_bound_vol;
 
-typedef struct s_parse	t_parse;
-typedef struct s_val	t_val;
+typedef struct s_parse		t_parse;
+typedef struct s_val		t_val;
 
 //====================(DECLARATIONS)========================//
 //ambiant
@@ -55,14 +55,5 @@ int		plane(t_parse *parse, char **tab, char *line);
 
 //cylinder
 int		cylinder(t_parse *parse, char **tab, char *line);
-
-//boundings
-t_vec3	bbox_min_cylinder(t_val val);
-t_vec3	bbox_max_cylinder(t_val val);
-t_vec3	bbox_min_sphere(t_val val);
-t_vec3	bbox_max_sphere(t_val val);
-
-//added
-// int	added(t_parse *parse, char **tab, char *line);
 
 #endif

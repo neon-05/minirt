@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/22 17:12:07 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/29 11:45:29 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	cylinder(t_parse *parse, char **tab, char *line)
 	val->type = "Cy";
 	val->xyz = NULL;
 	val->orient = NULL;
-	val->colors = NULL;
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;
 	val->next = NULL;

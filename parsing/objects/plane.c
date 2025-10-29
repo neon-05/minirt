@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/22 22:16:06 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/29 11:45:29 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	plane(t_parse *parse, char **tab, char *line)
 	val->type = "Pl";
 	val->xyz = NULL;
 	val->orient = NULL;
-	val->colors = NULL;
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;
 	val->next = NULL;

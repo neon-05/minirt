@@ -1,14 +1,14 @@
 VARS_OLD := $(.VARIABLES)
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -gdwarf-4 $(LDIR:%=-I%) -I/usr/include
-LFLAGS = -L$(LIBDIR) -L/usr/lib -lXext -lX11 -lm -lbsd
+CFLAGS = -Wall -Wextra -Werror -g -gdwarf-4 $(LDIR:%=-I%) -I/usr/include -std=c99
+LFLAGS = -L -L/usr/lib -lXext -lX11 -lm -lbsd
 DEBUG = -fsanitize=address
 
 RM = rm -f
 NAME = minirt
 
-LIB = ../42_libft/libft.a ../42_matft/matft.a
+LIB = ../42_libft/libft.a ../42_matft/matft.a mlx_linux/libmlx_Linux.a
 
 
 SRCS = \
@@ -30,8 +30,6 @@ SRCS = \
 	objects/plane.c \
 	objects/cylinder.c \
 	objects/cube.c \
-	objects/boundings.c \
-	externals_copies.c
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

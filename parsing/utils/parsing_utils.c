@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:56 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/20 18:17:39 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:37:41 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,6 @@ char	*ft_strjoin_f(char *s1, char *s2)
 	return (ptr);
 }
 
-int	arr_size(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
 void	ft_free_arr(char **arr, int i)
 {
 	while (i > 0)
@@ -83,17 +73,33 @@ void	ft_free_arr(char **arr, int i)
 		free(arr);
 }
 
-double	atod(const char *s)// a bosseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer
+double	atod2(const char *s, double n, int sign)
 {
-	double	n;
 	double	frac;
 	double	power;
+
+	frac = 0;
+	power = 0.1;
+	if (*s == '.')
+	{
+		s++;
+		while (ft_isdigit(*s))
+		{
+			frac += (*s - '0') * power;
+			power *= 0.1;
+			s++;
+		}
+	}
+	return (sign * (n + frac));
+}
+
+double	atod(const char *s)
+{
+	double	n;
 	int		sign;
 
 	n = 0;
-	frac = 0;
 	sign = 1;
-	power = 0.1;
 	if (!s)
 		return (0);
 	while (*s == ' ' || (*s >= 9 && *s <= 13))
@@ -107,15 +113,5 @@ double	atod(const char *s)// a bosseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer
 	n = ft_atoi(s);
 	while (*s && *s != '.')
 		s++;
-	if (*s == '.')
-	{
-		s++;
-		while (ft_isdigit(*s))
-		{
-			frac += (*s - '0') * power;
-			power *= 0.1;
-			s++;
-		}
-	}
-	return (sign * (n + frac));
+	return (atod2(s, n, sign));
 }

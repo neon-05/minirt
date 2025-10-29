@@ -6,31 +6,11 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:21:43 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/15 18:19:10 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:19:44 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-}
-
-void	free_val(t_val *val)
-{
-	if (val->xyz)
-		free_tab(val->xyz);
-	if (val->orient)
-		free_tab(val->orient);
-	if (val->colors)
-		free_tab(val->colors);
-}
 
 int	split_assign_colors(t_val *val, char *object, int i, char *line)
 {

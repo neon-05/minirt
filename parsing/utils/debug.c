@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:28:39 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/23 00:33:33 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:29:40 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static void	print_acl(t_parse parse)
 			parse.ambiant->r, parse.ambiant->g, parse.ambiant->b);
 	if (parse.camera)
 		printf(YELLOW"C\t %.2f,%.2f,%.2f \t %.2f,%.2f,%.2f \t %.2f \n"RESET, \
-			parse.camera->x, parse.camera->y, parse.camera->z, parse.camera->aa, \
-			parse.camera->ab, parse.camera->ac, parse.camera->ratio);
+		parse.camera->x, parse.camera->y, parse.camera->z, parse.camera->aa, \
+		parse.camera->ab, parse.camera->ac, parse.camera->ratio);
 	if (parse.light)
 		printf(YELLOW"L\t %.2f,%.2f,%.2f \t %.2f \t %.2f,%.2f,%.2f \n"RESET, \
 			parse.light->x, parse.light->y, parse.light->z, parse.light->ratio, \

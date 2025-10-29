@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/24 00:00:53 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/29 13:37:51 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int	get_data(t_parse *parse, char *line)
 		return (MALLOC_ERROR);
 	if (tab[0] && tab[0][0] == '#')
 		return (free_tab(tab), SUCCESS);
-	// if (tab[0] && tab[0][0] == '+')  //added
-		// return (added(parse, tab, line));  //added
 	else if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
 		return (once_objects(parse, tab, line));
 	else if (ft_strlen(tab[0]) == 2)
@@ -71,7 +69,7 @@ int	get_data(t_parse *parse, char *line)
 		free_tab(tab);
 		return (SKIPPED);
 	}
-	return (SUCCESS);
+	return (free_tab(tab), SUCCESS);
 }
 
 void	init_parse(t_parse *parse)
@@ -84,7 +82,7 @@ void	init_parse(t_parse *parse)
 	parse->objects = NULL;
 }
 
-size_t	parse(t_scene *scene, int fd)//n of line parsed ?
+size_t	parse(t_scene *scene, int fd)
 {
 	t_parse		parse;
 	char		*line;
@@ -95,30 +93,18 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 	while (get_line(&line, fd))
 	{
 		status = get_data(&parse, line);
+		free(line);
 		line = NULL;
-		if (status == MALLOC_ERROR)
-			return (MALLOC_ERROR);
-		else if (status == SKIPPED)
-			return (SKIPPED);
+		if (status == MALLOC_ERROR || status == SKIPPED)
+			return (free_parse(&parse), status);
 	}
 	if (line)
 		free(line);
-	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0]) || !ft_strchr(SET, parse.once[1]) || !ft_strchr(SET, parse.once[2]))
+	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0]) \
+		|| !ft_strchr(SET, parse.once[1]) || !ft_strchr(SET, parse.once[2]))
 		return (printf("Not all the mandatory elements are here..."), SKIPPED);
 	show_parse(parse);
 	if (assign(scene, &parse) == MALLOC_ERROR)
-		return (MALLOC_ERROR);
-	return (free_parse(&parse), SUCCESS);
+		return (free_parse(&parse), MALLOC_ERROR);
+	return (free_parse(&parse), SKIPPED);//change SKIPPED by SUCCESS
 }
-
-//if line not valid skipp, add 1 to return value
-
-// R resolution int int
-
-/*
-
-scene->objects[0] = 
-object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
-										 offset				   material_init(emmissive, vec4(RGBA),roughness,refraction_index) , b1, b2,              t_hit_info (*ray_func)(t_ray)
-
-*/

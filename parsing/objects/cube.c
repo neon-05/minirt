@@ -6,10 +6,9 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 12:38:14 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/21 12:43:54 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:44:56 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "objects.h"
 
@@ -37,7 +36,7 @@ static int	check_numbers(t_val *val, char *line)
 		return (printf("%sCube vector has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	if (!is_number(val->tab[3]))
-		return (printf("%sCube size is not numeric :\n%s\n\n",
+		return (printf("%sCube size is not numeric :\n%s\n\n", \
 			val->error, line), SKIPPED);
 	if (!is_number(val->colors[0]) || !is_number(val->colors[1]) || \
 		!is_number(val->colors[2]))
@@ -78,7 +77,6 @@ int	cube(t_parse *parse, char **tab, char *line)
 	val->type = "Cu";
 	val->xyz = NULL;
 	val->orient = NULL;
-	val->colors = NULL;
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;
 	val->next = NULL;
@@ -96,4 +94,3 @@ int	cube(t_parse *parse, char **tab, char *line)
 	}
 	return (SUCCESS);
 }
-

@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:48:25 by malapoug          #+#    #+#             */
-/*   Updated: 2025/06/25 13:13:16 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:38:31 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 int	ft_issispace(char c)
 {
 	return ((c >= 8 && c <= 13) || c == ' ');
+}
+
+int	arr_size(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }
 
 static int	count_w(const char *s)

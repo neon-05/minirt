@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/23 00:29:41 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:55:15 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	init_parse(t_parse *parse);
 size_t	parse(t_scene *scene, int fd);
 
 //assign
-int	assign(t_scene *scene, t_parse *parse);
+int		assign(t_scene *scene, t_parse *parse);
 
 //============(OBJCTS)================//
 //ambiant

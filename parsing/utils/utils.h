@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/14 22:57:02 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/29 11:39:24 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@ typedef struct s_hit_info	t_hit_info;
 typedef struct s_object		t_object;
 typedef struct s_bound_vol	t_bound_vol;
 
-typedef struct s_parse	t_parse;
-typedef struct s_val	t_val;
+typedef struct s_parse		t_parse;
+typedef struct s_val		t_val;
 
 //====================(DECLARATIONS)========================//
 //parsing_utils
 int		get_line(char **line, int fd);
 char	*ft_strjoin_f(char *s1, char *s2);
-int		arr_size(char **arr);
 void	ft_free_arr(char **arr, int i);
 double	atod(const char *s);
 
@@ -64,6 +63,7 @@ int		split_assign_position(t_val *val, char *object, int i, char *line);
 //split_ispace
 char	**split_ispace(const char *s);
 int		ft_issispace(char c);
+int		arr_size(char **arr);
 
 //clear
 void	free_parse(t_parse *parse);
