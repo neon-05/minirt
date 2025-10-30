@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:56 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 11:37:41 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/30 14:37:04 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	get_line(char **line, int fd)
 	if (!buffer)
 		return (-1);
 	bytes = read(fd, &c, 1);
-	while (bytes && c != '\n')
+	while (bytes > 0 && c != '\n')
 	{
 		if (c != '\n')
 			buffer[i] = c;

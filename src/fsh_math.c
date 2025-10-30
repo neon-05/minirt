@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   fsh_math.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:12:10 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/23 23:25:53 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/30 14:31:21 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minirt.h"
 
-static int	random(int *seed)
+static int	ft_random(int *seed)
 {
 	*seed = (*seed * LCG_MULT + LCG_INCR) & __INT_MAX__;
 	return (*seed);
@@ -24,8 +24,8 @@ t_vec3	vec3_random_normalized(int *seed)
 	double	rand2;
 	t_vec2	tmp;
 
-	rand1 = (double) random(seed) / __INT_MAX__ * 2. * PI;
-	rand2 = (double) random(seed) / __INT_MAX__ * 2. - 1.;
+	rand1 = (double) ft_random(seed) / __INT_MAX__ * 2. * PI;
+	rand2 = (double) ft_random(seed) / __INT_MAX__ * 2. - 1.;
 	tmp = vec2(cos(rand1), sin(rand2));
 	return (vec2to3(vec2_scale(tmp, sqrt(1. - rand1 * rand2)), rand2));
 }

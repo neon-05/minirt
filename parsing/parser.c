@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 17:18:22 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/30 14:37:16 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ size_t	parse(t_scene *scene, int fd)
 
 	init_parse(&parse);
 	parse.scene = scene;
-	while (get_line(&line, fd))
+	while (get_line(&line, fd) > 0)
 	{
 		status = get_data(&parse, line);
 		free(line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 15:28:32 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/29 19:51:43 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/30 14:48:11 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define PI 3.141592653589793
 
-# define WIN_WIDTH 100
-# define WIN_HEIGHT 100
+# define WIN_WIDTH 1080
+# define WIN_HEIGHT 720
 # define WIN_TITLE "minirt"
 # define RAY_DEPTH_LIMIT 6
 # define RAY_PER_BOUNCE 4
