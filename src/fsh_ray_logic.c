@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsh_ray_logic.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 17:06:46 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/23 23:04:20 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/30 16:41:54 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 int		check_bounding_vol(t_bound_vol box, t_ray ray);
 t_vec4	get_ray_color(t_scene *scene, t_ray ray, int depth);
 
-static void	replace_hit_info(t_object *obj, t_hit_info *cur_hit, t_ray ray)
+static void	replace_hit_info(t_object *obj, t_hit_info *cur_hit, t_ray ray, int depth)
 {
 	t_hit_info	hit_info;
 	t_hit_info	tmp_hit_info;
 	t_ray		new_ray;
 
+	if (depth == RAY_DEPTH_LIMIT && obj->ray_func == ray_light)
+			return ;
 	new_ray.origin = mat3_mul_vec3(obj->_inv_trans_matrix,
 			vec3_sub(ray.origin, obj->offset));
 	new_ray.n_director = vec3_normalize(
@@ -42,7 +44,7 @@ static void	replace_hit_info(t_object *obj, t_hit_info *cur_hit, t_ray ray)
 	}
 }
 
-static t_hit_info	calculate_ray(t_scene *scene, t_ray ray)
+static t_hit_info	calculate_ray(t_scene *scene, t_ray ray, int depth)
 {
 	t_hit_info	hit_info;
 	size_t		i;
@@ -53,7 +55,7 @@ static t_hit_info	calculate_ray(t_scene *scene, t_ray ray)
 	while (scene->objects[i])
 	{
 		if (check_bounding_vol(scene->objects[i]->bounding_volume, ray))
-			replace_hit_info(scene->objects[i], &hit_info, ray);
+			replace_hit_info(scene->objects[i], &hit_info, ray, depth);
 		i++;
 	}
 	if (hit_info.object)
@@ -99,7 +101,7 @@ t_vec4	get_ray_color(t_scene *scene, t_ray ray, int depth)
 	t_hit_info	hit;
 	t_vec4		col;
 
-	hit = calculate_ray(scene, ray);
+	hit = calculate_ray(scene, ray, depth);
 	if (!hit.object || depth <= 0)
 		return (scene->ambient);
 	else if (hit.object->material.emmissive)

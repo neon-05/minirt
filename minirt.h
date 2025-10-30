@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 15:28:32 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/30 14:48:11 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/30 17:09:59 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
 # define WIN_TITLE "minirt"
-# define RAY_DEPTH_LIMIT 6
-# define RAY_PER_BOUNCE 4
-# define MAX_RENDER_PASSES 3
+# define RAY_DEPTH_LIMIT 3
+# define RAY_PER_BOUNCE 1
+# define MAX_RENDER_PASSES 10
+
+# define LOADING_BAR_LENGTH 100
+# define PROGRESS_BAR_SCALE "%:\t-------10v-------20v-------30v-------40v-------50v\
+-------60v-------70v-------80v-------90v------100v"
 
 # define LCG_MULT 1103515245
 # define LCG_INCR 12345

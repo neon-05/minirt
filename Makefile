@@ -29,7 +29,6 @@ SRCSP = \
 	parsing/objects/cube.c \
 	parsing/objects/plane.c \
 	parsing/objects/cylinder.c \
-	parsing/objects/boundings.c \
 
 OBJSP = $(SRCSP:$(SDIRP)%.c=%.o)
 

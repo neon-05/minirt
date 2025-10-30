@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:17 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 17:29:00 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:38:35 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	light(t_parse *parse, char **tab, char *line)
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;
 	val->next = NULL;
+	val->diametre = val->ratio;
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
 	colors(val, val->ratio);

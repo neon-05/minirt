@@ -61,19 +61,23 @@ int	render(t_scene **scene)
 	frag_pos = 0;
 	if ((*scene)->cam->passes >= MAX_RENDER_PASSES)
 		mlx_loop_hook((*scene)->mlx, NULL, NULL);
+	ft_putnbr_fd((*scene)->cam->passes, 2);
+	ft_putstr_fd(":\t", 2);
 	while (frag_pos < WIN_WIDTH * WIN_HEIGHT)
 	{
 		uv = vec2(
 				(double)(frag_pos % WIN_WIDTH) / WIN_HEIGHT,
-				1. - (double)(frag_pos / WIN_WIDTH) / WIN_HEIGHT
-				);
+				1. - (double)(frag_pos / WIN_WIDTH) / WIN_HEIGHT);
 		fragment_shader(*scene, &(*scene)->cam->prev_frame[frag_pos],
 			vec2_sub(vec2_scale(uv, 2.),
 				vec2((double) WIN_WIDTH / WIN_HEIGHT, 1.)));
 		pixel_put_image(*scene, (*scene)->cam->img, frag_pos * 4,
 			(*scene)->cam->prev_frame[frag_pos]);
+		if (frag_pos % (WIN_HEIGHT * WIN_WIDTH / LOADING_BAR_LENGTH) == 0)
+			ft_putchar_fd('=', 2);
 		frag_pos++;
 	}
+	ft_putchar_fd('\n', 2);
 	(*scene)->cam->passes++;
 	mlx_put_image_to_window((*scene)->mlx,
 		(*scene)->window, (*scene)->cam->img, 0, 0);
@@ -109,6 +113,7 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(scene->mlx, render, &scene);
 	mlx_hook(scene->window, DestroyNotify, 0, mlx_loop_end, scene->mlx);
 	mlx_hook(scene->window, KeyPress, KeyPressMask, on_key_press, &scene);
+	ft_putendl_fd(PROGRESS_BAR_SCALE, 2);
 	mlx_loop(scene->mlx);
 	free_all(scene);
 	return (0);

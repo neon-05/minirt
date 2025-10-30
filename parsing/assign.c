@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assign.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 18:42:24 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:41:14 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 int	assign_obj(t_scene *scene, t_val *obj)
 {
 	if (obj->type[0] == 'L')
-		new_obj("L", (double []){obj->x, obj->y, obj->z, obj->diametre / 2, \
+		new_obj("L", (double []){obj->x, obj->y, obj->z, obj->ratio, \
 			obj->r, obj->g, obj->b}, scene->objects, 1);
 	else if (obj->type[0] == 'S' && obj->type[1] == 'p')
 		new_obj("sp", (double []){obj->x, obj->y, obj->z, obj->diametre / 2, \
@@ -77,7 +77,7 @@ int	assign(t_scene *scene, t_parse *parse)
 	assign_cam(scene, parse);
 	scene->ambient = colors(parse->ambiant, parse->ambiant->ratio);
 	new_obj("L", (double []){parse->light->x, parse->light->y, \
-		parse->light->z, parse->light->diametre / 2, \
+		parse->light->z, parse->light->ratio, \
 		parse->light->r, parse->light->g, parse->light->b}, scene->objects, 1);
 	while (tmp)
 	{
