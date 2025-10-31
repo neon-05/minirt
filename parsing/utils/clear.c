@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:28:38 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 15:54:32 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:06:35 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	free_tab(char **tab)
 {
 	int	i;
 
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
 	free(tab);
 }
 
@@ -30,6 +30,8 @@ void	free_val(t_val *val)
 		free_tab(val->orient);
 	if (val->colors)
 		free_tab(val->colors);
+	if (val->tab)
+		free_tab(val->tab);
 	free(val);
 }
 

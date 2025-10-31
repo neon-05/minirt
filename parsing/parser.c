@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/30 14:37:16 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:14:28 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,27 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 		return (free_tab(tab), SKIPPED);
 	else if (tab[0][0] == 'C' && camera(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	return (free_tab(tab), SUCCESS);
+	return (SUCCESS);
 }
 
 int	others_objects(t_parse *parse, char **tab, char *line)
 {
+	char	*error;
+
+	error = RED"ERROR: "RESET;
 	if (check_others(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	if (tab[0][0] == 's' && tab[0][1] == 'p' &&
-			sphere(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'c' && tab[0][1] == 'u' &&
-			cube(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'p' &&
-			tab[0][1] == 'l' && plane(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'c' && tab[0][1] == 'y' &&
-			cylinder(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
+	if (tab[0][0] == 's' && tab[0][1] == 'p')
+		return (sphere(parse, tab, line));
+	else if (tab[0][0] == 'p' && tab[0][1] == 'l')
+		return (plane(parse, tab, line));
+	else if (tab[0][0] == 'c' && tab[0][1] == 'y')
+		return (cylinder(parse, tab, line));
+	else
+		return (printf("%sUnrecognized object :\n%s\n\n", error, line)
+			, free_tab(tab), SKIPPED);
 	parse->n_objects++;
-	return (free_tab(tab), SUCCESS);
+	return (SUCCESS);
 }
 
 int	get_data(t_parse *parse, char *line)
@@ -57,6 +57,8 @@ int	get_data(t_parse *parse, char *line)
 	tab = split_ispace(line);
 	if (!tab)
 		return (MALLOC_ERROR);
+	if (!tab[0])
+		return (free_tab(tab), SUCCESS);
 	if (tab[0] && tab[0][0] == '#')
 		return (free_tab(tab), SUCCESS);
 	else if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
@@ -69,7 +71,7 @@ int	get_data(t_parse *parse, char *line)
 		free_tab(tab);
 		return (SKIPPED);
 	}
-	return (free_tab(tab), SUCCESS);
+	return (SUCCESS);
 }
 
 size_t	parse(t_scene *scene, int fd)
@@ -90,9 +92,9 @@ size_t	parse(t_scene *scene, int fd)
 	}
 	if (line)
 		free(line);
-	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0]) \
+	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0])
 		|| !ft_strchr(SET, parse.once[1]) || !ft_strchr(SET, parse.once[2]))
-		return (free_parse(&parse), \
+		return (free_parse(&parse),
 			printf("Not all the mandatory elements are here..."), SKIPPED);
 	if (assign(scene, &parse) == MALLOC_ERROR)
 		return (free_parse(&parse), MALLOC_ERROR);

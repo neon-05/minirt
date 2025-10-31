@@ -6,7 +6,7 @@
 /*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:28:39 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 11:29:40 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/31 15:17:14 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,6 @@ void	show_parse(t_parse parse)
 				tmp->aa, tmp->ab, tmp->ac, tmp->r, tmp->g, tmp->b);
 		else if (tmp->type && tmp->type[0] == 'S' && tmp->type[1] == 'p')
 			printf(YELLOW"sp\t %.2f,%.2f,%.2f \t %.2f \t %.2f,%.2f,%.2f \n"\
-				RESET, tmp->x, tmp->y, tmp->z, \
-				tmp->diametre, tmp->r, tmp->g, tmp->b);
-		else if (tmp->type && tmp->type[0] == 'C' && tmp->type[1] == 'u')
-			printf(YELLOW"cu\t %.2f,%.2f,%.2f \t %.2f \t %.2f,%.2f,%.2f \n"\
 				RESET, tmp->x, tmp->y, tmp->z, \
 				tmp->diametre, tmp->r, tmp->g, tmp->b);
 		tmp = tmp->next;

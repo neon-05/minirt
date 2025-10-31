@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/30 15:41:14 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/31 15:17:31 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ int	assign_obj(t_scene *scene, t_val *obj)
 		new_obj("cy", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab, \
 			obj->ac, obj->diametre, obj->height, obj->r, \
 			obj->g, obj->b}, scene->objects, 0);
-	else if (obj->type[0] == 'C' && obj->type[1] == 'u' )
-		new_obj("cu", (double []){obj->x, obj->y, obj->z, obj->diametre, \
-			obj->r, obj->g, obj->b}, scene->objects, 0);
 	return (SUCCESS);
 }
 

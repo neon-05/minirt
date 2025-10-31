@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 17:29:00 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/31 15:58:36 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static int	check_ranges(t_val *val, char *line)
 {
-	if (val->aa < -1 || val->aa > 1 || val->ab < -1 \
+	if (val->aa < -1 || val->aa > 1 || val->ab < -1
 		|| val->ab > 1 || val->ac < -1 || val->ac > 1)
 		return (printf("%sCylinder vector is not in the range [-1 - 1]\
  :\n%s\n\n", val->error, line), SKIPPED);
-	if (val->r < 0 || val->r > 255 || val->g < 0 \
+	if (val->r < 0 || val->r > 255 || val->g < 0
 		|| val->g > 255 || val->b < 0 || val->b > 255)
 		return (printf("%sCylinder color is not in the range [0 - 255]\
  :\n%s\n\n", val->error, line), SKIPPED);
@@ -27,16 +27,16 @@ static int	check_ranges(t_val *val, char *line)
 
 static int	check_numbers(t_val *val, char *line)
 {
-	if (!is_number(val->xyz[0]) || !is_number(val->xyz[1]) || \
+	if (!is_number(val->xyz[0]) || !is_number(val->xyz[1]) ||
 		!is_number(val->xyz[2]))
 		return (printf("%sCylinder position has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
-	if (!is_number(val->orient[0]) || !is_number(val->orient[1]) || \
+	if (!is_number(val->orient[0]) || !is_number(val->orient[1]) ||
 		!is_number(val->orient[2]))
 		return (printf("%sCylinder vector has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	if (!is_number(val->tab[3]))
-		return (printf("%sCylinder diametre is not numeric :\n%s\n\n"\
+		return (printf("%sCylinder diametre is not numeric :\n%s\n\n"
 			, val->error, line), SKIPPED);
 	if (!is_number(val->tab[4]))
 		return (printf("%sCylinder height is not numeric :\n%s\n\n"\
@@ -89,7 +89,6 @@ int	cylinder(t_parse *parse, char **tab, char *line)
 		tmp->next = val;
 	}
 	val->type = "Cy";
-	val->xyz = NULL;
 	val->orient = NULL;
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;

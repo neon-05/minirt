@@ -29,7 +29,6 @@ SRCS = \
 	objects/sphere.c \
 	objects/plane.c \
 	objects/cylinder.c \
-	objects/cube.c \
 
 OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
 

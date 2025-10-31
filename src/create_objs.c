@@ -6,7 +6,7 @@
 /*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 16:05:05 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/29 18:56:26 by neon-05          ###   ########.fr       */
+/*   Updated: 2025/10/31 15:15:01 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,6 @@ int	new_obj(const char *id, double *params, t_object **objs, int emmissive)
 		o = new_plane(params, objs, i, emmissive);
 	else if (ft_strncmp(id, "cy", 3) == 0)
 		o = new_cyl(params, objs, i, emmissive);
-	else if (ft_strncmp(id, "cu", 3) == 0)
-		o = new_cube(params, objs, i, emmissive);
 	else if (ft_strncmp(id, "L", 2) == 0)
 		o = new_light(params, objs, i, emmissive);
 	else

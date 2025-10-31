@@ -1,7 +1,7 @@
 VARS_OLD := $(.VARIABLES)
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -gdwarf-4 $(LDIR:%=-I%) -I/usr/include
+CFLAGS = -Wall -Wextra -Werror -g -gdwarf-4 $(LDIR:%=-I%) -I/usr/include -std=c99
 LFLAGS = -L -L/usr/lib -lXext -lX11 -lm -lbsd
 DEBUG = -fsanitize=address
 
@@ -26,7 +26,6 @@ SRCSP = \
 	parsing/objects/light.c \
 	parsing/objects/camera.c \
 	parsing/objects/sphere.c \
-	parsing/objects/cube.c \
 	parsing/objects/plane.c \
 	parsing/objects/cylinder.c \
 

@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 15:28:32 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/30 17:09:59 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:15:36 by malapoug         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define PI 3.141592653589793
 
-# define WIN_WIDTH 1080
-# define WIN_HEIGHT 720
+# define WIN_WIDTH 80
+# define WIN_HEIGHT 20
 # define WIN_TITLE "minirt"
 # define RAY_DEPTH_LIMIT 3
 # define RAY_PER_BOUNCE 1
@@ -151,10 +151,6 @@ int			new_obj(
 				const char *id, double *params, t_object **objs, int emmissive);
 
 t_object	*new_light(
-				double params[7], t_object **objs, int i, int emmissive);
-
-/* todo: remake this properly */
-t_object	*new_cube(
 				double params[7], t_object **objs, int i, int emmissive);
 
 #endif
