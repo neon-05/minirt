@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: ylabussi <ylabussi@student.42.fr>		  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/10/15 16:38:16 by ylabussi		  #+#	#+#			 */
-/*   Updated: 2025/10/29 12:28:04 by malapoug         ###   ########.fr       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/31 16:20:49 by ylabussi          #+#    #+#             */
+/*   Updated: 2025/10/31 16:21:15 by ylabussi         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../minirt.h"
@@ -65,17 +65,15 @@ int	render(t_scene **scene)
 	ft_putstr_fd(":\t", 2);
 	while (frag_pos < WIN_WIDTH * WIN_HEIGHT)
 	{
-		uv = vec2(
-				(double)(frag_pos % WIN_WIDTH) / WIN_HEIGHT,
+		uv = vec2((double)(frag_pos % WIN_WIDTH) / WIN_HEIGHT,
 				1. - (double)(frag_pos / WIN_WIDTH) / WIN_HEIGHT);
 		fragment_shader(*scene, &(*scene)->cam->prev_frame[frag_pos],
 			vec2_sub(vec2_scale(uv, 2.),
 				vec2((double) WIN_WIDTH / WIN_HEIGHT, 1.)));
 		pixel_put_image(*scene, (*scene)->cam->img, frag_pos * 4,
 			(*scene)->cam->prev_frame[frag_pos]);
-		if (frag_pos % (WIN_HEIGHT * WIN_WIDTH / LOADING_BAR_LENGTH) == 0)
+		if (frag_pos++ % (WIN_HEIGHT * WIN_WIDTH / LOADING_BAR_LENGTH) == 0)
 			ft_putchar_fd('=', 2);
-		frag_pos++;
 	}
 	ft_putchar_fd('\n', 2);
 	(*scene)->cam->passes++;

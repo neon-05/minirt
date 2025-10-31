@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 20:52:33 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/31 15:58:36 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:29:13 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,22 @@ static int	check_ranges(t_val *val, char *line)
 
 static int	check_numbers(t_val *val, char *line)
 {
-	if (!is_number(val->xyz[0]) || !is_number(val->xyz[1]) ||
-		!is_number(val->xyz[2]))
+	if (!is_number(val->xyz[0]) || !is_number(val->xyz[1])
+		|| !is_number(val->xyz[2]))
 		return (printf("%sCylinder position has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
-	if (!is_number(val->orient[0]) || !is_number(val->orient[1]) ||
-		!is_number(val->orient[2]))
+	if (!is_number(val->orient[0]) || !is_number(val->orient[1])
+		|| !is_number(val->orient[2]))
 		return (printf("%sCylinder vector has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	if (!is_number(val->tab[3]))
 		return (printf("%sCylinder diametre is not numeric :\n%s\n\n"
-			, val->error, line), SKIPPED);
+				, val->error, line), SKIPPED);
 	if (!is_number(val->tab[4]))
-		return (printf("%sCylinder height is not numeric :\n%s\n\n"\
-			, val->error, line), SKIPPED);
-	if (!is_number(val->colors[0]) || !is_number(val->colors[1]) || \
-		!is_number(val->colors[2]))
+		return (printf("%sCylinder height is not numeric :\n%s\n\n"
+				, val->error, line), SKIPPED);
+	if (!is_number(val->colors[0]) || !is_number(val->colors[1])
+		|| !is_number(val->colors[2]))
 		return (printf("%sCylinder color has non numerics arguments\
  :\n%s\n\n", val->error, line), SKIPPED);
 	return (SUCCESS);
@@ -89,10 +89,8 @@ int	cylinder(t_parse *parse, char **tab, char *line)
 		tmp->next = val;
 	}
 	val->type = "Cy";
-	val->orient = NULL;
 	val->error = RED"ERROR: "RESET;
 	val->tab = tab;
-	val->next = NULL;
 	if (get_data(val, line) == SKIPPED)
 		return (SKIPPED);
 	colors(val, val->ratio);

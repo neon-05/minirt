@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 17:06:46 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/30 16:41:54 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:19:40 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 int		check_bounding_vol(t_bound_vol box, t_ray ray);
 t_vec4	get_ray_color(t_scene *scene, t_ray ray, int depth);
 
-static void	replace_hit_info(t_object *obj, t_hit_info *cur_hit, t_ray ray, int depth)
+static void	replace_hit_info(
+	t_object *obj, t_hit_info *cur_hit, t_ray ray, int depth)
 {
 	t_hit_info	hit_info;
 	t_hit_info	tmp_hit_info;
 	t_ray		new_ray;
 
 	if (depth == RAY_DEPTH_LIMIT && obj->ray_func == ray_light)
-			return ;
+		return ;
 	new_ray.origin = mat3_mul_vec3(obj->_inv_trans_matrix,
 			vec3_sub(ray.origin, obj->offset));
 	new_ray.n_director = vec3_normalize(
