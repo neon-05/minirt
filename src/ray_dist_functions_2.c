@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 15:11:03 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/31 16:21:43 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/03 16:50:22 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_hit_info	ray_light(t_ray ray)
 	ret.point = vec3_add(
 			ray.origin, vec3_scale(ray.n_director, ret.distance)
 			);
-	if (vec3_dot(ret.point, ret.point) > vec3_dot(ray.origin, ray.origin))
+	if (vec3_dot(ret.point, ret.point) > 1.)
 		ret.distance = -1.;
 	ret.normal = ray.origin;
 	return (ret);

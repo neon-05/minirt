@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transf.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:42:06 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/14 15:19:58 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/11/03 17:10:05 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 t_vec4	colors(t_val *val, double a)
 {
-	static double	inv_range = 1.0f * (1. / 255.);
+	static double	inv_range = (1. / 255.);
 
-	val->r = val->r * inv_range;
-	val->g = val->g * inv_range;
-	val->b = val->b * inv_range;
+	val->r *= inv_range * a;
+	val->g *= inv_range * a;
+	val->b *= inv_range * a;
 	return (vec4(val->r, val->g, val->b, a));
 }
 

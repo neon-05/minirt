@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:17:37 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/29 17:24:16 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/11/03 17:10:32 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	init_val(t_val *v)
 	v->r = 0;
 	v->g = 0;
 	v->b = 0;
-	v->ratio = 0;
+	v->ratio = 1;
 	v->teta = 0;
 	v->x = 0;
 	v->y = 0;

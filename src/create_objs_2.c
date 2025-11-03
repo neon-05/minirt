@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 15:18:08 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/31 16:22:11 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/03 17:12:33 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_object	*new_light(
 			);
 	o.bounding_volume.corner1 = vec3(INFINITY, INFINITY, INFINITY);
 	o.bounding_volume.corner2 = vec3(-INFINITY, -INFINITY, -INFINITY);
-	o.ray_func = ray_light;
+	o.ray_func = ray_sphere;
 	o.material = material_init(emmissive, vec4_scale(
 				vec4(params[4], params[5], params[6], 1.), params[3]), 1.);
 	objs[i] = object_init(o);
