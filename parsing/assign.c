@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/31 16:25:59 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/03 18:39:54 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 
 	tmp = parse->camera;
 	scene->cam->pos = vec3(tmp->x, tmp->y, tmp->z);
-	scene->cam->orientation = vec4(tmp->aa, tmp->ab, tmp->ac, 0);
+	scene->cam->orientation = vec3to4(vec3_normalize(vec3_lerp(vec3(0, 0, 1),
+					vec3(tmp->aa, tmp->ab, tmp->ac), 0.5)), 0.);
 	scene->cam->passes = 0;
 	scene->cam->fov_dist = (WIN_WIDTH / WIN_HEIGHT)
 		/ tan((tmp->fov * PI / 180.0) / 2.0);
@@ -26,16 +27,13 @@ void	assign_cam(t_scene *scene, t_parse *parse)
 
 int	assign_obj(t_scene *scene, t_val *obj)
 {
-	if (obj->type[0] == 'L')
-		new_obj("L", (double []){obj->x, obj->y, obj->z, obj->ratio,
-			obj->r, obj->g, obj->b}, scene->objects, 1);
-	else if (obj->type[0] == 'S' && obj->type[1] == 'p')
+	if (ft_strncmp("Sp", obj->type, 3) == 0)
 		new_obj("sp", (double []){obj->x, obj->y, obj->z, obj->diametre / 2,
 			obj->r, obj->g, obj->b}, scene->objects, 0);
-	else if (obj->type[0] == 'P' && obj->type[1] == 'l' )
+	else if (ft_strncmp("Pl", obj->type, 3) == 0)
 		new_obj("pl", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
 			obj->ac, obj->r, obj->g, obj->b}, scene->objects, 0);
-	else if (obj->type[0] == 'C' && obj->type[1] == 'y' )
+	else if (ft_strncmp("Cy", obj->type, 3) == 0)
 		new_obj("cy", (double []){obj->x, obj->y, obj->z, obj->aa, obj->ab,
 			obj->ac, obj->diametre, obj->height, obj->r,
 			obj->g, obj->b}, scene->objects, 0);

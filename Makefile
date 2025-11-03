@@ -6,7 +6,7 @@ LFLAGS = -L -L/usr/lib -lXext -lX11 -lm -lbsd
 DEBUG = -fsanitize=address
 
 RM = rm -f
-NAME = minirt
+NAME = miniRT
 
 LIB = 42_libft/libft.a 42_matft/matft.a mlx_linux/libmlx_Linux.a
 
