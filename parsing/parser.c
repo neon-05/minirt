@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/31 16:14:28 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/11/03 18:48:21 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 	if (!parse->once)
 		return (free_tab(tab), MALLOC_ERROR);
 	if (tab[0][0] == 'A' && ambiant(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
+		return (SKIPPED);
 	else if (tab[0][0] == 'L' && light(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
+		return (SKIPPED);
 	else if (tab[0][0] == 'C' && camera(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
+		return (SKIPPED);
 	return (SUCCESS);
 }
 
