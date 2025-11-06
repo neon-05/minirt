@@ -6,7 +6,7 @@ LFLAGS = -L -L/usr/lib -lXext -lX11 -lm -lbsd
 DEBUG = -fsanitize=address
 
 RM = rm -f
-NAME = minirt
+NAME = miniRT
 
 LIB = 42_libft/libft.a 42_matft/matft.a mlx_linux/libmlx_Linux.a
 
@@ -19,28 +19,33 @@ SRCSP = \
 	parsing/utils/split_assign.c \
 	parsing/utils/split_ispace.c \
 	parsing/utils/transf.c \
+	parsing/utils/init.c \
 	parsing/utils/debug.c \
 	parsing/utils/clear.c \
 	parsing/objects/ambiant.c \
 	parsing/objects/light.c \
 	parsing/objects/camera.c \
 	parsing/objects/sphere.c \
-	parsing/objects/cube.c \
 	parsing/objects/plane.c \
 	parsing/objects/cylinder.c \
-	parsing/objects/boundings.c \
-	parsing/objects/added.c \
 
 OBJSP = $(SRCSP:$(SDIRP)%.c=%.o)
 
 SRCS = \
-	src/minirt.c \
-	src/vsh.c \
-	src/initialize_structs.c \
-	src/allocs.c \
-	src/ray_dist_functions.c \
+	allocs.c \
+	create_objs.c \
+	create_objs_2.c \
+	fsh_bbox.c \
+	fsh_math.c \
+	fsh_ray_logic.c \
+	initialize_structs.c \
+	math_utils.c \
+	minirt.c \
+	ray_dist_functions.c \
+	ray_dist_functions_2.c \
 
-OBJS = $(addprefix $(ODIR), $(SRCS:$(SDIR)%.c=%.o))
+
+OBJS = $(SRCS:%.c=$(ODIR)%.o)
 
 LDIR = $(dir $(LIB))
 SDIR = src/

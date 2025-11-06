@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_structs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 16:38:09 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/15 17:33:50 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/21 16:23:43 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,8 @@ t_object	*object_init(t_object o)
 
 	obj = malloc(sizeof(t_object));
 	if (!obj)
-		return NULL;
+		return (NULL);
 	*obj = o;
-	/*
-	obj->trans_matrix = trans_matrix;
-	obj->offset = offset;
-	obj->material = material;
-	obj->ray_func = ray_func;
-	obj->bounding_volume.corner1 = b1;
-	obj->bounding_volume.corner2 = b2;*/
+	obj->_inv_trans_matrix = mat3_inverse(o.trans_matrix);
 	return (obj);
 }

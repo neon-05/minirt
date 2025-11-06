@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   allocs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: neon-05 <neon-05@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 16:29:40 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/15 18:06:19 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:53:46 by neon-05          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minirt.h"
 
 static void	*malloc_e(int n, int *e);
-static int	alloc_mlx(t_scene *scene);
+static int	alloc_mlx(t_scene *scene, const char *filename);
 
 static void	*malloc_e(int n, int *e)
 {
@@ -24,7 +24,10 @@ static void	*malloc_e(int n, int *e)
 	else
 	{
 		ptr = malloc(n);
-		*e |= !ptr;
+		if (ptr)
+			ft_bzero(ptr, n);
+		else
+			*e = 1;
 	}
 	return (ptr);
 }
@@ -51,19 +54,20 @@ void	free_all(t_scene *scene)
 	free_c((void **) &scene);
 }
 
-static int	alloc_mlx(t_scene *scene)
+static int	alloc_mlx(t_scene *scene, const char *filename)
 {
-	int	err;
+	int		err;
+	char	*win_name;
 
 	err = 0;
 	scene->mlx = mlx_init();
-	if (!scene->mlx)
+	win_name = ft_strjoin(WIN_TITLE" - ", filename);
+	if (!scene->mlx || !win_name)
 		err = 1;
 	else
 	{
 		scene->window = mlx_new_window(
-				scene->mlx, WIN_WIDTH, WIN_HEIGHT, WIN_TITLE
-				);
+				scene->mlx, WIN_WIDTH, WIN_HEIGHT, win_name);
 		if (!scene->window)
 			err = 1;
 		else
@@ -73,13 +77,15 @@ static int	alloc_mlx(t_scene *scene)
 				err = 1;
 		}
 	}
+	free_c((void **) &win_name);
 	return (err);
 }
 
-int	alloc_all(t_scene **scene, int n_obj)
+int	alloc_all(t_scene **scene, const char *filename)
 {
 	t_scene	*ret;
 	int		err;
+	int		i;
 
 	err = 0;
 	ret = malloc_e(sizeof(t_scene), &err);
@@ -87,9 +93,11 @@ int	alloc_all(t_scene **scene, int n_obj)
 	ret->cam->prev_frame = malloc_e(
 			sizeof(t_vec4) * WIN_HEIGHT * WIN_WIDTH, &err
 			);
-	ret->objects = malloc_e(sizeof(t_object *) * n_obj, &err);
-	ret->objects[0] = NULL;
-	err |= alloc_mlx(ret);
+	i = -1;
+	while (++i < WIN_WIDTH * WIN_HEIGHT)
+		ret->cam->prev_frame[i] = (t_vec4){0.0, 0.0, 0.0, 0.0};
+	ret->cam->passes = 0;
+	err |= alloc_mlx(ret, filename);
 	if (err)
 		free_all(ret);
 	*scene = ret;

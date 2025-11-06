@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:54:48 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/21 13:39:18 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/11/03 18:48:21 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,32 @@ int	once_objects(t_parse *parse, char **tab, char *line)
 	if (!parse->once)
 		return (free_tab(tab), MALLOC_ERROR);
 	if (tab[0][0] == 'A' && ambiant(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
+		return (SKIPPED);
 	else if (tab[0][0] == 'L' && light(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
+		return (SKIPPED);
 	else if (tab[0][0] == 'C' && camera(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
-	return (free_tab(tab), SUCCESS);
+		return (SKIPPED);
+	return (SUCCESS);
 }
 
 int	others_objects(t_parse *parse, char **tab, char *line)
 {
+	char	*error;
+
+	error = RED"ERROR: "RESET;
 	if (check_others(parse, tab, line) == SKIPPED)
 		return (free_tab(tab), SKIPPED);
-	if (tab[0][0] == 's' && tab[0][1] == 'p' &&
-			sphere(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'c' && tab[0][1] == 'u' &&
-			cube(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'p' &&
-			tab[0][1] == 'l' && plane(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
-	else if (tab[0][0] == 'c' && tab[0][1] == 'y' &&
-			cylinder(parse, tab, line) == SKIPPED)
-		return (free_tab(tab), SKIPPED);
+	if (tab[0][0] == 's' && tab[0][1] == 'p')
+		return (sphere(parse, tab, line));
+	else if (tab[0][0] == 'p' && tab[0][1] == 'l')
+		return (plane(parse, tab, line));
+	else if (tab[0][0] == 'c' && tab[0][1] == 'y')
+		return (cylinder(parse, tab, line));
+	else
+		return (printf("%sUnrecognized object :\n%s\n\n", error, line)
+			, free_tab(tab), SKIPPED);
 	parse->n_objects++;
-	return (free_tab(tab), SUCCESS);
+	return (SUCCESS);
 }
 
 int	get_data(t_parse *parse, char *line)
@@ -57,10 +57,10 @@ int	get_data(t_parse *parse, char *line)
 	tab = split_ispace(line);
 	if (!tab)
 		return (MALLOC_ERROR);
+	if (!tab[0])
+		return (free_tab(tab), SUCCESS);
 	if (tab[0] && tab[0][0] == '#')
 		return (free_tab(tab), SUCCESS);
-	if (tab[0] && tab[0][0] == '+')  //added
-		return (added(parse, tab, line));  //added
 	else if (ft_strlen(tab[0]) == 1 && ft_strchr("ACL", tab[0][0]))
 		return (once_objects(parse, tab, line));
 	else if (ft_strlen(tab[0]) == 2)
@@ -74,17 +74,7 @@ int	get_data(t_parse *parse, char *line)
 	return (SUCCESS);
 }
 
-void	init_parse(t_parse *parse)
-{
-	parse->once = NULL;
-	parse->scene = NULL;
-	parse->camera = NULL;
-	parse->ambiant = NULL;
-	parse->light = NULL;
-	parse->objects = NULL;
-}
-
-size_t	parse(t_scene *scene, int fd)//n of line parsed ?
+size_t	parse(t_scene *scene, int fd)
 {
 	t_parse		parse;
 	char		*line;
@@ -92,33 +82,21 @@ size_t	parse(t_scene *scene, int fd)//n of line parsed ?
 
 	init_parse(&parse);
 	parse.scene = scene;
-	while (get_line(&line, fd))
+	while (get_line(&line, fd) > 0)
 	{
 		status = get_data(&parse, line);
+		free(line);
 		line = NULL;
-		if (status == MALLOC_ERROR)
-			return (MALLOC_ERROR);
-		else if (status == SKIPPED)
-			return (SKIPPED);
+		if (status == MALLOC_ERROR || status == SKIPPED)
+			return (free_parse(&parse), status);
 	}
 	if (line)
 		free(line);
-	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0]) || !ft_strchr(SET, parse.once[1]) || !ft_strchr(SET, parse.once[2]))
-		return (printf("Not all the mandatory elements are here..."), SKIPPED);
-	show_parse(parse);
+	if (ft_strlen(parse.once) != 3 || !ft_strchr(SET, parse.once[0])
+		|| !ft_strchr(SET, parse.once[1]) || !ft_strchr(SET, parse.once[2]))
+		return (free_parse(&parse),
+			printf("Not all the mandatory elements are here..."), SKIPPED);
 	if (assign(scene, &parse) == MALLOC_ERROR)
-		return (MALLOC_ERROR);
+		return (free_parse(&parse), MALLOC_ERROR);
 	return (free_parse(&parse), SUCCESS);
 }
-
-//if line not valid skipp, add 1 to return value
-
-// R resolution int int
-
-/*
-
-scene->objects[0] = 
-object_init(mat3_scale(i_mat3i, 1./30.), vec3(10., 40., -20.), material_init(1, vec4(1., 1., 1., 1.), 1., 1.), vec3(100.,100.,100.), vec3(-100.,-100.,-100.), ray_sphere);
-										 offset				   material_init(emmissive, vec4(RGBA),roughness,refraction_index) , b1, b2,              t_hit_info (*ray_func)(t_ray)
-
-*/
