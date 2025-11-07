@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:56 by malapoug          #+#    #+#             */
-/*   Updated: 2025/11/03 16:42:20 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:07:10 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,18 @@ int	get_line(char **line, int fd)
 	if (!buffer)
 		return (-1);
 	bytes = read(fd, &c, 1);
+	if (bytes == 0)
+		return (free(buffer), 0);
 	while (bytes > 0 && c != '\n')
 	{
-		if (c != '\n')
-			buffer[i] = c;
+		buffer[i] = c;
 		i++;
 		bytes = read(fd, &c, 1);
 	}
 	buffer[i] = '\n';
 	buffer[++i] = '\0';
 	*line = buffer;
-	return (bytes);
+	return (ft_strlen(buffer));
 }
 
 char	*ft_strjoin_f(char *s1, char *s2)

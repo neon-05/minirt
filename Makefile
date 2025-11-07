@@ -43,6 +43,7 @@ SRCS = \
 	minirt.c \
 	ray_dist_functions.c \
 	ray_dist_functions_2.c \
+	input_check.c \
 
 
 OBJS = $(SRCS:%.c=$(ODIR)%.o)

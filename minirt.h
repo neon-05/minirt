@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 15:28:32 by neon-05           #+#    #+#             */
-/*   Updated: 2025/11/05 17:03:37 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:49:49 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,5 +155,9 @@ int			new_obj(
 
 t_object	*new_light(
 				double params[7], t_object **objs, int i, int emmissive);
+
+// input_check.c
+void		check_input(int cond, const char *msg, int exit_code);
+int			ft_endswith(const char *s, const char *ref);
 
 #endif

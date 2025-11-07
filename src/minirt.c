@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 16:20:49 by ylabussi          #+#    #+#             */
-/*   Updated: 2025/10/31 16:21:15 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:57:55 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	render(t_scene **scene)
 	t_vec2	uv;
 
 	frag_pos = 0;
-	if ((*scene)->cam->passes >= MAX_RENDER_PASSES)
+	if ((*scene)->cam->passes + 1 >= MAX_RENDER_PASSES)
 		mlx_loop_hook((*scene)->mlx, NULL, NULL);
 	ft_putnbr_fd((*scene)->cam->passes, 2);
 	ft_putstr_fd(":\t", 2);
@@ -94,8 +94,8 @@ int	main(int argc, char **argv)
 	t_scene	*scene;
 	int		fd;
 
-	if (argc < 2)
-		return (ft_putendl_fd("missing filename", 2), 1);
+	check_input(argc < 2, "missing filename", 1);
+	check_input(!ft_endswith(argv[1], ".rt"), "filename doesn't end in .rt", 1);
 	if (alloc_all(&scene, argv[1]))
 		return (2);
 	fd = open(argv[1], O_RDONLY);
