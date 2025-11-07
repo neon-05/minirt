@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/26 15:28:32 by neon-05           #+#    #+#             */
-/*   Updated: 2025/10/31 16:52:09 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/05 17:03:37 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <libft.h>
 # include <mlx.h>
 # include <mlx_int.h>
+# include <stdlib.h>
 # include "parsing/parsing.h"
 
 //====================(DEFINES)=============================//
@@ -27,9 +28,9 @@
 
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
-# define WIN_TITLE "minirt"
-# define RAY_DEPTH_LIMIT 3
-# define RAY_PER_BOUNCE 1
+# define WIN_TITLE "miniRT"
+# define RAY_DEPTH_LIMIT 4
+# define RAY_PER_BOUNCE 2
 # define MAX_RENDER_PASSES 10
 
 # define LOADING_BAR_LENGTH 100
@@ -38,6 +39,8 @@
 
 # define LCG_MULT 1103515245
 # define LCG_INCR 12345
+
+# define LIGHT_STRENGTH 10.
 
 # define KEY_ESC 65307
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malapoug <malapoug@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:39:16 by malapoug          #+#    #+#             */
-/*   Updated: 2025/10/31 15:15:22 by malapoug         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:06:43 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int		check_others(t_parse *parse, char **tab, char *line);
 
 //tranfs
 t_vec4	colors(t_val *val, double a);
-t_vec4	quaternion(double a, double b, double c, double teta);
+t_vec4	quaternion(t_vec3 start, t_vec3 target);
 
 //split_assign
 void	free_tab(char **tab);

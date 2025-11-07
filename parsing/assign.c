@@ -6,7 +6,7 @@
 /*   By: ylabussi <ylabussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:34:07 by malapoug          #+#    #+#             */
-/*   Updated: 2025/11/03 18:39:54 by ylabussi         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:52:15 by ylabussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,19 @@
 void	assign_cam(t_scene *scene, t_parse *parse)
 {
 	t_val	*tmp;
+	t_vec3	cam_dir;
 
 	tmp = parse->camera;
+	if (tmp->aa == 0. && tmp->ab == 0. && tmp->ac == 0.)
+	{
+		cam_dir = vec3(0., 0., 1.);
+		ft_putendl_fd("WARNING: no specified camera direction,\
+ chose (0, 0, 1) as default", 2);
+	}
+	else
+		cam_dir = vec3_normalize(vec3(tmp->aa, tmp->ab, tmp->ac));
 	scene->cam->pos = vec3(tmp->x, tmp->y, tmp->z);
-	scene->cam->orientation = vec3to4(vec3_normalize(vec3_lerp(vec3(0, 0, 1),
-					vec3(tmp->aa, tmp->ab, tmp->ac), 0.5)), 0.);
+	scene->cam->orientation = quaternion(vec3(0., 0., 1.), cam_dir);
 	scene->cam->passes = 0;
 	scene->cam->fov_dist = (WIN_WIDTH / WIN_HEIGHT)
 		/ tan((tmp->fov * PI / 180.0) / 2.0);
