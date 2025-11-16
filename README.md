@@ -76,8 +76,8 @@ Common behavior:
 - Repeat the operation mutiple times to reduce the noise and enhance the quality
 
 ## Scenes & Screenshots
-<img src="https://github.com/Loufok0/miniRT/blob/main/ressources/Pokeball.png" width="500">)
-<img src="https://github.com/Loufok0/miniRT/blob/main/ressources/Burger.webp" width="500">)
+<img src="https://github.com/Loufok0/miniRT/blob/main/ressources/Pokeball.png" width="500">
+<img src="https://github.com/Loufok0/miniRT/blob/main/ressources/Burger.webp" width="500">
 
 ## Project structure (suggested)
 - src/            — execution, calculs and rendering code
